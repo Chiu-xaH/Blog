@@ -15,16 +15,16 @@ interface ArticleMapper {
     fun add(@Param("articleInfo") articleInfo: ArticleInfo) : Int
     // 查询指定博客id的详情
     @Select("SELECT * FROM articleinfo WHERE id = #{blogId}")
-    fun selectByBlogId(@Param("blogId") blogId : Long) : ArticleInfo?
+    fun selectByBlogId(@Param("blogId") blogId : Int) : ArticleInfo?
     // 查询个人博客列表
     @Select("SELECT * FROM articleinfo WHERE uid = #{uid}")
-    fun getMyBlogList(@Param("uid") uid : Long) : List<ArticleInfo>
+    fun getMyBlogList(@Param("uid") uid : Int) : List<ArticleInfo>
     // 查询总的博客列表
     @Select("SELECT * FROM articleinfo")
     fun getBlogList() : List<ArticleInfo>
     // 删除指定博客
     @Delete("DELETE FROM articleinfo WHERE id = #{id}")
-    fun del(@Param("id") id : Long) : Int
+    fun del(@Param("id") id : Int) : Int
     // 当前博客总数目
     @Select(" SELECT COUNT(*) FROM articleinfo")
     fun getPageCount() : Int

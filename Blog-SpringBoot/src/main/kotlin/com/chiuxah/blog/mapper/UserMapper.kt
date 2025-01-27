@@ -22,7 +22,7 @@ interface UserMapper {
     // 按ID找 SELECT * FROM userinfo WHERE id = uid
     @Select("SELECT * FROM userinfo WHERE id = #{uid}")
     fun selectByUid(
-        @Param("uid") uid : Long
+        @Param("uid") uid : Int
     ) : UserInfo?
     // 验证是否注册过
     @Select("SELECT COUNT(1) FROM userinfo WHERE username = #{username}")

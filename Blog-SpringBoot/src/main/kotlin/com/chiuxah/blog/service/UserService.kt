@@ -18,7 +18,7 @@ class UserService {
         return userMapper.selectByUsername(username)
     }
     // 用UID查询信息
-    fun selectByUid(uid : Long) : UserInfo? {
+    fun selectByUid(uid : Int) : UserInfo? {
         return userMapper.selectByUid(uid)
     }
     // 是否注册过
