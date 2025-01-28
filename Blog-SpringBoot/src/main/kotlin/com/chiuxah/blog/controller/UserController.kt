@@ -4,7 +4,7 @@ import com.chiuxah.blog.config.AjaxResult
 import com.chiuxah.blog.model.UserInfo
 import com.chiuxah.blog.service.UserService
 import com.chiuxah.blog.util.ConstVariable
-import com.chiuxah.blog.util.CryptoUtil
+import com.chiuxah.blog.util.CryptoUtils
 import com.chiuxah.blog.util.state.StatusCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -29,7 +29,7 @@ class UserController {
         } else if(!(StringUtils.hasLength(username) && StringUtils.hasLength(password))) {
             AjaxResult.fail(StatusCode.BAD_REQUEST,"参数输入错误")
         } else {
-            val result = userService.reg(username,CryptoUtil.encrypt(password))
+            val result = userService.reg(username,CryptoUtils.encrypt(password))
             if(result == -1) {
                 AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"数据库添加出错")
             } else {
@@ -44,7 +44,7 @@ class UserController {
             return AjaxResult.fail(StatusCode.BAD_REQUEST,"参数输入错误 登陆失败")
         }
         val userInfo = userService.selectByUsername(username) ?: return AjaxResult.fail(StatusCode.FORBIDDEN,"用户未注册")
-        if(!CryptoUtil.decryept(password,userInfo.password) || userInfo.id <= 0) {
+        if(!CryptoUtils.decryept(password,userInfo.password) || userInfo.id <= 0) {
             return AjaxResult.fail(StatusCode.FORBIDDEN,"账号或密码错误 登陆失败")
         }
         val session = request.session

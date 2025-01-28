@@ -4,7 +4,7 @@ import cn.hutool.core.util.IdUtil
 import cn.hutool.crypto.SecureUtil
 import org.springframework.util.StringUtils
 
-object CryptoUtil {
+object CryptoUtils {
     // 加密
     fun encrypt(password : String) : String {
         val salt = IdUtil.simpleUUID()

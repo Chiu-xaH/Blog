@@ -2,7 +2,6 @@ package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.ArticleMapper
 import com.chiuxah.blog.model.ArticleInfo
-import org.apache.ibatis.annotations.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -19,7 +18,7 @@ class ArticleService {
         return articleMapper.selectByBlogId(blogId)
     }
     // 查询个人博客列表
-    fun getMyBlogList(uid : Int) : List<ArticleInfo> {
+    fun getBlogListByUser(uid : Int) : List<ArticleInfo> {
         return articleMapper.getMyBlogList(uid)
     }
     // 查询总的博客列表
@@ -39,7 +38,7 @@ class ArticleService {
         return articleMapper.getBlogListByPage(pageSize, page)
     }
     // 修改博客title和content
-    fun update(title : String, content : String) : Int {
-        return articleMapper.update(title, content)
+    fun update(id : Int,title : String?, content : String?) : Int {
+        return articleMapper.update(id,title, content)
     }
 }

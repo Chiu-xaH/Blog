@@ -22,12 +22,11 @@ class ArticleController {
     @Autowired lateinit var articleService: ArticleService
     // 发博客
     @RequestMapping("/add")
-    fun add(request : HttpServletRequest,title : String,content : String) : Any {
+    fun addBlog(request : HttpServletRequest,title : String,content : String) : Any {
         val session = request.session
-        val ajaxResult = AjaxResult
-        if(session?.getAttribute(ConstVariable.USER_SESSION_KEY) == null) {
-            return ajaxResult.fail(StatusCode.UNAUTHORIZED,"未登录")
-        }
+//        if(session?.getAttribute(ConstVariable.USER_SESSION_KEY) == null) {
+//            return AjaxResult.fail(StatusCode.UNAUTHORIZED,"未登录")
+//        }
         // 用户
         val userInfo = session.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
         val uid = userInfo.id
@@ -42,18 +41,27 @@ class ArticleController {
         )
         val result = articleService.add(articleInfo)
         return if(result == 1) {
-            ajaxResult.success("发布成功",1)
+            AjaxResult.success("发布成功",1)
         } else {
-            ajaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"发布失败")
+            AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"发布失败")
         }
     }
+    // 管理我的博客
+    @GetMapping("/get_my_list")
+    fun getMyBlogList(request: HttpServletRequest) : Any {
+        val session = request.session.getAttribute(ConstVariable.USER_SESSION_KEY)
+//            ?: return AjaxResult.fail(StatusCode.UNAUTHORIZED,"未登录")
+        val userInfo = session as UserInfo
+        val uid = userInfo.id
+        return AjaxResult.success("查找成功",articleService.getBlogListByUser(uid))
+    }
     // 查询指定用户的博客
-    @GetMapping("/get_mylist")
-    fun getMyBlogList(uid : Int,response : HttpServletResponse) : Any {
+    @GetMapping("/get_user_list")
+    fun getUserBlogList(uid : Int) : Any {
         if(uid <= 0) {
             return AjaxResult.fail(StatusCode.BAD_REQUEST,"传入参数有误")
         }
-        return AjaxResult.success("查找成功",articleService.getMyBlogList(uid))
+        return AjaxResult.success("查找成功",articleService.getBlogListByUser(uid))
     }
     // 博客详情
     @GetMapping("/get_by_blog_id")
@@ -83,7 +91,7 @@ class ArticleController {
             ?: return AjaxResult.fail(StatusCode.BAD_REQUEST,"无此博文")
 
         val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY)
-            ?: return AjaxResult.fail(StatusCode.UNAUTHORIZED,"未登录")
+//            ?: return AjaxResult.fail(StatusCode.UNAUTHORIZED,"未登录")
 
         val userInfo = session as UserInfo
         return if(userInfo.id != articleInfo.uid) {
@@ -94,6 +102,30 @@ class ArticleController {
                 AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
             } else {
                 AjaxResult.success(data = 1)
+            }
+        }
+    }
+    // 更新博客内容/标题
+    @RequestMapping("/update")
+    fun updateBlog(request: HttpServletRequest,id : Int,title: String?,content: String?) : Any {
+        if(id <= 0) {
+            return AjaxResult.fail(StatusCode.BAD_REQUEST,"参数有误")
+        }
+        val articleInfo = articleService.selectByBlogId(id) ?: return AjaxResult.fail(StatusCode.BAD_REQUEST,"找不到博文")
+        // 验证是否登录
+        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY)
+//            ?: return AjaxResult.fail(StatusCode.UNAUTHORIZED,"未登录")
+        val userInfo = session as UserInfo
+        val uid = userInfo.id
+        // 验证是否为博文的作者，只有作者有权限操作自己的博文
+        return if(uid != articleInfo.uid) {
+            AjaxResult.fail(StatusCode.FORBIDDEN,"无权限")
+        } else {
+            val result = articleService.update(id,title,content)
+            if(result <= 0) {
+                AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"更新失败")
+            } else {
+                AjaxResult.success("更新成功")
             }
         }
     }

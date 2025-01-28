@@ -5,5 +5,9 @@ spring:
     password: 050908
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
+file:
+  upload-dir: D:\Jet Brains Project\IDEA\Blog\Blog-SpringBoot\src\main\resources\uploads\images
+
 #mybatis:
 #  mapper-locations: classpath:mapper/**Mapper.xml

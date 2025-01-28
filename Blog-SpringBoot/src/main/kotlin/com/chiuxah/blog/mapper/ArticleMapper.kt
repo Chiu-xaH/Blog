@@ -1,12 +1,7 @@
 package com.chiuxah.blog.mapper
 
 import com.chiuxah.blog.model.ArticleInfo
-import org.apache.ibatis.annotations.Delete
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Param
-import org.apache.ibatis.annotations.Select
-import org.apache.ibatis.annotations.Update
+import org.apache.ibatis.annotations.*
 
 @Mapper
 interface ArticleMapper {
@@ -35,9 +30,19 @@ interface ArticleMapper {
         @Param("offset") page : Int = 1
     ) : List<ArticleInfo>
     // 修改博客title和content
-    @Update("UPDATE articleinfo SET title = #{title}, content = #{content} WHERE id = #{id}")
+    @Update(
+        "<script>" +
+        "UPDATE articleinfo" +
+        "<set>" +
+        "<if test='title != null and title != \"\"'>title = #{title},</if>" +
+        "<if test='content != null and content != \"\"'>content = #{content},</if>" +
+        "</set>" +
+        "WHERE id = #{id}" +
+        "</script>"
+    )
     fun update(
-        @Param("title") title : String,
-        @Param("content") content : String
-    ) : Int
+        @Param("id") id: Int,
+        @Param("title") title: String?,
+        @Param("content") content: String?
+    ): Int
 }

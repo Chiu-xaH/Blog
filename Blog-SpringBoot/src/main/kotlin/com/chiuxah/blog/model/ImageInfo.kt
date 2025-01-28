@@ -7,7 +7,9 @@ data class ImageInfo(
     val url : String,
     val filename : String,
     val size : Long,
-    val type : String,
-    val uploadtime : Timestamp,
+    val filetype : String,
+    val uploadtime : Timestamp? = null,
+    val uid : Int,
+    val type : Int,
     val state : Int
 )
