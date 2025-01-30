@@ -12,4 +12,15 @@ class ImageService {
     fun addImage(imageInfo : ImageInfo) : Int {
         return imageMapper.add(imageInfo)
     }
+
+    fun selectByUid(uid : Int) : List<ImageInfo> {
+        return imageMapper.selectByUid(uid)
+    }
+
+    fun updateUserPhoto(id : Int,url : String) : Int {
+        return imageMapper.updateUserPhoto(id, url)
+    }
+    fun delImage(id: Int) : Int {
+        return imageMapper.del(id)
+    }
 }

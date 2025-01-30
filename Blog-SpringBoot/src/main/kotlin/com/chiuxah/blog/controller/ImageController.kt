@@ -32,6 +32,8 @@ class ImageController {
     @Value("\${file.upload-dir}") // 保存路径
     lateinit var uploadDir: String
 
+    @Value("\${file.location-url}") // 映射路径
+    lateinit var locationUrl: String
     // 上传图片返回URL、id
     @PostMapping("/upload")
     fun uploadImage(
@@ -47,13 +49,20 @@ class ImageController {
             else -> return AjaxResult.fail(StatusCode.BAD_REQUEST,"参数有误")
         }
 
-        val filename = UUID.randomUUID().toString()
-        val filePath = File(uploadDir,filename)
+        val originalFilename = image.originalFilename ?: ""
+        val extension = originalFilename.substringAfterLast(".", "").lowercase()
+
+        if (extension.isEmpty()) {
+            return AjaxResult.fail(StatusCode.BAD_REQUEST, "无法识别文件格式")
+        }
+        val filename = "${UUID.randomUUID()}.$extension" // 生成带扩展名的唯一文件名
+        val filePath = File(uploadDir, filename)
+
         // 保存文件
         try {
             image.transferTo(filePath)
 
-            val url = "/$uploadDir/$filename"
+            val url = "$locationUrl$filename"
 
             val fileSize = filePath.length()
             val fileType = image.contentType ?: "unknown"
@@ -84,8 +93,11 @@ class ImageController {
 
     // 查看用户上传的图片
     @GetMapping("get_uploaded")
-    fun getUploadedImage() {
-
+    fun getUploadedImage(request: HttpServletRequest) : Any {
+        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+        val uid = session.id
+        val imgList = imageService.selectByUid(uid)
+        return AjaxResult.success(data = imgList)
     }
     // 删除图片 数据库删除，并移除实体文件
     @DeleteMapping("del")
@@ -93,8 +105,27 @@ class ImageController {
 
     }
     // 更换头像 上传图片后，保存用户数据库的photo为旧的URL，然后设置photo为新的url 然后根据旧URL检索删掉旧的图片实体文件及其数据库记录
-    @PostMapping("upload_user_photo")
-    fun uploadUserPhoto() {
+    @PostMapping("update_user_photo")
+    fun uploadUserPhoto(
+        image : MultipartFile,
+        request : HttpServletRequest
+    )  : Any {
+        val responseBody = uploadImage(image,ImageType.USER_PHOTO.str,request)
+        return if(responseBody is Map<*, *> && responseBody["state"] == StatusCode.SUCCESS.code) {
+            // 将响应URL设置为用户信息的photo
+            val data = responseBody["data"] as? Map<*, *> ?: return AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR, "解析上传结果失败")
+            val url = data["url"] as? String ?: return AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR, "未获取到图片URL")
 
+            val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+            val uid = session.id
+            val result = imageService.updateUserPhoto(uid,url)
+            if(result <= 0) {
+                AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"更新失败")
+            } else {
+                AjaxResult.success("更新成功")
+            }
+        } else {
+            AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"上传失败")
+        }
     }
 }
