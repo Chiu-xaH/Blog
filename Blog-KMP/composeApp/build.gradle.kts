@@ -41,7 +41,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+//            implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -57,6 +57,13 @@ kotlin {
             implementation(libs.androidx.lifecycle.livedata.core.ktx)
             // 图片库
             api(libs.image.loader)
+            // 导航
+//            implementation(libs.androidx.navigation.runtime.ktx)
+            implementation(libs.navigation.compose)
+//            implementation(libs.androidx.navigation.compose)
+//            implementation(libs.navigation.compose)
+//            implementation(libs.activity.ktx)
+//            implementation(libs.androidx.activity.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
