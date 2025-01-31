@@ -1,4 +1,4 @@
-package org.chiuxah.blog
+package org.chiuxah.blog.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

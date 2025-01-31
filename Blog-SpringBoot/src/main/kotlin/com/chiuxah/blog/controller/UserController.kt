@@ -25,7 +25,7 @@ class UserController {
         // 注册过
         return if(userService.hasAccount(username)) {
             // 后面完善 重定向到登录
-            AjaxResult.fail(StatusCode.REDIRECT,"用户已注册")
+            AjaxResult.fail(StatusCode.REDIRECT,"用户注册过")
         } else if(!(StringUtils.hasLength(username) && StringUtils.hasLength(password))) {
             AjaxResult.fail(StatusCode.BAD_REQUEST,"参数输入错误")
         } else {
@@ -33,7 +33,7 @@ class UserController {
             if(result == -1) {
                 AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"数据库添加出错")
             } else {
-                AjaxResult.success("注册成功","1")
+                AjaxResult.success("注册成功")
             }
         }
     }
@@ -49,7 +49,9 @@ class UserController {
         }
         val session = request.session
         session.setAttribute(ConstVariable.USER_SESSION_KEY,userInfo)
-        return AjaxResult.success("登陆成功",1)
+        return AjaxResult.success("登陆成功", mapOf(
+            "JSESSIONID" to session.id
+        ))
     }
     /*退出登录*/
     @RequestMapping("/logout")
@@ -59,7 +61,7 @@ class UserController {
             return AjaxResult.fail(StatusCode.UNAUTHORIZED,"未登录")
         }
         session.setAttribute(ConstVariable.USER_SESSION_KEY,null)
-        return AjaxResult.success("已退出登录","true")
+        return AjaxResult.success("已退出登录")
     }
     /*通过id搜索用户详细信息*/
     @GetMapping("/get_detail")

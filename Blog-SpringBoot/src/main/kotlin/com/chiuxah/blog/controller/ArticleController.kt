@@ -41,7 +41,7 @@ class ArticleController {
         )
         val result = articleService.add(articleInfo)
         return if(result == 1) {
-            AjaxResult.success("发布成功",1)
+            AjaxResult.success("发布成功")
         } else {
             AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"发布失败")
         }
@@ -101,7 +101,7 @@ class ArticleController {
             if(result <= 0) {
                 AjaxResult.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
             } else {
-                AjaxResult.success(data = 1)
+                AjaxResult.success(msg = "删除成功")
             }
         }
     }

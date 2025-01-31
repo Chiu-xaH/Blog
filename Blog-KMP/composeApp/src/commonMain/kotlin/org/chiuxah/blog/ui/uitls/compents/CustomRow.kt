@@ -1,4 +1,4 @@
-package org.chiuxah.blog.ui.uitls
+package org.chiuxah.blog.ui.uitls.compents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
