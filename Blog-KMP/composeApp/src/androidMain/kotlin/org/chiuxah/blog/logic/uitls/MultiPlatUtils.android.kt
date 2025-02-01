@@ -5,7 +5,7 @@ import android.net.Uri
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.engine.android.Android
 import org.chiuxah.blog.MyApplication
-import org.chiuxah.blog.logic.enums.PlatformType
+import org.chiuxah.blog.logic.bean.PlatformType
 import org.chiuxah.blog.ui.utils.myToast
 
 actual object MultiPlatUtils {

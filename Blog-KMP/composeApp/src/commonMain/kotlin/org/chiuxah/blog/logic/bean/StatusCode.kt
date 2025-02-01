@@ -1,4 +1,4 @@
-package org.chiuxah.blog.logic.enums
+package org.chiuxah.blog.logic.bean
 
 /*
 200 成功

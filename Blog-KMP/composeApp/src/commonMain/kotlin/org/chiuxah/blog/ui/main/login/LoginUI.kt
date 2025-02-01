@@ -29,7 +29,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,17 +39,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.chiuxah.blog.logic.enums.NavRoute
-import org.chiuxah.blog.logic.enums.PlatformType
-import org.chiuxah.blog.logic.enums.StatusCode
-import org.chiuxah.blog.logic.network.bean.LoginResponse
+import org.chiuxah.blog.logic.bean.NavRoute
+import org.chiuxah.blog.logic.bean.PlatformType
+import org.chiuxah.blog.logic.bean.StatusCode
 import org.chiuxah.blog.logic.network.config.ApiResult
-import org.chiuxah.blog.logic.uitls.MultiPlatUtils
 import org.chiuxah.blog.logic.uitls.MultiPlatUtils.showMsg
 import org.chiuxah.blog.logic.uitls.PlatformsManager
-import org.chiuxah.blog.ui.uitls.NavigateManager.turnTo
+import org.chiuxah.blog.logic.uitls.PreferencesManager
+import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_COOKIE
+import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_PASSWORD
+import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_USERNAME
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
 import org.chiuxah.blog.ui.uitls.compents.CustomRow
 import org.chiuxah.blog.viewmodel.MainViewModel
@@ -115,6 +113,7 @@ fun LoginInfoUI(navController : NavHostController, vm : MainViewModel) {
                 is ApiResult.Success -> {
                     val result = response.data
                     if (result.state == StatusCode.SUCCESS.code) {
+                        PreferencesManager.settings.putString(KEY_COOKIE,result.data!!.JSESSIONID)
                         turnToAndClear(navController, NavRoute.HOME.name)
                     } else {
                         showMsg(result.msg)
@@ -123,39 +122,7 @@ fun LoginInfoUI(navController : NavHostController, vm : MainViewModel) {
                 is ApiResult.Error -> showMsg("网络错误")
             }
         }
-//        if(!isReg) {
-//
-//        } else {
-//            vm.regResponse.collect { response ->
-//                when (response) {
-//                    is ApiResult.Success -> {
-//                        val result = response.data
-//                        showMsg(result.msg)
-//                    }
-//                    is ApiResult.Error -> showMsg("网络错误")
-//                }
-//            }
-//        }
     }
-
-//    LaunchedEffect(loginResponse) {
-//        when(loginResponse) {
-//            is ApiResult.Success -> {
-//                val result = (loginResponse as ApiResult.Success<LoginResponse>).data
-//                if(result.state == StatusCode.SUCCESS.code) {
-//                    // 登陆成功
-//                    turnTo(navController, NavRoute.HOME.name)
-//                } else {
-//                    showMsg(result.msg)
-//                    // 登陆失败
-//                }
-//            }
-//            is ApiResult.Error -> {
-//                showMsg("网络错误")
-//            }
-//            else ->  {}
-//        }
-//    }
 
     var inputUsername by remember { mutableStateOf("") }
     var inputPassword by remember { mutableStateOf("") }
@@ -222,9 +189,16 @@ fun LoginInfoUI(navController : NavHostController, vm : MainViewModel) {
     CustomRow {
         Button(
             onClick = {
+                saveLogin(inputUsername,inputPassword)
                 vm.fetchLogin(inputUsername,inputPassword)
             },
         ) { Text("登录") }
+        Spacer(Modifier.width(10.dp))
+        FilledTonalButton(
+            onClick = {
+                turnToAndClear(navController,NavRoute.HOME.name)
+            },
+        ) { Text("游客") }
         Spacer(Modifier.width(10.dp))
         FilledTonalButton(
             onClick = {
@@ -237,5 +211,13 @@ fun LoginInfoUI(navController : NavHostController, vm : MainViewModel) {
                 showMsg("正在开发")
             },
         ) { Text("忘记密码") }
+    }
+}
+
+
+fun saveLogin(username : String,password : String) {
+    PreferencesManager.settings.apply {
+        putString(KEY_USERNAME,username)
+        putString(KEY_PASSWORD,password)
     }
 }

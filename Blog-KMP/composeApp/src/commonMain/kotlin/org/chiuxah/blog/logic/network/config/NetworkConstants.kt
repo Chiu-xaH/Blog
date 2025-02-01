@@ -10,9 +10,17 @@ object NetworkConstants {
     const val API_HOST = "localhost"
 
     // 接口 们(可扩展多个，若扩展，需要创建接口Service)
-    private const val API_USER = "user/"
-    const val API_LOGIN = API_USER + "login"
-    const val API_REG = API_USER + "reg"
+    object APIs {
+        private const val USER = "user/"
+        const val LOGIN = USER + "login"
+        const val REG = USER + "reg"
+        const val CHECK_LOGIN = USER + "check_login"
+        const val LOGOUT = USER + "logout"
+        const val GET_USER_BY_ID = USER + "get_detail"
+
+        private const val ARTICLE = "article/"
+        const val GET_ALL_ARTICLES = ARTICLE + "get_list"
+    }
     // 类型 http/https
     val TYPE =  URLProtocol.HTTP
     // 端口

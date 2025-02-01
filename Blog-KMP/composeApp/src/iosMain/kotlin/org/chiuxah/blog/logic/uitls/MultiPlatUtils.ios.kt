@@ -1,7 +1,7 @@
 package org.chiuxah.blog.logic.uitls
 
 import io.ktor.client.engine.HttpClientEngineFactory
-import org.chiuxah.blog.logic.enums.PlatformType
+import org.chiuxah.blog.logic.bean.PlatformType
 
 actual object MultiPlatUtils {
     actual fun createEngine(): HttpClientEngineFactory<*> {

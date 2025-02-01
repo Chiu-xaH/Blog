@@ -25,7 +25,9 @@ class ApplicationConfig : WebMvcConfigurer {
             .excludePathPatterns("/article/get_user_list") // 除外 不拦截
             .excludePathPatterns("/user/login") // 除外 不拦截
             .excludePathPatterns("/user/reg") // 除外 不拦截
+            .excludePathPatterns("/user/get_detail")
             .excludePathPatterns("/upload/image/**")
+            .excludePathPatterns("/image/recycle")
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {

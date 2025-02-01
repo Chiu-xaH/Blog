@@ -20,7 +20,19 @@ class ImageService {
     fun updateUserPhoto(id : Int,url : String) : Int {
         return imageMapper.updateUserPhoto(id, url)
     }
-    fun delImage(id: Int) : Int {
-        return imageMapper.del(id)
+    fun delById(id: Int) : Int {
+        return imageMapper.delById(id)
+    }
+
+    fun delByFilename(filename : String) : Int {
+        return imageMapper.delByFilename(filename)
+    }
+
+    fun selectById(id : Int) : ImageInfo? {
+        return imageMapper.selectById(id)
+    }
+
+    fun selectByFilename(filename : String) : ImageInfo? {
+        return imageMapper.selectByFilename(filename)
     }
 }

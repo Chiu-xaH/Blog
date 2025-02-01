@@ -1,4 +1,4 @@
-package com.chiuxah.blog.util
+package com.chiuxah.blog.utils
 
 import cn.hutool.core.util.IdUtil
 import cn.hutool.crypto.SecureUtil

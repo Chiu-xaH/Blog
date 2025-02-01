@@ -59,12 +59,11 @@ kotlin {
             // 图片库
             api(libs.image.loader)
             // 导航
-//            implementation(libs.androidx.navigation.runtime.ktx)
             implementation(libs.navigation.compose)
-//            implementation(libs.androidx.navigation.compose)
-//            implementation(libs.navigation.compose)
-//            implementation(libs.activity.ktx)
-//            implementation(libs.androidx.activity.compose)
+            // 持久化存储 键值对
+            implementation(libs.multiplatform.settings)
+            // 自适应横竖屏布局
+            implementation(libs.material3.adaptive.navigation.suite)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

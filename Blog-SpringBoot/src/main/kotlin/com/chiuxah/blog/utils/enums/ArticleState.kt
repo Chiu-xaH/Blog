@@ -1,4 +1,4 @@
-package com.chiuxah.blog.util.state
+package com.chiuxah.blog.utils.enums
 
 enum class ArticleState(val state : Int) {
     PUBLISHED(1),

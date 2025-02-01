@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.chiuxah'
-version = '0.1 Preview'
+version = '1.0'
 
 java {
 	toolchain {

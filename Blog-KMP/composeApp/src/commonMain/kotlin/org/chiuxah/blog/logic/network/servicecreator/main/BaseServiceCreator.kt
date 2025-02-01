@@ -1,29 +1,34 @@
 package org.chiuxah.blog.logic.network.servicecreator.main
 
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
-import org.chiuxah.blog.logic.network.config.NetworkConstants.PORT
+import org.chiuxah.blog.logic.network.config.NetworkConstants.TYPE
 import org.chiuxah.blog.logic.uitls.MultiPlatUtils
 
 //基类
 open class BaseServiceCreator(
-    private val hosts: String,
-    private val clientBuilder: HttpClient.() -> Unit
+    private val hosts : String, // 主机
+    private val type : URLProtocol = TYPE, // HTTP/HTTPS
+    private val ports : Int? = null, // 端口 默认
+    private val clients: HttpClientConfig<*>.() -> Unit = {}  // 扩展
 ) {
     protected val client: HttpClient by lazy {
         HttpClient(MultiPlatUtils.createEngine()) {
             install(ContentNegotiation) { json() }
             defaultRequest {
                 url {
-                    protocol = URLProtocol.HTTP
+                    protocol = type
                     host = hosts
-                    port = PORT
+                    if(ports != null) {
+                        port = ports
+                    }
                 }
             }
-            clientBuilder
+            clients()
         }
     }
 }

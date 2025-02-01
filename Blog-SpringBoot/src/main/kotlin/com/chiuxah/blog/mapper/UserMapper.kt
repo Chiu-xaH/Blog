@@ -10,21 +10,14 @@ import org.apache.ibatis.annotations.Select
 interface UserMapper {
     // 注册 INSERT INTO userinfo(username, password)
     @Insert("INSERT INTO userinfo (username, password) VALUES (#{username}, #{password})")
-    fun reg(
-        @Param("username") username : String,
-        @Param("password") password : String,
-    ) : Int
+    fun reg(username : String, password : String, ) : Int
     // 查询用户 SELECT * FROM userinfo WHERE username = username
     @Select("SELECT * FROM userinfo WHERE username = #{username}")
-    fun selectByUsername(
-        @Param("username") username : String
-    ) : UserInfo?
+    fun selectByUsername(username : String) : UserInfo?
     // 按ID找 SELECT * FROM userinfo WHERE id = uid
     @Select("SELECT * FROM userinfo WHERE id = #{uid}")
-    fun selectByUid(
-        @Param("uid") uid : Int
-    ) : UserInfo?
+    fun selectByUid(uid : Int) : UserInfo?
     // 验证是否注册过
     @Select("SELECT COUNT(1) FROM userinfo WHERE username = #{username}")
-    fun hasAccount(@Param("username") username: String) : Boolean
+    fun hasAccount(username: String) : Boolean
 }

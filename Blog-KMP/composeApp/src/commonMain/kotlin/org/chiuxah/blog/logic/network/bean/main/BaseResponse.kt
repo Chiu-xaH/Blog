@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 // 基类
 @Serializable
-abstract class ApiBaseResponse {
+abstract class BaseResponse {
     abstract val state: Int
     abstract val msg: String
     abstract val data: Any?

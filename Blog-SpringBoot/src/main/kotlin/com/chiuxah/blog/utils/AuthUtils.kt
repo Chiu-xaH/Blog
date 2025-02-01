@@ -1,9 +1,6 @@
-package com.chiuxah.blog.util
+package com.chiuxah.blog.utils
 
-import com.chiuxah.blog.config.AjaxResult
-import com.chiuxah.blog.model.ArticleInfo
 import com.chiuxah.blog.model.UserInfo
-import com.chiuxah.blog.util.state.StatusCode
 import jakarta.servlet.http.HttpServletRequest
 
 object AuthUtils {

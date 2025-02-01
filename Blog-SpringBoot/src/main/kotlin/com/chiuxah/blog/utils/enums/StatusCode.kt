@@ -1,4 +1,4 @@
-package com.chiuxah.blog.util.state
+package com.chiuxah.blog.utils.enums
 
 /*
 200 成功

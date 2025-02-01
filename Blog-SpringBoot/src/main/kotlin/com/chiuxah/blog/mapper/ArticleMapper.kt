@@ -7,19 +7,19 @@ import org.apache.ibatis.annotations.*
 interface ArticleMapper {
     // 发布新文章
     @Insert("INSERT INTO articleinfo(id, title, content, uid, rcount, state) VALUES(#{articleInfo.id}, #{articleInfo.title}, #{articleInfo.content}, #{articleInfo.uid}, #{articleInfo.rcount}, #{articleInfo.state})")
-    fun add(@Param("articleInfo") articleInfo: ArticleInfo) : Int
+    fun add(articleInfo: ArticleInfo) : Int
     // 查询指定博客id的详情
     @Select("SELECT * FROM articleinfo WHERE id = #{blogId}")
-    fun selectByBlogId(@Param("blogId") blogId : Int) : ArticleInfo?
+    fun selectByBlogId(blogId : Int) : ArticleInfo?
     // 查询个人博客列表
     @Select("SELECT * FROM articleinfo WHERE uid = #{uid}")
-    fun getMyBlogList(@Param("uid") uid : Int) : List<ArticleInfo>
+    fun getMyBlogList(uid : Int) : List<ArticleInfo>
     // 查询总的博客列表
     @Select("SELECT * FROM articleinfo")
     fun getBlogList() : List<ArticleInfo>
     // 删除指定博客
     @Delete("DELETE FROM articleinfo WHERE id = #{id}")
-    fun del(@Param("id") id : Int) : Int
+    fun del(id : Int) : Int
     // 当前博客总数目
     @Select(" SELECT COUNT(*) FROM articleinfo")
     fun getPageCount() : Int
@@ -41,8 +41,8 @@ interface ArticleMapper {
         "</script>"
     )
     fun update(
-        @Param("id") id: Int,
-        @Param("title") title: String?,
-        @Param("content") content: String?
+        id: Int,
+        title: String?,
+        content: String?
     ): Int
 }

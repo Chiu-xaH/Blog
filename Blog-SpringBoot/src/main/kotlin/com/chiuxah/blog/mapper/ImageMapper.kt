@@ -18,9 +18,18 @@ interface ImageMapper {
     @Select("SELECT * FROM imageinfo WHERE uid = #{uid}")
     fun selectByUid(uid : Int) : List<ImageInfo>
 
+    @Select("SELECT * FROM imageinfo WHERE id = #{id}")
+    fun selectById(id : Int) : ImageInfo?
+
+    @Select("SELECT * FROM imageinfo WHERE filename = #{filename}")
+    fun selectByFilename(filename : String) : ImageInfo?
+
     @Update("UPDATE userinfo SET photo = #{url} WHERE id = #{id}")
     fun updateUserPhoto(id : Int,url : String) : Int
 
-    @Delete("DELETE imageinfo WHERE id = #{id}")
-    fun del(id : Int) : Int
+    @Delete("DELETE FROM imageinfo WHERE id = #{id}")
+    fun delById(id : Int) : Int
+
+    @Delete("DELETE FROM imageinfo WHERE filename = #{filename}")
+    fun delByFilename(filename : String) : Int
 }

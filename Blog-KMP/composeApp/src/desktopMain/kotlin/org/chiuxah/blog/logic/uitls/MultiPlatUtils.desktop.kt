@@ -2,7 +2,7 @@ package org.chiuxah.blog.logic.uitls
 
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.engine.cio.CIO
-import org.chiuxah.blog.logic.enums.PlatformType
+import org.chiuxah.blog.logic.bean.PlatformType
 import java.awt.Desktop
 import java.net.URI
 import javax.swing.JOptionPane

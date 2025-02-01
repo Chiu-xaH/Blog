@@ -1,6 +1,6 @@
 package com.chiuxah.blog.config
 
-import com.chiuxah.blog.util.state.StatusCode
+import com.chiuxah.blog.utils.enums.StatusCode
 
 
 // 自定义返回数据

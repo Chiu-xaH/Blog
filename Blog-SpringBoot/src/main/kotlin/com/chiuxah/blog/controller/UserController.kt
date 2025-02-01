@@ -3,14 +3,16 @@ package com.chiuxah.blog.controller
 import com.chiuxah.blog.config.AjaxResult
 import com.chiuxah.blog.model.UserInfo
 import com.chiuxah.blog.service.UserService
-import com.chiuxah.blog.util.ConstVariable
-import com.chiuxah.blog.util.CryptoUtils
-import com.chiuxah.blog.util.state.StatusCode
+import com.chiuxah.blog.utils.ConstVariable
+import com.chiuxah.blog.utils.CryptoUtils
+import com.chiuxah.blog.utils.enums.StatusCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.apache.catalina.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.StringUtils
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.Mapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -63,14 +65,23 @@ class UserController {
         session.setAttribute(ConstVariable.USER_SESSION_KEY,null)
         return AjaxResult.success("已退出登录")
     }
-    /*通过id搜索用户详细信息*/
+    /*通过id搜索用户详细信息*/// 精准查找
     @GetMapping("/get_detail")
     fun selectByUid(id : Int) : Any {
         if(id <= 0) {
             return AjaxResult.fail(StatusCode.BAD_REQUEST,"uid <= 0")
         }
-        val userInfo = userService.selectByUid(id) ?: return AjaxResult.success(data = emptyList<UserInfo>())
-        userInfo.password = ""
+        val userInfo = userService.selectByUid(id)
+        if (userInfo != null) {
+            userInfo.password = ""
+        }
         return AjaxResult.success("查询成功",userInfo)
+    }
+    // 验证Cookie是仍有效
+    @GetMapping("/check_login")
+    fun checkLogin(request: HttpServletRequest) : Any {
+        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY)
+            ?: return AjaxResult.fail(StatusCode.UNAUTHORIZED,"无凭证")
+        return AjaxResult.success("有效")
     }
 }

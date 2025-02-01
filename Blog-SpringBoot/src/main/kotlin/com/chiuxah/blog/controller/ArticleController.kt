@@ -4,9 +4,9 @@ import com.chiuxah.blog.config.AjaxResult
 import com.chiuxah.blog.model.ArticleInfo
 import com.chiuxah.blog.model.UserInfo
 import com.chiuxah.blog.service.ArticleService
-import com.chiuxah.blog.util.ConstVariable
-import com.chiuxah.blog.util.state.ArticleState
-import com.chiuxah.blog.util.state.StatusCode
+import com.chiuxah.blog.utils.ConstVariable
+import com.chiuxah.blog.utils.enums.ArticleState
+import com.chiuxah.blog.utils.enums.StatusCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired

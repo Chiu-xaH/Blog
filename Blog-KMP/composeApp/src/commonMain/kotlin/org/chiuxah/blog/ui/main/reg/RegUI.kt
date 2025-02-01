@@ -35,7 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import org.chiuxah.blog.logic.enums.NavRoute
+import org.chiuxah.blog.logic.bean.NavRoute
 import org.chiuxah.blog.logic.network.config.ApiResult
 import org.chiuxah.blog.logic.uitls.MultiPlatUtils.showMsg
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
