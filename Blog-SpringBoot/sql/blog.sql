@@ -3,6 +3,7 @@ create database blog_system DEFAULT CHARACTER SET utf8mb4;
 
 use blog_system;
 
+drop table if exists imageinfo;
 create table imageinfo(
     id int primary key auto_increment,
     url text not null,
@@ -31,6 +32,7 @@ create table articleinfo(
     title varchar(100) not null,
     content text not null,
     createtime timestamp default now(),
+    updatetime timestamp default now(),
     uid int not null,
     rcount int not null default 1,
     state int default 1

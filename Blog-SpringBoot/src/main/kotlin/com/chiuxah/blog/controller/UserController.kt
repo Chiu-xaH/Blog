@@ -84,4 +84,8 @@ class UserController {
             ?: return AjaxResult.fail(StatusCode.UNAUTHORIZED,"无凭证")
         return AjaxResult.success("有效")
     }
+    // 修改用户信息
+    // 注销账号 删除账号数据库，并删除头像文件及其数据库记录； 由用户自行决定是否保留其关联的博文 不保留博文则删除所有博文以及图片
+    // 扩展任务：用户鉴权改为JWT
+    // 扩展任务：使用加密传输数据 例如AES
 }

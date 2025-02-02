@@ -38,6 +38,7 @@ import org.chiuxah.blog.logic.uitls.PlatformsManager
 import org.chiuxah.blog.logic.uitls.PreferencesManager
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_COOKIE
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_USERNAME
+import org.chiuxah.blog.ui.main.home.add.AddUI
 import org.chiuxah.blog.ui.main.home.blog.BlogsUI
 import org.chiuxah.blog.ui.uitls.NavigateManager.fadeAnimation
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
@@ -162,14 +163,10 @@ fun HomeUI(navController : NavHostController, vm : MainViewModel) {
                 BlogsUI(vm)
             }
             composable(HomeRoute.ADD.name) {
-                Scaffold {
-
-                }
+                AddUI(vm)
             }
             composable(HomeRoute.CUBE.name) {
-                Scaffold {
 
-                }
             }
         }
     }

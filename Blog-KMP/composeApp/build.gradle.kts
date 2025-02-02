@@ -64,6 +64,14 @@ kotlin {
             implementation(libs.multiplatform.settings)
             // 自适应横竖屏布局
             implementation(libs.material3.adaptive.navigation.suite)
+            // 富文本
+//            implementation(libs.richeditor.compose)
+            // MarkDown渲染
+            implementation(libs.multiplatform.markdown.renderer.m3)
+            implementation(libs.multiplatform.markdown.renderer.coil3)
+//            implementation(libs.multiplatform.markdown.renderer.coil2)
+//            implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+//            implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

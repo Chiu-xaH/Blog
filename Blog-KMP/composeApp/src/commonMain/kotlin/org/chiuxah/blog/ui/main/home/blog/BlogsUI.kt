@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.chiuxah.blog.logic.bean.StatusCode
+import org.chiuxah.blog.logic.network.bean.ArticleBean
 import org.chiuxah.blog.logic.network.bean.BlogResponse
 import org.chiuxah.blog.logic.network.bean.UserBean
 import org.chiuxah.blog.logic.network.config.ApiResult
@@ -57,6 +58,11 @@ fun BlogsUI(vm : MainViewModel) {
 
 @Composable
 fun ArticleListUI(vm : MainViewModel) {
+    var articleInfo by remember { mutableStateOf(ArticleBean(0, "博文", "", "", "", -1, 0)) }
+    var showDialog by remember { mutableStateOf(false) }
+
+    ArticleContentUI(articleInfo,showDialog,{ showDialog = false })
+
     val dataList = getArticlesList(vm)
     LazyColumn {
         items(dataList.size) { index ->
@@ -77,7 +83,8 @@ fun ArticleListUI(vm : MainViewModel) {
                         UserImage(author.photo)
                     },
                     modifier = Modifier.clickable {
-
+                        articleInfo = item
+                        showDialog = true
                     }
                 )
             }

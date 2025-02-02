@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*
 @Mapper
 interface ArticleMapper {
     // 发布新文章
-    @Insert("INSERT INTO articleinfo(id, title, content, uid, rcount, state) VALUES(#{articleInfo.id}, #{articleInfo.title}, #{articleInfo.content}, #{articleInfo.uid}, #{articleInfo.rcount}, #{articleInfo.state})")
+    @Insert("INSERT INTO articleinfo(id, title, content, uid) VALUES(#{id}, #{title}, #{content}, #{uid})")
     fun add(articleInfo: ArticleInfo) : Int
     // 查询指定博客id的详情
     @Select("SELECT * FROM articleinfo WHERE id = #{blogId}")
