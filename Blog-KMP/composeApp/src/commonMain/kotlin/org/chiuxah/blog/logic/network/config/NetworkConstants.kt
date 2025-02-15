@@ -11,15 +11,22 @@ object NetworkConstants {
 
     // 接口 们(可扩展多个，若扩展，需要创建接口Service)
     object APIs {
-        private const val USER = "user/"
+        private const val API = "api/v1/"
+        // 用户
+        private const val USER = API + "user/"
         const val LOGIN = USER + "login"
         const val REG = USER + "reg"
-        const val CHECK_LOGIN = USER + "check_login"
+        const val CHECK_LOGIN = USER + "check-login"
         const val LOGOUT = USER + "logout"
-        const val GET_USER_BY_ID = USER + "get_detail"
-
-        private const val ARTICLE = "article/"
-        const val GET_ALL_ARTICLES = ARTICLE + "get_list"
+        const val GET_USER_BY_ID = USER + "info"
+        const val GET_MY = USER + "me"
+        // 博文
+        private const val ARTICLE = API + "article/"
+        const val GET_ALL_ARTICLES = ARTICLE + "all"
+        const val DEL = ARTICLE + "del"
+        // 关注
+        private const val FOLLOW = API + "follow/"
+        const val GET_FOLLOWERS_COUNT = FOLLOW + "count"
     }
     // 类型 http/https
     val TYPE =  URLProtocol.HTTP

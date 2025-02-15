@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.chiuxah.blog.logic.bean.StatusCode
 import org.chiuxah.blog.logic.network.bean.BlogResponse
+import org.chiuxah.blog.logic.network.bean.FollowCountResponse
 import org.chiuxah.blog.logic.network.bean.LoginResponse
 import org.chiuxah.blog.logic.network.bean.MsgResponse
 import org.chiuxah.blog.logic.network.bean.UserBean
@@ -19,7 +19,7 @@ import org.chiuxah.blog.logic.network.bean.UserResponse
 import org.chiuxah.blog.logic.network.config.ApiResult
 import org.chiuxah.blog.logic.network.servicecreator.BlogServiceCreator
 
-class MainViewModel : ViewModel() {
+class NetworkViewModel : ViewModel() {
     // 网络接口
     private val blogApi = BlogServiceCreator.apiService
     // 通用网络请求处理函数
@@ -71,7 +71,7 @@ class MainViewModel : ViewModel() {
         if (!_authorCache.containsKey(id)) {
             viewModelScope.launch {
                 val response = blogApi.getAuthor(id)
-                if (response is ApiResult.Success && response.data.state == StatusCode.SUCCESS.code) {
+                if (response is ApiResult.Success && response.data.state == StatusCode.OK.code) {
                     _authorCache[id] = response.data.data
                 } else {
                     _authorCache[id] = UserBean(0, "未知", "", "")
@@ -79,4 +79,10 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+
+    private val _getFollowCountResponse = MutableStateFlow<ApiResult<FollowCountResponse>?>(null) // 初始值设为 null
+    val getFollowCountResponse: StateFlow<ApiResult<FollowCountResponse>?> = _getFollowCountResponse.asStateFlow()
+
+    fun fetchGetFollowCount(uid : Int) = launchRequest(flow = _getFollowCountResponse) { blogApi.getFollowCount(uid) }
+
 }

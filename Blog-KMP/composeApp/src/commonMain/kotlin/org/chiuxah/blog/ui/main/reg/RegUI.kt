@@ -40,11 +40,11 @@ import org.chiuxah.blog.logic.network.config.ApiResult
 import org.chiuxah.blog.logic.uitls.MultiPlatUtils.showMsg
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
 import org.chiuxah.blog.ui.uitls.compents.CustomRow
-import org.chiuxah.blog.viewmodel.MainViewModel
+import org.chiuxah.blog.viewmodel.NetworkViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegUI(navController: NavHostController,vm : MainViewModel) {
+fun RegUI(navController: NavHostController,vm : NetworkViewModel) {
     Scaffold(
         topBar = {
             LargeTopAppBar(
@@ -80,7 +80,7 @@ fun RegUI(navController: NavHostController,vm : MainViewModel) {
 }
 
 @Composable
-fun RegInfoUI( vm : MainViewModel) {
+fun RegInfoUI( vm : NetworkViewModel) {
     var inputUsername by remember { mutableStateOf("") }
     var inputPassword by remember { mutableStateOf("") }
     var inputPassword2 by remember { mutableStateOf("") }
@@ -92,7 +92,7 @@ fun RegInfoUI( vm : MainViewModel) {
                         val result = response.data
                         showMsg(result.msg)
                     }
-                    is ApiResult.Error -> showMsg("网络错误")
+                    is ApiResult.Error -> showMsg(response.toString())
                 }
         }
     }

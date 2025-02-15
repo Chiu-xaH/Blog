@@ -7,7 +7,7 @@ import org.chiuxah.blog.logic.network.bean.main.BaseResponse
 data class BlogResponse(
     override val state: Int,
     override val msg: String,
-    override val data: List<ArticleBean>
+    override val data: List<ArticleBeanSummary>
 ) : BaseResponse()
 
 @Serializable
@@ -15,8 +15,18 @@ data class ArticleBean(
     val id : Int,
     val title : String,
     val content : String,
-    val createtime : String,
-    val updatetime : String,
+    val create_time : String,
+    val update_time : String,
     val uid : Int,
     val rcount : Int
 )
+
+@Serializable
+data class ArticleBeanSummary(
+    val id : Int,
+    val title : String,
+    val update_time : String,
+    val uid : Int,
+    val rcount : Int
+)
+

@@ -9,6 +9,7 @@ object PreferencesManager {
     const val KEY_COOKIE = "cookie"
     const val KEY_USERNAME = "username"
     const val KEY_PASSWORD = "password"
+    const val KEY_USERINFO = "userinfo"
 
     fun <T> putValue(key: String, value: T) {
         when (value) {

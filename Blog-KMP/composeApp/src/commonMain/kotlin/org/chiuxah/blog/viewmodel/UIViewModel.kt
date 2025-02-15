@@ -1,4 +1,6 @@
 package org.chiuxah.blog.viewmodel
 
-class UIViewModel {
+import androidx.lifecycle.ViewModel
+
+class UIViewModel : ViewModel() {
 }

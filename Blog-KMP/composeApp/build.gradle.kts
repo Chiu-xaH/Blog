@@ -70,8 +70,11 @@ kotlin {
             implementation(libs.multiplatform.markdown.renderer.m3)
             implementation(libs.multiplatform.markdown.renderer.coil3)
 //            implementation(libs.multiplatform.markdown.renderer.coil2)
-//            implementation("io.coil-kt.coil3:coil-compose:3.0.4")
-//            implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+            // 时间日期
+            implementation(libs.kotlinx.datetime)
+            // Log
+            implementation(libs.ktor.client.logging)
+            implementation(libs.logback.classic)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

@@ -29,7 +29,7 @@ import org.chiuxah.blog.ui.uitls.compents.CustomMarkdownTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArticleContentUI(articleInfo : ArticleBean, showDialog : Boolean, showChanged : () -> Unit) {
+fun ArticleContentUI(articleId : Int,title : String, showDialog : Boolean, showChanged : () -> Unit) {
     if(showDialog) {
         Dialog(
             onDismissRequest = showChanged,
@@ -46,7 +46,7 @@ fun ArticleContentUI(articleInfo : ArticleBean, showDialog : Boolean, showChange
                         actions = {
                             IconButton(onClick = showChanged) { Icon(Icons.Default.Close, contentDescription = null) }
                         },
-                        title = { Text(articleInfo.title) }
+                        title = { Text(title) }
                     )
                 }
             ) { innerPadding ->
@@ -59,7 +59,7 @@ fun ArticleContentUI(articleInfo : ArticleBean, showDialog : Boolean, showChange
 //                            .verticalScroll(rememberScrollState())
 //                    )
                     Markdown(
-                        content = articleInfo.content,
+                        content = "正在开发",
                         modifier = Modifier.padding(horizontal = 15.dp).verticalScroll(
                             rememberScrollState()
                         ),

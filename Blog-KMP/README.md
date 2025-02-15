@@ -1,3 +1,13 @@
+# 博客 KMP
+## vs安卓开发
+使用协程Flow代替LiveData
+
+仍采用ViewModel
+
+定义更多的基类，抽出复用逻辑
+
+
+## Kotlin MultiPlatform
 This is a Kotlin Multiplatform project targeting Android, iOS, Desktop.
 
 * `/composeApp` is for code that will be shared across your Compose Multiplatform applications.

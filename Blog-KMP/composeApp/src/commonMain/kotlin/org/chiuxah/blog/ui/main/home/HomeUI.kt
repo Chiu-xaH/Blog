@@ -8,7 +8,6 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
@@ -40,14 +39,15 @@ import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_COOKIE
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_USERNAME
 import org.chiuxah.blog.ui.main.home.add.AddUI
 import org.chiuxah.blog.ui.main.home.blog.BlogsUI
+import org.chiuxah.blog.ui.main.home.cube.MyUI
 import org.chiuxah.blog.ui.uitls.NavigateManager.fadeAnimation
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
-import org.chiuxah.blog.viewmodel.MainViewModel
+import org.chiuxah.blog.viewmodel.NetworkViewModel
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeUI(navController : NavHostController, vm : MainViewModel) {
+fun HomeUI(navController : NavHostController, vm : NetworkViewModel) {
     val navHomeController = rememberNavController()
     val isDesktop = PlatformsManager.platformType == PlatformType.DESKTOP
     val username = PreferencesManager.settings.getStringOrNull(KEY_USERNAME) ?: "游客"
@@ -166,12 +166,12 @@ fun HomeUI(navController : NavHostController, vm : MainViewModel) {
                 AddUI(vm)
             }
             composable(HomeRoute.CUBE.name) {
-
+                MyUI(vm,navController)
             }
         }
     }
 }
-fun logout(vm: MainViewModel,navController: NavHostController) {
+fun logout(vm: NetworkViewModel, navController: NavHostController) {
     vm.fetchLogout()
     PreferencesManager.settings.remove(KEY_COOKIE)
     turnToAndClear(navController, NavRoute.LOGIN.name)

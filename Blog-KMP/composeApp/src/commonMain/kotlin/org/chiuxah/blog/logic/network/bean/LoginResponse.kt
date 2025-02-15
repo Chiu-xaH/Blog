@@ -12,5 +12,6 @@ data class LoginResponse(
 
 @Serializable
 data class LoginBean(
-    val JSESSIONID : String
+    val JSESSIONID : String,
+    val userinfo : UserBean
 )

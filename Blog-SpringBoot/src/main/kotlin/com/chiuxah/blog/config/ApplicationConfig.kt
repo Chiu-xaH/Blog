@@ -19,17 +19,15 @@ class ApplicationConfig : WebMvcConfigurer {
     lateinit var locationUrl: String
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterception)
-            .addPathPatterns("/**") // 全部拦截
-            .excludePathPatterns("/api/v1/article/get_list") // 除外 不拦截
-            .excludePathPatterns("/api/v1/article/get_by_blog_id") // 除外 不拦截
-            .excludePathPatterns("/api/v1/article/get_user_list") // 除外 不拦截
+            .addPathPatterns("/api/v1/**") // 全部拦截
+            .excludePathPatterns("/api/v1/article/all") // 除外 不拦截
+            .excludePathPatterns("/api/v1/article/info") // 除外 不拦截
+            .excludePathPatterns("/api/v1/article/user") // 除外 不拦截
             .excludePathPatterns("/api/v1/user/login") // 除外 不拦截
             .excludePathPatterns("/api/v1/user/reg") // 除外 不拦截
-            .excludePathPatterns("/api/v1/user/get_detail")
+            .excludePathPatterns("/api/v1/user/info")
             .excludePathPatterns("/api/v1/upload/image/**")
-            .excludePathPatterns("/api/v1/image/recycle")
             .excludePathPatterns("/api/v1/follow/count")
-            .excludePathPatterns("/rec/**")
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {

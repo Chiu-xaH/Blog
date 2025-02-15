@@ -42,6 +42,7 @@ import androidx.navigation.NavHostController
 import org.chiuxah.blog.logic.bean.NavRoute
 import org.chiuxah.blog.logic.bean.PlatformType
 import org.chiuxah.blog.logic.bean.StatusCode
+import org.chiuxah.blog.logic.network.bean.LoginResponse
 import org.chiuxah.blog.logic.network.config.ApiResult
 import org.chiuxah.blog.logic.uitls.MultiPlatUtils.showMsg
 import org.chiuxah.blog.logic.uitls.PlatformsManager
@@ -50,12 +51,13 @@ import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_COOKIE
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_PASSWORD
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_USERNAME
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
+import org.chiuxah.blog.ui.uitls.UserManager.userinfo
 import org.chiuxah.blog.ui.uitls.compents.CustomRow
-import org.chiuxah.blog.viewmodel.MainViewModel
+import org.chiuxah.blog.viewmodel.NetworkViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginUI(navController : NavHostController, vm : MainViewModel) {
+fun LoginUI(navController : NavHostController, vm : NetworkViewModel) {
     Scaffold(
         topBar = {
             LargeTopAppBar(
@@ -104,7 +106,7 @@ fun LoginUI(navController : NavHostController, vm : MainViewModel) {
 }
 
 @Composable
-fun LoginInfoUI(navController : NavHostController, vm : MainViewModel) {
+fun LoginInfoUI(navController : NavHostController, vm : NetworkViewModel) {
 //    val loginResponse by vm.loginResponse.collectAsState()
     // 监听
     LaunchedEffect(Unit) { // 监听 SharedFlow，不用传 `loginResponse`
@@ -112,14 +114,13 @@ fun LoginInfoUI(navController : NavHostController, vm : MainViewModel) {
             when (response) {
                 is ApiResult.Success -> {
                     val result = response.data
-                    if (result.state == StatusCode.SUCCESS.code) {
-                        PreferencesManager.settings.putString(KEY_COOKIE,result.data!!.JSESSIONID)
-                        turnToAndClear(navController, NavRoute.HOME.name)
+                    if (result.state == StatusCode.OK.code) {
+                        loginSuccess(navController,result)
                     } else {
                         showMsg(result.msg)
                     }
                 }
-                is ApiResult.Error -> showMsg("网络错误")
+                is ApiResult.Error -> showMsg(response.toString())
             }
         }
     }
@@ -214,10 +215,19 @@ fun LoginInfoUI(navController : NavHostController, vm : MainViewModel) {
     }
 }
 
-
+// 记住密码
 fun saveLogin(username : String,password : String) {
     PreferencesManager.settings.apply {
         putString(KEY_USERNAME,username)
         putString(KEY_PASSWORD,password)
     }
+}
+
+fun loginSuccess(navController: NavHostController,result: LoginResponse) {
+    // 保存Cookie
+    PreferencesManager.settings.putString(KEY_COOKIE,result.data!!.JSESSIONID)
+    // 临时保存用户信息
+    userinfo = result.data.userinfo
+    // 进入主界面
+    turnToAndClear(navController, NavRoute.HOME.name)
 }

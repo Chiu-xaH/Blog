@@ -1,10 +1,5 @@
 package org.chiuxah.blog.ui.main
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -24,27 +19,27 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.chiuxah.blog.logic.bean.NavRoute
 import org.chiuxah.blog.logic.bean.StatusCode
-import org.chiuxah.blog.logic.network.bean.MsgResponse
+import org.chiuxah.blog.logic.network.bean.UserResponse
 import org.chiuxah.blog.logic.network.config.ApiResult
 import org.chiuxah.blog.logic.uitls.PreferencesManager
 import org.chiuxah.blog.ui.main.home.HomeUI
 import org.chiuxah.blog.ui.main.login.LoginUI
 import org.chiuxah.blog.ui.main.reg.RegUI
-import org.chiuxah.blog.ui.uitls.NavigateManager.ANIMATION_SPEED
 import org.chiuxah.blog.ui.uitls.NavigateManager.fadeAnimation
-import org.chiuxah.blog.viewmodel.MainViewModel
+import org.chiuxah.blog.ui.uitls.UserManager.userinfo
+import org.chiuxah.blog.viewmodel.NetworkViewModel
 
 @Composable
 fun App() {
     MaterialTheme {
         val navController = rememberNavController()
-        val vm = remember { MainViewModel() }
+        val vm = remember { NetworkViewModel() }
         AppNavHost(navController,vm)
     }
 }
 
 @Composable
-fun AppNavHost(navController : NavHostController,vm : MainViewModel) {
+fun AppNavHost(navController : NavHostController,vm : NetworkViewModel) {
     var firstRoute by remember { mutableStateOf(NavRoute.LOGIN.name) }
     @Composable
     fun MainUI() {
@@ -86,11 +81,12 @@ fun AppNavHost(navController : NavHostController,vm : MainViewModel) {
         LaunchedEffect(checkLoginResponse) {
             when(checkLoginResponse) {
                 is ApiResult.Success -> {
-                    val result = (checkLoginResponse as ApiResult.Success<MsgResponse>).data
-                    firstRoute = if(result.state == StatusCode.SUCCESS.code) {
-                        NavRoute.HOME.name
+                    val result = (checkLoginResponse as ApiResult.Success<UserResponse>).data
+                    if(result.state == StatusCode.OK.code) {
+                        userinfo = result.data
+                        firstRoute = NavRoute.HOME.name
                     } else {
-                        NavRoute.LOGIN.name
+                        firstRoute = NavRoute.LOGIN.name
                     }
                     loading = false
                 }

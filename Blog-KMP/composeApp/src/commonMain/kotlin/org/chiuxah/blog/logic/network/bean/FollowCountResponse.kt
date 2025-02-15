@@ -4,16 +4,14 @@ import kotlinx.serialization.Serializable
 import org.chiuxah.blog.logic.network.bean.main.BaseResponse
 
 @Serializable
-data class UserResponse(
-    override val state: Int,
+data class FollowCountResponse(
     override val msg: String,
-    override val data: UserBean
+    override val state: Int,
+    override val data: FollowCountBean
 ) : BaseResponse()
 
 @Serializable
-data class UserBean(
-    val id : Int,
-    val username : String,
-    val photo : String,
-    val create_time : String
+data class FollowCountBean(
+    val followersCount : Int,
+    val followeeCount : Int
 )

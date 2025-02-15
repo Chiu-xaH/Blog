@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,24 +33,107 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import org.chiuxah.blog.logic.bean.PlatformType
+import org.chiuxah.blog.logic.uitls.PlatformsManager
 import org.chiuxah.blog.ui.uitls.NavigateManager
 
 //import com.hfut.schedule.App.MyApplication
 
 @Composable
-fun MyCard(modifier: Modifier = Modifier
-    .fillMaxWidth()
-    .padding(horizontal = 15.dp, vertical = 4.dp),containerColor : Color? = null,content: @Composable () -> Unit) {
+fun MyCustomCard(
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 15.dp, vertical = 4.dp),
+    containerColor : Color? = null,
+    hasElevation : Boolean = false,
+    content: @Composable () -> Unit) {
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.75.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = if(hasElevation) 1.75.dp else 0.dp),
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        colors = if(containerColor == null) CardDefaults.cardColors() else CardDefaults.cardColors(containerColor = containerColor)
+        colors = if(containerColor == null) CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer) else CardDefaults.cardColors(containerColor = containerColor)
     ) {
         content()
+    }
+}
+
+@Composable
+fun TransplantListItem(
+    headlineContent :  @Composable () -> Unit,
+    overlineContent  : @Composable() (() -> Unit)? = null,
+    supportingContent : @Composable() (() -> Unit)? = null,
+    trailingContent : @Composable() (() -> Unit)? = null,
+    leadingContent : @Composable() (() -> Unit)? = null,
+    modifier: Modifier = Modifier
+) {
+    ListItem(
+        headlineContent = headlineContent,
+        overlineContent = overlineContent,
+        supportingContent = supportingContent,
+        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        trailingContent = trailingContent,
+        leadingContent = leadingContent,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun CardListItem(
+    headlineContent :  @Composable () -> Unit,
+    overlineContent  : @Composable() (() -> Unit)? = null,
+    supportingContent : @Composable() (() -> Unit)? = null,
+    trailingContent : @Composable() (() -> Unit)? = null,
+    leadingContent : @Composable() (() -> Unit)? = null,
+    hasElevation : Boolean = false,
+    containerColor : Color? = null,
+    modifier: Modifier = Modifier
+    ) {
+    MyCustomCard(hasElevation = hasElevation, containerColor = containerColor) {
+        TransplantListItem(
+            headlineContent = headlineContent,
+            overlineContent = overlineContent,
+            supportingContent = supportingContent,
+            trailingContent = trailingContent,
+            leadingContent = leadingContent,
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun MultiListItem(
+    headlineContent :  @Composable () -> Unit,
+    overlineContent  : @Composable() (() -> Unit)? = null,
+    supportingContent : @Composable() (() -> Unit)? = null,
+    trailingContent : @Composable() (() -> Unit)? = null,
+    leadingContent : @Composable() (() -> Unit)? = null,
+    modifier: Modifier = Modifier
+) {
+    val listItem = @Composable {
+        TransplantListItem(
+            headlineContent = headlineContent,
+            overlineContent = overlineContent,
+            supportingContent = supportingContent,
+            trailingContent = trailingContent,
+            leadingContent = leadingContent,
+            modifier = modifier
+        )
+    }
+    if(PlatformsManager.platformType == PlatformType.DESKTOP) {
+        listItem()
+    } else {
+        CardListItem(
+            headlineContent = headlineContent,
+            overlineContent = overlineContent,
+            supportingContent = supportingContent,
+            trailingContent = trailingContent,
+            leadingContent = leadingContent,
+            modifier = modifier
+        )
     }
 }
 
@@ -58,8 +142,8 @@ fun MyCard(modifier: Modifier = Modifier
 fun LargeCard(
     title: String,
     modifier : Modifier = Modifier,
-    rightTop: @Composable() (() -> Unit?)? = null,
-    leftTop: @Composable() (() -> Unit?)? = null,
+    rightTop:  @Composable() (() -> Unit)? = null,
+    leftTop:  @Composable() (() -> Unit)? = null,
     color : CardColors = CardDefaults.cardColors(),
     content: @Composable () -> Unit
 ) {
@@ -69,7 +153,7 @@ fun LargeCard(
         shape = MaterialTheme.shapes.medium,
         colors = color
     ) {
-        ListItem(
+        TransplantListItem(
             headlineContent = {
                 Text(
                     text = title,
@@ -78,10 +162,8 @@ fun LargeCard(
                     fontSize = 28.sp
                 )
             },
-            trailingContent = { rightTop?.let { it() } },
-            leadingContent = {
-                leftTop?.let { it() }
-            }
+            trailingContent = rightTop,
+            leadingContent = leftTop
         )
         //下面的内容
         content()
@@ -94,12 +176,12 @@ fun LargeCard(
 fun LoadingLargeCard(
     title: String,
     loading : Boolean,
-    rightTop: @Composable() (() -> Unit?)? = null,
-    leftTop: @Composable() (() -> Unit?)? = null,
+    rightTop: @Composable() (() -> Unit)? = null,
+    leftTop: @Composable() (() -> Unit)? = null,
     color : CardColors = CardDefaults.cardColors(),
     content: @Composable () -> Unit
 ) {
-    val speed = NavigateManager.ANIMATION_SPEED / 2
+    val speed = 200
     val scale = animateFloatAsState(
         targetValue = if (loading) 0.9f else 1f, // 按下时为0.9，松开时为1
         //animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
@@ -118,75 +200,27 @@ fun LoadingLargeCard(
         ,animationSpec = tween(speed, easing = LinearOutSlowInEasing),
     )
 
-    LargeCard(
-        title,
-        modifier = Modifier.scale(scale2.value),
-        rightTop,
-        leftTop,
-        color = color,
-        content = {
-            Column (modifier = Modifier
-                .blur(blurSize)
-                .scale(scale.value)) {
-                content()
-            }
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 15.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp, vertical = 5.dp).scale(scale2.value),
+        shape = MaterialTheme.shapes.medium,
+        colors = color
+    ) {
+        //下面的内容
+        Column (modifier = Modifier.blur(blurSize).scale(scale.value)) {
+            TransplantListItem(
+                headlineContent = {
+                    Text(
+                        text = title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 28.sp
+                    )
+                },
+                trailingContent = rightTop,
+                leadingContent = leftTop
+            )
+            content()
         }
-    )
-}
-
-//封存按钮大卡片
-@Composable
-fun PrepareLoadLargeCard(
-    title: String,
-    loading: Boolean,
-    rightTop: @Composable (() -> Unit?)? = null,
-    leftTop: @Composable (() -> Unit?)? = null,
-    color: CardColors = CardDefaults.cardColors(),
-    switchAutoRefresh: Boolean = false,
-    actionButtonContent: @Composable () -> Unit = {
-        Text("加载")
-    },
-    actionButtonOnClick: () -> Unit = {
-        //按钮点击逻辑，通常传入refresh()函数，通过网络请求更新数据
-    },
-    content: @Composable () -> Unit
-) {
-    var showButton by remember { mutableStateOf(true) }
-    LoadingLargeCard(
-        title,
-        loading,
-        rightTop,
-        leftTop,
-        color,
-        content = {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if(!switchAutoRefresh) {
-                    AnimatedVisibility(
-                        visible = showButton,
-                        exit = fadeOut(tween(durationMillis = NavigateManager.ANIMATION_SPEED)) + scaleOut(
-                            tween(durationMillis = NavigateManager.ANIMATION_SPEED)
-                        ),
-                        modifier = Modifier.align(Alignment.Center).zIndex(1f)
-                    ) {
-                        val blurSizeButton by animateDpAsState(
-                            targetValue = if (!showButton) 4.dp else 0.dp, label = ""
-                            ,animationSpec = tween(NavigateManager.ANIMATION_SPEED / 2, easing = LinearOutSlowInEasing),
-                        )
-
-                        Button(
-                            onClick = {
-                                showButton = false
-                                actionButtonOnClick.invoke()
-                            },
-                            modifier = Modifier.blur(blurSizeButton),
-                            elevation = ButtonDefaults.elevatedButtonElevation()
-                        ) {
-                            actionButtonContent()
-                        }
-                    }
-                }
-                content()
-            }
-        }
-    )
+    }
 }
