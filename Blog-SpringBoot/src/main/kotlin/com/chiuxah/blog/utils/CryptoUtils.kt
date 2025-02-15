@@ -14,7 +14,7 @@ object CryptoUtils {
 
 
     // 解密
-    fun decryept(password: String, securePassword : String) : Boolean {
+    fun decrypt(password: String, securePassword : String) : Boolean {
         var result = false
         if(StringUtils.hasLength(password) && StringUtils.hasLength(securePassword)) {
             if(securePassword.length == 65 && securePassword.contains("$")) {

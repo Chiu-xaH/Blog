@@ -10,26 +10,26 @@ import org.apache.ibatis.annotations.Update
 
 @Mapper
 interface ImageMapper {
-    @Insert("INSERT INTO imageinfo(url, filename, size, filetype, uid, type, state) " +
+    @Insert("INSERT INTO image_info(url, filename, size, filetype, uid, type, state) " +
             "VALUES(#{url}, #{filename}, #{size}, #{filetype}, #{uid}, #{type}, #{state})")
     @Options(useGeneratedKeys = true, keyProperty = "id") // 返回id
     fun add(imageInfo: ImageInfo): Int
 
-    @Select("SELECT * FROM imageinfo WHERE uid = #{uid}")
+    @Select("SELECT * FROM image_info WHERE uid = #{uid}")
     fun selectByUid(uid : Int) : List<ImageInfo>
 
-    @Select("SELECT * FROM imageinfo WHERE id = #{id}")
+    @Select("SELECT * FROM image_info WHERE id = #{id}")
     fun selectById(id : Int) : ImageInfo?
 
-    @Select("SELECT * FROM imageinfo WHERE filename = #{filename}")
+    @Select("SELECT * FROM image_info WHERE filename = #{filename}")
     fun selectByFilename(filename : String) : ImageInfo?
 
     @Update("UPDATE userinfo SET photo = #{url} WHERE id = #{id}")
-    fun updateUserPhoto(id : Int,url : String) : Int
+    fun updateUserPhoto(id : Int,url : String) : Boolean
 
-    @Delete("DELETE FROM imageinfo WHERE id = #{id}")
-    fun delById(id : Int) : Int
+    @Delete("DELETE FROM image_info WHERE id = #{id}")
+    fun delById(id : Int) : Boolean
 
-    @Delete("DELETE FROM imageinfo WHERE filename = #{filename}")
-    fun delByFilename(filename : String) : Int
+    @Delete("DELETE FROM image_info WHERE filename = #{filename}")
+    fun delByFilename(filename : String) : Boolean
 }

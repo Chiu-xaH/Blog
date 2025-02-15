@@ -1,15 +1,16 @@
 package com.chiuxah.blog.model
 
+import com.chiuxah.blog.model.base.BaseSqlBean
 import java.sql.Timestamp
 
 data class ImageInfo(
-    val id : Int = 0,
+    override val id : Int = 0,
     val url : String,
     val filename : String,
     val size : Long,
     val filetype : String,
-    val uploadtime : Timestamp? = null,
+    override val create_time : Timestamp? = null,
     val uid : Int,
     val type : Int,
     val state : Int
-)
+) : BaseSqlBean()

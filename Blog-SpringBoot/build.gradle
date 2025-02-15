@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.chiuxah'
-version = '1.0'
+version = '0.1'
 
 java {
 	toolchain {
@@ -32,6 +32,31 @@ dependencies {
 	implementation("com.mysql:mysql-connector-j:9.1.0")
 	// 加解密
 	implementation("cn.hutool:hutool-crypto:5.8.35")
+	// Spring Security
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// Thymeleaf 视图解析引擎 解析static下的html
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// 参数校验
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// 测试
+//	implementation("junit:junit:3.8.1")
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+	// AspectJ 库 AOP
+//	implementation 'org.aspectj:aspectjweaver:1.9.8'
+	// AOP
+//	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	// 监控
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+//	// Redis Jedis
+//	implementation 'redis.clients:jedis:5.2.0'
+	// Redis Lettuce
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	// 连接池
+	implementation 'org.apache.commons:commons-pool2:2.12.1'
+	// Rabbit Message Queue SpringBoot集成MQ测试
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	// JWT
+//	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
 }
 
 kotlin {

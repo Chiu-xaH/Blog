@@ -17,14 +17,14 @@ class ImageService {
         return imageMapper.selectByUid(uid)
     }
 
-    fun updateUserPhoto(id : Int,url : String) : Int {
+    fun updateUserPhoto(id : Int,url : String) : Boolean {
         return imageMapper.updateUserPhoto(id, url)
     }
-    fun delById(id: Int) : Int {
+    fun delById(id: Int) : Boolean {
         return imageMapper.delById(id)
     }
 
-    fun delByFilename(filename : String) : Int {
+    fun delByFilename(filename : String) : Boolean {
         return imageMapper.delByFilename(filename)
     }
 
