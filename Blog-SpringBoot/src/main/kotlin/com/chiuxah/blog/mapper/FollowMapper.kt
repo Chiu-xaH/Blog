@@ -1,8 +1,6 @@
 package com.chiuxah.blog.mapper
 
-import com.chiuxah.blog.model.UserInfo
-import com.chiuxah.blog.model.UserInfoDTO
-import com.chiuxah.blog.model.UserInfoSummary
+import com.chiuxah.blog.model.bean.UserInfoSummary
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper

@@ -17,17 +17,29 @@ class ApplicationConfig : WebMvcConfigurer {
 
     @Value("\${file.location-url}") // 映射路径
     lateinit var locationUrl: String
+
+    companion object {
+        const val API = "/api/v1"
+        const val ARTICLE = "/article"
+        const val USER = "/user"
+        const val FOLLOW = "/follow"
+        const val COLLECTION = "/collection"
+    }
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterception)
-            .addPathPatterns("/api/v1/**") // 全部拦截
-            .excludePathPatterns("/api/v1/article/all") // 除外 不拦截
-            .excludePathPatterns("/api/v1/article/info") // 除外 不拦截
-            .excludePathPatterns("/api/v1/article/user") // 除外 不拦截
-            .excludePathPatterns("/api/v1/user/login") // 除外 不拦截
-            .excludePathPatterns("/api/v1/user/reg") // 除外 不拦截
-            .excludePathPatterns("/api/v1/user/info")
-            .excludePathPatterns("/api/v1/upload/image/**")
-            .excludePathPatterns("/api/v1/follow/count")
+            .addPathPatterns("${API}/**") // 全部拦截
+            // 除外 不拦截
+            .excludePathPatterns("$API$ARTICLE/all")
+            .excludePathPatterns("$API$ARTICLE/info")
+            .excludePathPatterns("$API$ARTICLE/user")
+
+            .excludePathPatterns("$API$USER/login")
+            .excludePathPatterns("$API$USER/reg")
+            .excludePathPatterns("$API$USER/info")
+
+            .excludePathPatterns("${API}/upload/image/**")
+
+            .excludePathPatterns("$API$FOLLOW/count")
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {

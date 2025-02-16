@@ -1,4 +1,4 @@
-package com.chiuxah.blog.utils.enums
+package com.chiuxah.blog.config.response
 
 enum class StatusCode(val code: Int) {
     OK(200), // 成功返回用户请求的数据

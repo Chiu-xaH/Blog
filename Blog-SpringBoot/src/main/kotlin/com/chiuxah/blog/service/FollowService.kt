@@ -1,10 +1,9 @@
 package com.chiuxah.blog.service
 
-import com.chiuxah.blog.config.ResponseEntity
-import com.chiuxah.blog.mapper.ArticleMapper
+import com.chiuxah.blog.config.response.ResponseEntity
 import com.chiuxah.blog.mapper.FollowMapper
-import com.chiuxah.blog.model.UserInfoSummary
-import com.chiuxah.blog.utils.enums.StatusCode
+import com.chiuxah.blog.model.bean.UserInfoSummary
+import com.chiuxah.blog.config.response.StatusCode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

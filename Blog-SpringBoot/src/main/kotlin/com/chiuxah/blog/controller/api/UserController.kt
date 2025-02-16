@@ -1,11 +1,14 @@
 package com.chiuxah.blog.controller.api
 
-import com.chiuxah.blog.config.ResponseEntity
-import com.chiuxah.blog.model.UserInfo
+import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.model.bean.UserBean
 import com.chiuxah.blog.service.UserService
 import com.chiuxah.blog.utils.ConstVariable
 import com.chiuxah.blog.utils.CryptoUtils
-import com.chiuxah.blog.utils.enums.StatusCode
+import com.chiuxah.blog.config.response.StatusCode
+import com.chiuxah.blog.utils.ControllerUtils
+import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
@@ -55,18 +58,14 @@ class UserController {
     /*退出登录*/
     @PostMapping("/logout")
     fun logout(request : HttpServletRequest,response : HttpServletResponse) : Any {
-        val session = request.session
-        if(session?.getAttribute(ConstVariable.USER_SESSION_KEY) == null) {
-            return ResponseEntity.fail(StatusCode.UNAUTHORIZED,"未登录")
-        }
-        session.setAttribute(ConstVariable.USER_SESSION_KEY,null)
+        request.session.setAttribute(ConstVariable.USER_SESSION_KEY,null)
         return ResponseEntity.success("已退出登录")
     }
     /*通过id搜索用户详细信息*/// 精准查找
     @GetMapping("/info")
     fun selectByUid(id : Int) : Any {
-        if(id <= 0) {
-            return ResponseEntity.fail(StatusCode.BAD_REQUEST,"uid <= 0")
+        if(!ControllerUtils.isValidId(id)) {
+            return INVALID_RESPONSE
         }
         val userInfo = userService.selectByUid(id)
         return if(userInfo != null) {
@@ -79,17 +78,14 @@ class UserController {
     @GetMapping("/check-login")
     fun checkLogin(request: HttpServletRequest) : Any {
         val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY)
-            ?: return ResponseEntity.fail(StatusCode.UNAUTHORIZED,"无凭证")
-        val userinfo = session as UserInfo
+            ?: return ResponseEntity.fail(StatusCode.UNAUTHORIZED,"无效")
+        val userinfo = session as UserBean
         return ResponseEntity.success("有效", data = userinfo)
     }
     // 根据session得到用户信息
     @GetMapping("/me")
     fun selectByUid(request: HttpServletRequest) : Any {
-        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY)
-            ?: return ResponseEntity.fail(StatusCode.UNAUTHORIZED,"未登录")
-
-        val userInfo = session as UserInfo
+        val userInfo = myUserInfo(request)
         return ResponseEntity.success("获取成功",userInfo)
     }
 

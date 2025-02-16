@@ -1,7 +1,7 @@
 package com.chiuxah.blog.config
 
+import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.utils.ConstVariable
-import com.chiuxah.blog.utils.enums.StatusCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component

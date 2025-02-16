@@ -1,6 +1,6 @@
 package com.chiuxah.blog.mapper
 
-import com.chiuxah.blog.model.ImageInfo
+import com.chiuxah.blog.model.bean.ImageBean
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
@@ -13,16 +13,16 @@ interface ImageMapper {
     @Insert("INSERT INTO image_info(url, filename, size, filetype, uid, type, state) " +
             "VALUES(#{url}, #{filename}, #{size}, #{filetype}, #{uid}, #{type}, #{state})")
     @Options(useGeneratedKeys = true, keyProperty = "id") // 返回id
-    fun add(imageInfo: ImageInfo): Int
+    fun add(imageInfo: ImageBean): Int
 
     @Select("SELECT * FROM image_info WHERE uid = #{uid}")
-    fun selectByUid(uid : Int) : List<ImageInfo>
+    fun selectByUid(uid : Int) : List<ImageBean>
 
     @Select("SELECT * FROM image_info WHERE id = #{id}")
-    fun selectById(id : Int) : ImageInfo?
+    fun selectById(id : Int) : ImageBean?
 
     @Select("SELECT * FROM image_info WHERE filename = #{filename}")
-    fun selectByFilename(filename : String) : ImageInfo?
+    fun selectByFilename(filename : String) : ImageBean?
 
     @Update("UPDATE userinfo SET photo = #{url} WHERE id = #{id}")
     fun updateUserPhoto(id : Int,url : String) : Boolean

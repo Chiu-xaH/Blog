@@ -1,12 +1,15 @@
 package com.chiuxah.blog.controller.api
 
-import com.chiuxah.blog.config.ResponseEntity
-import com.chiuxah.blog.model.ImageInfo
-import com.chiuxah.blog.model.UserInfo
+import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.model.bean.ImageBean
 import com.chiuxah.blog.service.ImageService
-import com.chiuxah.blog.utils.ConstVariable
-import com.chiuxah.blog.utils.enums.ImageType
-import com.chiuxah.blog.utils.enums.StatusCode
+import com.chiuxah.blog.model.enums.ImageType
+import com.chiuxah.blog.config.response.StatusCode
+import com.chiuxah.blog.utils.ControllerUtils
+import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
+import com.chiuxah.blog.utils.ControllerUtils.jsonToMap
+import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -33,12 +36,12 @@ class ImageController {
         type : String,
         request : HttpServletRequest
     ) : Any {
-        val userinfo = request.session.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+        val userinfo = myUserInfo(request)
 
         val types = when(type) {
             ImageType.BLOG_PHOTO.str -> ImageType.BLOG_PHOTO
             ImageType.USER_PHOTO.str -> ImageType.USER_PHOTO
-            else -> return ResponseEntity.fail(StatusCode.BAD_REQUEST,"参数有误")
+            else -> return INVALID_RESPONSE
         }
 
         val originalFilename = image.originalFilename ?: ""
@@ -59,7 +62,7 @@ class ImageController {
             val fileSize = filePath.length()
             val fileType = image.contentType ?: "unknown"
 
-            val imageInfo = ImageInfo(
+            val imageInfo = ImageBean(
                 url = url,
                 size = fileSize,
                 filename = filename,
@@ -93,7 +96,7 @@ class ImageController {
     // 查看用户上传的图片
     @GetMapping("/mine")
     fun getUploadedImage(request: HttpServletRequest) : Any {
-        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+        val session = myUserInfo(request)
         val uid = session.id
         val imgList = imageService.selectByUid(uid)
         return ResponseEntity.success(data = imgList)
@@ -104,10 +107,10 @@ class ImageController {
         // 查找图片
         val responseBody = getImage(filename)
         if(responseBody is Map<*,*> && responseBody["data"] != null) {
-            val imageinfo = responseBody["data"] as? ImageInfo ?: return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"解析上传结果失败")
+            val imageinfo = responseBody["data"] as? ImageBean ?: return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"解析上传结果失败")
             val uid = imageinfo.uid
             // 权限检查
-            val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+            val session = myUserInfo(request)
             val user = session.id
             if(user != uid) {
                 return ResponseEntity.fail(StatusCode.FORBIDDEN,"权限不足")
@@ -130,16 +133,16 @@ class ImageController {
         request : HttpServletRequest
     )  : Any {
         // 保存旧头像URL,提取文件名
-        val userinfo = (request.session?.getAttribute(ConstVariable.USER_SESSION_KEY)) as UserInfo
+        val userinfo = myUserInfo(request)
         val oldFilename = userinfo.photo.substringAfter(locationUrl)
 
-        val responseBody = uploadImage(image,ImageType.USER_PHOTO.str,request)
-        return if(responseBody is Map<*, *> && responseBody["state"] == StatusCode.OK.code) {
+        val responseBody = uploadImage(image, ImageType.USER_PHOTO.str,request)
+        return if(isSuccessResponse(responseBody)) {
             // 将响应URL设置为用户信息的photo
-            val data = responseBody["data"] as? Map<*, *> ?: return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR, "解析上传结果失败")
-            val url = data["url"] as? String ?: return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR, "未获取到图片URL")
+            val data = jsonToMap(responseBody)["data"] ?: return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"解析失败")
+            val url = jsonToMap(data)["url"] as String
 
-            val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+            val session = myUserInfo(request)
             val uid = session.id
             val result = imageService.updateUserPhoto(uid,url)
             if(!result) {

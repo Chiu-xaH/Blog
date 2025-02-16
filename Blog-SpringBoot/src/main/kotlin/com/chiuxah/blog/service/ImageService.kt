@@ -1,7 +1,7 @@
 package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.ImageMapper
-import com.chiuxah.blog.model.ImageInfo
+import com.chiuxah.blog.model.bean.ImageBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service
 class ImageService {
     @Autowired lateinit var imageMapper : ImageMapper
 
-    fun addImage(imageInfo : ImageInfo) : Int {
+    fun addImage(imageInfo : ImageBean) : Int {
         return imageMapper.add(imageInfo)
     }
 
-    fun selectByUid(uid : Int) : List<ImageInfo> {
+    fun selectByUid(uid : Int) : List<ImageBean> {
         return imageMapper.selectByUid(uid)
     }
 
@@ -28,11 +28,11 @@ class ImageService {
         return imageMapper.delByFilename(filename)
     }
 
-    fun selectById(id : Int) : ImageInfo? {
+    fun selectById(id : Int) : ImageBean? {
         return imageMapper.selectById(id)
     }
 
-    fun selectByFilename(filename : String) : ImageInfo? {
+    fun selectByFilename(filename : String) : ImageBean? {
         return imageMapper.selectByFilename(filename)
     }
 }

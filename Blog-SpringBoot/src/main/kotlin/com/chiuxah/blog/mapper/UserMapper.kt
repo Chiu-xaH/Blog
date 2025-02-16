@@ -1,9 +1,8 @@
 package com.chiuxah.blog.mapper
 
-import com.chiuxah.blog.model.UserInfo
+import com.chiuxah.blog.model.bean.UserBean
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
 
 @Mapper
@@ -13,10 +12,10 @@ interface UserMapper {
     fun reg(username : String, password : String) : Boolean
     // 查询用户 SELECT * FROM userinfo WHERE username = username
     @Select("SELECT * FROM user_info WHERE username = #{username}")
-    fun selectByUsername(username : String) : UserInfo?
+    fun selectByUsername(username : String) : UserBean?
     // 按ID找 SELECT * FROM userinfo WHERE id = uid
     @Select("SELECT * FROM user_info WHERE id = #{uid}")
-    fun selectByUid(uid : Int) : UserInfo?
+    fun selectByUid(uid : Int) : UserBean?
     // 验证是否注册过
     @Select("SELECT COUNT(1) FROM user_info WHERE username = #{username}")
     fun hasAccount(username: String) : Boolean

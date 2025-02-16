@@ -1,10 +1,10 @@
-package com.chiuxah.blog.model
+package com.chiuxah.blog.model.bean
 
-import com.chiuxah.blog.model.base.BaseSqlBean
+import com.chiuxah.blog.model.BaseSqlBean
 import java.sql.Timestamp
 
-// 所有用户信息
-data class UserInfo(
+// TABLE user_info
+data class UserBean(
     override val id : Int,
     val username : String,
     val password : String,

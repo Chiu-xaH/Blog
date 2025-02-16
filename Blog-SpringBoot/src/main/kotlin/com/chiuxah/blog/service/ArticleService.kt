@@ -1,8 +1,8 @@
 package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.ArticleMapper
-import com.chiuxah.blog.model.ArticleInfo
-import com.chiuxah.blog.model.ArticleInfoSummary
+import com.chiuxah.blog.model.bean.ArticleBean
+import com.chiuxah.blog.model.bean.ArticleInfoSummary
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -11,11 +11,11 @@ class ArticleService {
     @Autowired lateinit var articleMapper : ArticleMapper
 
     // 发布新文章
-    fun add(articleInfo: ArticleInfo) : Boolean {
+    fun add(articleInfo: ArticleBean) : Boolean {
         return articleMapper.add(articleInfo)
     }
     // 查询指定博客id的详情
-    fun selectByBlogId(blogId : Int) : ArticleInfo? {
+    fun selectByBlogId(blogId : Int) : ArticleBean? {
         return articleMapper.selectByBlogId(blogId)
     }
     // 查询个人博客列表

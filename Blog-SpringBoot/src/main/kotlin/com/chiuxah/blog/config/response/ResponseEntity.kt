@@ -1,6 +1,4 @@
-package com.chiuxah.blog.config
-
-import com.chiuxah.blog.utils.enums.StatusCode
+package com.chiuxah.blog.config.response
 
 
 // 自定义返回数据
@@ -12,7 +10,7 @@ object ResponseEntity {
             "data" to data
         )
     }
-    fun fail(state : StatusCode,msg : String,data : Any? = null) : Any {
+    fun fail(state : StatusCode, msg : String, data : Any? = null) : Any {
         return mapOf(
             "state" to state.code,
             "msg" to msg,

@@ -1,6 +1,6 @@
 package com.chiuxah.blog.controller
 
-import com.chiuxah.blog.config.ResponseEntity
+import com.chiuxah.blog.config.response.ResponseEntity
 import com.chiuxah.blog.utils.ConstVariable
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

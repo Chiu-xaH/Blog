@@ -1,4 +1,4 @@
-package com.chiuxah.blog.utils.enums
+package com.chiuxah.blog.model.enums
 
 enum class CommentState {
     PUBLISHED,DELETED

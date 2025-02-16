@@ -1,9 +1,9 @@
-package com.chiuxah.blog.model
+package com.chiuxah.blog.model.bean
 
-import com.chiuxah.blog.model.base.BaseSqlBean
+import com.chiuxah.blog.model.BaseSqlBean
 import java.sql.Timestamp
-
-data class ImageInfo(
+// TABLE image_info
+data class ImageBean(
     override val id : Int = 0,
     val url : String,
     val filename : String,

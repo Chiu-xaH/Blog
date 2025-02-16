@@ -1,8 +1,7 @@
 package com.chiuxah.blog
 
-import com.chiuxah.blog.model.UserInfo
+import com.chiuxah.blog.model.bean.UserBean
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -38,12 +37,12 @@ class BlogApplicationTests {
 
 	@Test
 	fun test() {
-		val user = UserInfo(1,"小明","zhaosihan0908","",null,1)
+		val user = UserBean(1,"小明","zhaosihan0908","",null,1)
 		val json = mapper.writeValueAsString(user)
 		redisTemplate.opsForValue().set("user:1",json)
 		val getValue = redisTemplate.opsForValue().get("user:1")
 		println(getValue)
-		val getUser = mapper.readValue(getValue,UserInfo::class.java)
+		val getUser = mapper.readValue(getValue, UserBean::class.java)
 		println(getUser)
 	}
 }

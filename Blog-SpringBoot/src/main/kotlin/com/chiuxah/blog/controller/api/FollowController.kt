@@ -1,10 +1,11 @@
 package com.chiuxah.blog.controller.api
 
-import com.chiuxah.blog.config.ResponseEntity
-import com.chiuxah.blog.model.UserInfo
+import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.model.bean.UserBean
 import com.chiuxah.blog.service.FollowService
 import com.chiuxah.blog.utils.ConstVariable
-import com.chiuxah.blog.utils.enums.StatusCode
+import com.chiuxah.blog.config.response.StatusCode
+import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -27,30 +28,24 @@ class FollowController {
             "followeeCount" to followeeCount
         ))
     }
-    // 自己粉丝及其关注数量
-    @GetMapping("/count/mine")
-    fun getMyFollowCount(request: HttpServletRequest) : Any {
-        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
-        return getFollowCount(session.id)
-    }
     // 粉丝列表 私人秘密，只能自己看
     @GetMapping("/follower")
     fun getFollowerList(request: HttpServletRequest) : Any {
-        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+        val session = myUserInfo(request)
         val resultList = followService.getFollowersList(session.id)
         return ResponseEntity.success("查询成功",resultList)
     }
     // 关注列表 私人秘密，只能自己看
     @GetMapping("/followee")
     fun getFolloweeList(request: HttpServletRequest) : Any {
-        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+        val session = myUserInfo(request)
         val resultList = followService.getFollowingList(session.id)
         return ResponseEntity.success("查询成功",resultList)
     }
     // 关注
     @PostMapping("/follow")
     fun follow(request: HttpServletRequest,uid : Int) : Any {
-        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+        val session = myUserInfo(request)
         val left = session.id
         val isSame = followService.isSameUser(uid,left)
         // 我关注我自己
@@ -67,7 +62,7 @@ class FollowController {
     // 取关
     @DeleteMapping("/unfollow")
     fun unfollow(request: HttpServletRequest,uid : Int) : Any {
-        val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY) as UserInfo
+        val session = myUserInfo(request)
         val left = session.id
         val isSame = followService.isSameUser(uid,left)
         // 我关注我自己

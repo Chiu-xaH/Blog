@@ -1,17 +1,17 @@
 package com.chiuxah.blog.mapper
 
-import com.chiuxah.blog.model.ArticleInfo
-import com.chiuxah.blog.model.ArticleInfoSummary
+import com.chiuxah.blog.model.bean.ArticleBean
+import com.chiuxah.blog.model.bean.ArticleInfoSummary
 import org.apache.ibatis.annotations.*
 
 @Mapper
 interface ArticleMapper {
     // 发布新文章
     @Insert("INSERT INTO article_info(id, title, content, uid) VALUES(#{id}, #{title}, #{content}, #{uid})")
-    fun add(articleInfo: ArticleInfo) : Boolean
+    fun add(articleInfo: ArticleBean) : Boolean
     // 查询指定博客id的详情
     @Select("SELECT * FROM article_info WHERE id = #{blogId}")
-    fun selectByBlogId(blogId : Int) : ArticleInfo?
+    fun selectByBlogId(blogId : Int) : ArticleBean?
     // 查询个人博客列表
     @Select("SELECT id,title,update_time,uid,rcount FROM article_info WHERE uid = #{uid}")
     fun getMyBlogList(uid : Int) : List<ArticleInfoSummary>

@@ -1,9 +1,10 @@
-package com.chiuxah.blog.model
+package com.chiuxah.blog.model.bean
 
-import com.chiuxah.blog.model.base.BaseSqlBean
+import com.chiuxah.blog.model.BaseSqlBean
 import java.sql.Timestamp
 
-data class ArticleInfo(
+// TABLE article_info
+data class ArticleBean(
     override val id : Int = 0,
     val title : String,
     val content : String,
