@@ -48,4 +48,7 @@ interface CollectionMapper {
     // 修改收藏夹的状态
     @Update("UPDATE collection_folder SET state = #{newState} WHERE id = #{folderId}")
     fun changeFolderState(folderId: Int,newState : Int) : Boolean
+    // 获取某个文章的收藏数目
+    @Select("SELECT COUNT(*) FROM user_collection WHERE article_id = #{articleId}")
+    fun getArticleCollectionsCount(articleId : Int) : Int
 }

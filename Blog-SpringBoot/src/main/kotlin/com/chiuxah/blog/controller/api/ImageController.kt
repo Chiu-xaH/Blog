@@ -66,7 +66,6 @@ class ImageController {
                 url = url,
                 size = fileSize,
                 filename = filename,
-                state = 1,
                 filetype = fileType,
                 type = types.code,
                 uid = userinfo.id,

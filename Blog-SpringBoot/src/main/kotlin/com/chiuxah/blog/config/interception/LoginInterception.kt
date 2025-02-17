@@ -1,4 +1,4 @@
-package com.chiuxah.blog.config
+package com.chiuxah.blog.config.interception
 
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.utils.ConstVariable

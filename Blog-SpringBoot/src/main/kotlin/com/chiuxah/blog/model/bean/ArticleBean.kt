@@ -6,13 +6,12 @@ import java.sql.Timestamp
 // TABLE article_info
 data class ArticleBean(
     override val id : Int = 0,
+    override val create_time : Timestamp? = null,
     val title : String,
     val content : String,
-    override val create_time : Timestamp? = null,
     val update_time : Timestamp? = null,
     val uid : Int,
-    val rcount : Int, // 阅读量
-    val state : Int // 1 已发布 2 编辑中
+    val state : Int //  0 审核中 1 已发布 2 私人可见
 ) : BaseSqlBean()
 
 
@@ -21,5 +20,4 @@ data class ArticleInfoSummary(
     val title : String,
     val update_time : Timestamp? = null,
     val uid : Int,
-    val rcount : Int,
 )

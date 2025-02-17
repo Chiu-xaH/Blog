@@ -4,6 +4,15 @@ spring:
     username: root
     password: 050908
     driver-class-name: com.mysql.cj.jdbc.Driver
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    stream:
+#      username: Chiu-xaH
+#      password: 050908
+#    listener:
+#      simple:
+#        prefetch: 1
 #  data:
 #    redis:
 #      host: localhost

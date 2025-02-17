@@ -24,13 +24,11 @@ class ArticleController {
         // 用户
         val userInfo = myUserInfo(request)
         val uid = userInfo.id
-        val rcount = 1 // 初始化阅读量为1
-        val state = ArticleState.PUBLISHED.state // 初始化状态为发布
+        val state = ArticleState.CHECKING.state // 初始化状态为发布 审核功能后期再加
         val articleInfo = ArticleBean(
             title = title,
             content = content,
             uid = uid,
-            rcount = rcount,
             state = state,
         )
         val result = articleService.add(articleInfo)

@@ -191,4 +191,15 @@ class CollectionController {
             else -> null
         }
     }
+
+    // 获取某文章的收藏数量
+    @GetMapping("/article/count")
+    fun getArticleCollectionsCount(articleId : Int) : Any {
+        if(!isValidId(articleId)) return INVALID_RESPONSE
+        val count = collectService.getArticleCollectionsCount(articleId)
+        return ResponseEntity.success("查询成功", mapOf(
+            "articleId" to articleId,
+            "collectionsCount" to count
+        ))
+    }
 }

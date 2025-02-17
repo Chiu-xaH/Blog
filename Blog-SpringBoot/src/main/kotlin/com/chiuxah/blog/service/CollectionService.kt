@@ -75,4 +75,8 @@ class CollectionService {
     fun changeFolderState(folderId: Int,newState : CollectionsFolderState) : Boolean {
         return collectionMapper.changeFolderState(folderId, newState.state)
     }
+
+    fun getArticleCollectionsCount(articleId : Int) : Int {
+        return collectionMapper.getArticleCollectionsCount(articleId)
+    }
 }
