@@ -5,7 +5,8 @@ import com.chiuxah.blog.model.bean.ImageBean
 import com.chiuxah.blog.service.ImageService
 import com.chiuxah.blog.model.enums.ImageType
 import com.chiuxah.blog.config.response.StatusCode
-import com.chiuxah.blog.utils.ControllerUtils
+import com.chiuxah.blog.model.bean.UserSessionSummary
+import com.chiuxah.blog.utils.ConstVariable
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
 import com.chiuxah.blog.utils.ControllerUtils.jsonToMap
@@ -138,20 +139,30 @@ class ImageController {
         val responseBody = uploadImage(image, ImageType.USER_PHOTO.str,request)
         return if(isSuccessResponse(responseBody)) {
             // 将响应URL设置为用户信息的photo
-            val data = jsonToMap(responseBody)["data"] ?: return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"解析失败")
+            val data = jsonToMap(responseBody)["data"] ?: return ResponseEntity.fail(
+                StatusCode.INTERNAL_SERVER_ERROR,
+                "解析失败"
+            )
             val url = jsonToMap(data)["url"] as String
 
-            val session = myUserInfo(request)
-            val uid = session.id
-            val result = imageService.updateUserPhoto(uid,url)
-            if(!result) {
-                ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"更新失败")
+            val uid = userinfo.id
+            val result = imageService.updateUserPhoto(uid, url)
+            if (!result) {
+                ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR, "更新失败")
             }
             // 删除旧头像
-            if(oldFilename.isNotEmpty()) {
-               delImage(oldFilename,request)
+            if (oldFilename.isNotEmpty()) {
+                delImage(oldFilename, request)
             }
-            return  ResponseEntity.success("更新成功")
+            // 更新cookie
+            request.session.setAttribute(ConstVariable.USER_SESSION_KEY, UserSessionSummary(
+                id = userinfo.id,
+                username = userinfo.username,
+                password = userinfo.password,
+                photo = url,
+                email = userinfo.email
+            ))
+            return ResponseEntity.success("更新成功")
         } else {
             ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"上传失败")
         }

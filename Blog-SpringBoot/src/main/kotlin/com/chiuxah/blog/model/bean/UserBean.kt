@@ -1,6 +1,7 @@
 package com.chiuxah.blog.model.bean
 
 import com.chiuxah.blog.model.BaseSqlBean
+import com.chiuxah.blog.model.enums.UserSexType
 import java.sql.Date
 import java.sql.Timestamp
 
@@ -45,7 +46,7 @@ data class UserInfoDTO(
     val email : String,
     val phone_number : String?,
     val description : String?,
-    val sex : Int,
+    val sex : String,
     val born_date : Date?,
     val region : String?,
     val website : String?,
@@ -59,12 +60,12 @@ data class UserInfoDTO(
         email = "",
         phone_number = null,
         description = null,
-        sex = 0,
+        sex = UserSexType.DEFAULT.name,
         born_date = null,
         region = null,
         website = null,
         photo = "/guest.png",
-        state = 1
+        state = 0
     )
 }
 
@@ -76,9 +77,24 @@ data class UserInfoSummary(
     val photo : String
 )
 
-data class UserCheckSummary(
+data class UserSessionSummary(
     val id : Int,
     val username : String,
-    val password : String,
     val email : String,
+    val photo : String,
+    var password : String?,
+)
+
+data class PostUserInfo(
+    val id : Int,
+    val username : String? = null,
+    val password : String? = null,
+    val email : String? = null,
+    val phoneNumber : String? = null,
+    val description : String? = null,
+    val sex : UserSexType? = null,
+    val bornDate : Date? = null,
+    val region : String? = null,
+    val website : String? = null,
+    val photo : String? = null,
 )

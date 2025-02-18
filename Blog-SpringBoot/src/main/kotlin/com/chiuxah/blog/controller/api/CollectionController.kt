@@ -8,9 +8,9 @@ import com.chiuxah.blog.model.enums.CollectionsFolderState
 import com.chiuxah.blog.service.CollectionService
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
-import com.chiuxah.blog.utils.ControllerUtils.isValidId
 import com.chiuxah.blog.utils.ControllerUtils.jsonToMap
 import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
+import com.chiuxah.blog.utils.ValidUtils.isValidId
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
