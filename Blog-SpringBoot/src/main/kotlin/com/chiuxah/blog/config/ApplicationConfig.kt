@@ -11,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 // 配置系统文件
 @Configuration
 class ApplicationConfig : WebMvcConfigurer {
-    @Autowired lateinit var loginInterception : LoginInterception
+    @Autowired
+    lateinit var loginInterception : LoginInterception
     // 装配拦截器
     @Value("\${file.upload-dir}") // 保存路径
     lateinit var uploadDir: String
@@ -25,6 +26,8 @@ class ApplicationConfig : WebMvcConfigurer {
         const val USER = "/user"
         const val FOLLOW = "/follow"
         const val COLLECTION = "/collection"
+        const val COMMENT = "/comment"
+        const val LIKE = "/like"
     }
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterception)
@@ -41,6 +44,8 @@ class ApplicationConfig : WebMvcConfigurer {
             .excludePathPatterns("${API}/upload/image/**")
 
             .excludePathPatterns("$API$FOLLOW/count")
+            .excludePathPatterns("$API$LIKE$ARTICLE/count")
+            .excludePathPatterns("$API$LIKE$COMMENT/count")
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {

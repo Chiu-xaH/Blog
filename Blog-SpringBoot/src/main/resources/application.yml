@@ -13,6 +13,8 @@ spring:
 #    listener:
 #      simple:
 #        prefetch: 1
+#        acknowledge-mode: manual # 手动签收
+#        default-requeue-rejected: false
 #  data:
 #    redis:
 #      host: localhost

@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class CollectionService {
-    @Autowired lateinit var collectionMapper: CollectionMapper
+    @Autowired
+    lateinit var collectionMapper: CollectionMapper
 
     // 获取某个收藏夹的信息
     fun getFolderInfo(folderId: Int): CollectionsFolderBean? {

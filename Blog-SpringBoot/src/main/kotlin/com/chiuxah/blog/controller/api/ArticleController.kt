@@ -1,6 +1,6 @@
 package com.chiuxah.blog.controller.api
 
-import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.model.bean.ArticleBean
 import com.chiuxah.blog.model.enums.ArticleState
@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/article")
 class ArticleController {
-    @Autowired lateinit var articleService: ArticleService
+    @Autowired
+    lateinit var articleService: ArticleService
     // 发博客
     @PostMapping("/add")
     fun addBlog(request : HttpServletRequest,title : String,content : String) : Any {
@@ -32,10 +33,10 @@ class ArticleController {
             state = state,
         )
         val result = articleService.add(articleInfo)
-        return if(!result) {
-            ResponseEntity.success("发布成功")
+        return if(result) {
+            ResultEntity.success("发布成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"发布失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"发布失败")
         }
     }
     // 管理我的博客
@@ -43,7 +44,7 @@ class ArticleController {
     fun getMyBlogList(request: HttpServletRequest) : Any {
         val userInfo = myUserInfo(request)
         val uid = userInfo.id
-        return ResponseEntity.success("查找成功",articleService.getBlogListByUser(uid))
+        return ResultEntity.success("查找成功",articleService.getBlogListByUser(uid))
     }
     // 查询指定用户的博客
     @GetMapping("/user")
@@ -51,7 +52,7 @@ class ArticleController {
         if(!isValidId(uid)) {
             return INVALID_RESPONSE
         }
-        return ResponseEntity.success("查找成功",articleService.getBlogListByUser(uid))
+        return ResultEntity.success("查找成功",articleService.getBlogListByUser(uid))
     }
     // 博客详情
     @GetMapping("/info")
@@ -60,16 +61,12 @@ class ArticleController {
             return INVALID_RESPONSE
         }
         val articleInfo = articleService.selectByBlogId(id)
-        return if(articleInfo == null) {
-            ResponseEntity.success(data = emptyList<ArticleBean>())
-        } else {
-            ResponseEntity.success(data = articleInfo)
-        }
+        return ResultEntity.success(data = articleInfo)
     }
     // 获取所有博客
     @GetMapping("/all")
     fun getBlogList() : Any {
-        return ResponseEntity.success(data = articleService.getBlogList())
+        return ResultEntity.success(data = articleService.getBlogList())
     }
     // 删除博客
     @DeleteMapping("/del")
@@ -78,17 +75,17 @@ class ArticleController {
             return INVALID_RESPONSE
         }
         val articleInfo = articleService.selectByBlogId(id)
-            ?: return ResponseEntity.fail(StatusCode.NOT_FOUND,"无此博文")
+            ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"无此博文")
 
         val userInfo = myUserInfo(request)
         return if(userInfo.id != articleInfo.uid) {
-            ResponseEntity.fail(StatusCode.FORBIDDEN,"无权限")
+            ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
         } else {
             val result = articleService.del(id)
             if(!result) {
-                ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
+                ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
             } else {
-                ResponseEntity.success(msg = "删除成功")
+                ResultEntity.success(msg = "删除成功")
             }
         }
     }
@@ -98,19 +95,19 @@ class ArticleController {
         if(!isValidId(id)) {
             return INVALID_RESPONSE
         }
-        val articleInfo = articleService.selectByBlogId(id) ?: return ResponseEntity.fail(StatusCode.NOT_FOUND,"找不到博文")
+        val articleInfo = articleService.selectByBlogId(id) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"找不到博文")
 
         val userInfo = myUserInfo(request)
         val uid = userInfo.id
         // 验证是否为博文的作者，只有作者有权限操作自己的博文
         return if(uid != articleInfo.uid) {
-            ResponseEntity.fail(StatusCode.FORBIDDEN,"无权限")
+            ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
         } else {
             val result = articleService.update(id,title,content)
             if(!result) {
-                ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"更新失败")
+                ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"更新失败")
             } else {
-                ResponseEntity.success("更新成功")
+                ResultEntity.success("更新成功")
             }
         }
     }

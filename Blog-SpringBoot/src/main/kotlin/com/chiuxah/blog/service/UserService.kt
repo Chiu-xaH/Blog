@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService {
-    @Autowired lateinit var userMapper : UserMapper
+    @Autowired
+    lateinit var userMapper : UserMapper
     // 注册
     fun reg(email: String,username : String, password : String): Boolean {
         return userMapper.reg(email,username, password)

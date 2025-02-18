@@ -1,6 +1,6 @@
 package com.chiuxah.blog.controller
 
-import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.utils.ConstVariable
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -16,7 +16,7 @@ class RecController {
         val session = request.session?.getAttribute(ConstVariable.USER_SESSION_KEY)
         if(session != null) {
             response.sendRedirect("/")
-            return ResponseEntity.success("已登录").toString()
+            return ResultEntity.success("已登录").toString()
         }
         return "login"
     }

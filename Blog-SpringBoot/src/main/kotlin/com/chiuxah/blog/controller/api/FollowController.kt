@@ -1,9 +1,7 @@
 package com.chiuxah.blog.controller.api
 
-import com.chiuxah.blog.config.response.ResponseEntity
-import com.chiuxah.blog.model.bean.UserBean
+import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.service.FollowService
-import com.chiuxah.blog.utils.ConstVariable
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
 import jakarta.servlet.http.HttpServletRequest
@@ -23,7 +21,7 @@ class FollowController {
         val followersCount = followService.getFollowersCount(uid)
         // uid关注了多少人
         val followeeCount = followService.getFollowingCount(uid)
-        return ResponseEntity.success("查询成功", mapOf(
+        return ResultEntity.success("查询成功", mapOf(
             "followersCount" to followersCount,
             "followeeCount" to followeeCount
         ))
@@ -33,14 +31,14 @@ class FollowController {
     fun getFollowerList(request: HttpServletRequest) : Any {
         val session = myUserInfo(request)
         val resultList = followService.getFollowersList(session.id)
-        return ResponseEntity.success("查询成功",resultList)
+        return ResultEntity.success("查询成功",resultList)
     }
     // 关注列表 私人秘密，只能自己看
     @GetMapping("/followee")
     fun getFolloweeList(request: HttpServletRequest) : Any {
         val session = myUserInfo(request)
         val resultList = followService.getFollowingList(session.id)
-        return ResponseEntity.success("查询成功",resultList)
+        return ResultEntity.success("查询成功",resultList)
     }
     // 关注
     @PostMapping("/follow")
@@ -54,9 +52,9 @@ class FollowController {
         }
         val result = followService.follow(left,uid)
         return if(result) {
-            ResponseEntity.success("关注成功")
+            ResultEntity.success("关注成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"关注失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"关注失败")
         }
     }
     // 取关
@@ -71,9 +69,9 @@ class FollowController {
         }
         val result = followService.unfollow(left,uid)
         return if(result) {
-            ResponseEntity.success("取关成功")
+            ResultEntity.success("取关成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取关失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取关失败")
         }
     }
 }

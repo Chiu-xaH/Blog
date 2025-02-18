@@ -1,8 +1,5 @@
 package com.chiuxah.blog.utils
 
-import com.chiuxah.blog.config.response.ResponseEntity
-import com.chiuxah.blog.config.response.StatusCode
-
 object ValidUtils {
     fun isValidId(id : Int) : Boolean = id > 0
 

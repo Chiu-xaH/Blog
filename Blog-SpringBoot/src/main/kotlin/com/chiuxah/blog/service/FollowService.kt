@@ -1,6 +1,6 @@
 package com.chiuxah.blog.service
 
-import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.mapper.FollowMapper
 import com.chiuxah.blog.model.bean.UserInfoSummary
 import com.chiuxah.blog.config.response.StatusCode
@@ -39,7 +39,7 @@ class FollowService {
     // 自己关注自己
     fun isSameUser(left : Int,right : Int) : Pair<Boolean,Any?> {
         return if(left == right) {
-            Pair(true, ResponseEntity.fail(StatusCode.BAD_REQUEST,"不能自己关注自己"))
+            Pair(true, ResultEntity.fail(StatusCode.BAD_REQUEST,"不能自己关注自己"))
         } else {
             Pair(false,null)
         }

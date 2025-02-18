@@ -25,25 +25,28 @@ class BlogApplicationTests {
 //	@AfterEach
 //	fun tearDown() = jedis.close()
 
-//	@Autowired lateinit var redisTemplate: RedisTemplate<String,Any>
+//	@Autowired
+	//	lateinit var redisTemplate: RedisTemplate<String,Any>
 //	@Test
 //	fun contextLoads() {
 //		val result = redisTemplate.opsForValue().set("name","小明")
 //		val name  = redisTemplate.opsForValue().get("name")
 //		println(name)
 //	}
-	@Autowired lateinit var redisTemplate: StringRedisTemplate
+	@Autowired
+	lateinit var redisTemplate: StringRedisTemplate
+
 	private val mapper = ObjectMapper()
 
 	@Test
 	fun test() {
-		val user = UserBean(1,"小明","zhaosihan0908","",null,1)
-		val json = mapper.writeValueAsString(user)
-		redisTemplate.opsForValue().set("user:1",json)
-		val getValue = redisTemplate.opsForValue().get("user:1")
-		println(getValue)
-		val getUser = mapper.readValue(getValue, UserBean::class.java)
-		println(getUser)
+//		val user = UserBean(1,"小明","zhaosihan0908","",null,1)
+//		val json = mapper.writeValueAsString(user)
+//		redisTemplate.opsForValue().set("user:1",json)
+//		val getValue = redisTemplate.opsForValue().get("user:1")
+//		println(getValue)
+//		val getUser = mapper.readValue(getValue, UserBean::class.java)
+//		println(getUser)
 	}
 }
 

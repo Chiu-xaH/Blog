@@ -16,7 +16,7 @@ class Tests {
     @Throws(InterruptedException::class)
     fun contextLoads() = runBlocking {
         for (i in 0 until 5) {
-            producer.produceDirect1((i + 1).toString())
+//            producer.produceDirect1((i + 1).toString())
             producer.produceDirect2((i).toString())
             delay(Random().nextInt(100, 1000).toLong())  // 代替 Thread.sleep，避免阻塞线程
         }

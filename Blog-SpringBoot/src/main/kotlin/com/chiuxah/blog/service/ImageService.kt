@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ImageService {
-    @Autowired lateinit var imageMapper : ImageMapper
+    @Autowired
+    lateinit var imageMapper : ImageMapper
 
     fun addImage(imageInfo : ImageBean) : Int {
         return imageMapper.add(imageInfo)

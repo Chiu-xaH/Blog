@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ArticleService {
-    @Autowired lateinit var articleMapper : ArticleMapper
+    @Autowired
+    lateinit var articleMapper : ArticleMapper
 
     // 发布新文章
     fun add(articleInfo: ArticleBean) : Boolean {

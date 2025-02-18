@@ -28,12 +28,8 @@ class Producer {
     fun produceDirect1(msg : String) {
         println("生产者产生消息exchange-direct给1=====$msg")
         rabbitTemplate.convertAndSend(RabbitMqConfigDirect.EXCHANGE_DIRECT, RabbitMqConfigDirect.CONSUMER_1,msg)
-//        println("生产者产生消息exchange-direct给2=====$msg")
-//        rabbitTemplate.convertAndSend(RabbitMqConfigDirect.EXCHANGE_DIRECT, RabbitMqConfigDirect.CONSUMER_2,msg)
     }
     fun produceDirect2(msg : String) {
-//        println("生产者产生消息exchange-direct给1=====$msg")
-//        rabbitTemplate.convertAndSend(RabbitMqConfigDirect.EXCHANGE_DIRECT, RabbitMqConfigDirect.CONSUMER_1,msg)
         println("生产者产生消息exchange-direct给2=====$msg")
         rabbitTemplate.convertAndSend(RabbitMqConfigDirect.EXCHANGE_DIRECT, RabbitMqConfigDirect.CONSUMER_2,msg)
     }

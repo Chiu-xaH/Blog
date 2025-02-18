@@ -1,6 +1,6 @@
 package com.chiuxah.blog.controller.api
 
-import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.model.bean.ImageBean
 import com.chiuxah.blog.service.ImageService
 import com.chiuxah.blog.model.enums.ImageType
@@ -23,7 +23,8 @@ import java.util.*
 @RestController
 @RequestMapping("/api/v1/image")
 class ImageController {
-    @Autowired lateinit var imageService : ImageService
+    @Autowired
+    lateinit var imageService : ImageService
 
     @Value("\${file.upload-dir}") // 保存路径
     lateinit var uploadDir: String
@@ -49,7 +50,7 @@ class ImageController {
         val extension = originalFilename.substringAfterLast(".", "").lowercase()
 
         if (extension.isEmpty()) {
-            return ResponseEntity.fail(StatusCode.BAD_REQUEST, "无法识别文件格式")
+            return ResultEntity.fail(StatusCode.BAD_REQUEST, "无法识别文件格式")
         }
         val filename = "${UUID.randomUUID()}.$extension" // 生成带扩展名的唯一文件名
         val filePath = File(uploadDir, filename)
@@ -73,16 +74,16 @@ class ImageController {
             )
             val result = imageService.addImage(imageInfo)
             return if(result <= 0) {
-                ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"插入数据库失败")
+                ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"插入数据库失败")
             } else {
-                ResponseEntity.success("上传成功", data = mapOf(
+                ResultEntity.success("上传成功", data = mapOf(
                     "id" to imageInfo.id,
                     "url" to url
                 ))
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"上传失败")
+            return ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"上传失败")
         }
     }
 
@@ -90,8 +91,8 @@ class ImageController {
     @GetMapping("/info")
     fun getImage(filename : String) : Any {
         val result = imageService.selectByFilename(filename)
-            ?: return ResponseEntity.success("未查询到")
-        return ResponseEntity.success("查询成功",result)
+            ?: return ResultEntity.success("未查询到")
+        return ResultEntity.success("查询成功",result)
     }
     // 查看用户上传的图片
     @GetMapping("/mine")
@@ -99,7 +100,7 @@ class ImageController {
         val session = myUserInfo(request)
         val uid = session.id
         val imgList = imageService.selectByUid(uid)
-        return ResponseEntity.success(data = imgList)
+        return ResultEntity.success(data = imgList)
     }
     // 删除图片 : 根据文件名删除数据库,然后移除实体文件
     @DeleteMapping("/del")
@@ -107,23 +108,23 @@ class ImageController {
         // 查找图片
         val responseBody = getImage(filename)
         if(responseBody is Map<*,*> && responseBody["data"] != null) {
-            val imageinfo = responseBody["data"] as? ImageBean ?: return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"解析上传结果失败")
+            val imageinfo = responseBody["data"] as? ImageBean ?: return ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"解析上传结果失败")
             val uid = imageinfo.uid
             // 权限检查
             val session = myUserInfo(request)
             val user = session.id
             if(user != uid) {
-                return ResponseEntity.fail(StatusCode.FORBIDDEN,"权限不足")
+                return ResultEntity.fail(StatusCode.FORBIDDEN,"权限不足")
             }
             // 移除数据库记录
             val result = imageService.delByFilename(filename)
             if(!result) {
-                return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除记录失败")
+                return ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除记录失败")
             }
             // 移除实体文件
             return delFile(filename)
         } else {
-            return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"查找图片失败")
+            return ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"查找图片失败")
         }
     }
     // 更换头像 上传图片后，保存用户数据库的photo为旧的URL，然后设置photo为新的url 然后根据旧URL检索删掉旧的图片实体文件及其数据库记录
@@ -139,7 +140,7 @@ class ImageController {
         val responseBody = uploadImage(image, ImageType.USER_PHOTO.str,request)
         return if(isSuccessResponse(responseBody)) {
             // 将响应URL设置为用户信息的photo
-            val data = jsonToMap(responseBody)["data"] ?: return ResponseEntity.fail(
+            val data = jsonToMap(responseBody)["data"] ?: return ResultEntity.fail(
                 StatusCode.INTERNAL_SERVER_ERROR,
                 "解析失败"
             )
@@ -148,7 +149,7 @@ class ImageController {
             val uid = userinfo.id
             val result = imageService.updateUserPhoto(uid, url)
             if (!result) {
-                ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR, "更新失败")
+                ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR, "更新失败")
             }
             // 删除旧头像
             if (oldFilename.isNotEmpty()) {
@@ -162,9 +163,9 @@ class ImageController {
                 photo = url,
                 email = userinfo.email
             ))
-            return ResponseEntity.success("更新成功")
+            return ResultEntity.success("更新成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"上传失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"上传失败")
         }
     }
     // 清理无家可归的实体文件 如果实体文件存在，但是数据库查询不到，则删除
@@ -191,11 +192,11 @@ class ImageController {
         if (file.exists()) {
             val deleted = file.delete()
             if (!deleted) {
-                return ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR, "文件删除失败")
+                return ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR, "文件删除失败")
             }
         } else {
-            return ResponseEntity.fail(StatusCode.NOT_FOUND, "文件不存在")
+            return ResultEntity.fail(StatusCode.NOT_FOUND, "文件不存在")
         }
-        return ResponseEntity.success("删除成功")
+        return ResultEntity.success("删除成功")
     }
 }

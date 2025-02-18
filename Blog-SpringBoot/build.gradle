@@ -31,7 +31,7 @@ dependencies {
 	// JDBC
 	implementation("com.mysql:mysql-connector-j:9.1.0")
 	// 加解密
-	implementation("cn.hutool:hutool-crypto:5.8.35")
+//	implementation("cn.hutool:hutool-crypto:5.8.35")
 	// Spring Security
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// Thymeleaf 视图解析引擎 解析static下的html

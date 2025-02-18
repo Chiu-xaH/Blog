@@ -16,7 +16,7 @@ interface ArticleMapper {
     @Select("SELECT id,title,update_time,uid,rcount FROM article_info WHERE uid = #{uid}")
     fun getMyBlogList(uid : Int) : List<ArticleInfoSummary>
     // 查询总的博客列表
-    @Select("SELECT id,title,update_time,uid,rcount FROM article_info")
+    @Select("SELECT id,title,update_time,uid FROM article_info")
     fun getBlogList() : List<ArticleInfoSummary>
     // 删除指定博客
     @Delete("DELETE FROM article_info WHERE id = #{id}")

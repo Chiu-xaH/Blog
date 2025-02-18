@@ -1,6 +1,6 @@
 package com.chiuxah.blog.controller.api
 
-import com.chiuxah.blog.config.response.ResponseEntity
+import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.model.bean.collection.CollectionBean
 import com.chiuxah.blog.model.bean.collection.CollectionsFolderBean
@@ -32,15 +32,15 @@ class CollectionController {
         // 如果不是本人的，需要检查state
         if(!isValidId(folderId)) return INVALID_RESPONSE
         val uid = myUserInfo(request).id
-        val folderInfo = collectService.getFolderInfo(folderId) ?: return ResponseEntity.fail(StatusCode.NOT_FOUND,"无收藏夹")
+        val folderInfo = collectService.getFolderInfo(folderId) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"无收藏夹")
         return if(folderInfo.uid == uid) {
             // 是本人的收藏夹
-            ResponseEntity.success("查询成功 本人的收藏夹",folderInfo)
+            ResultEntity.success("查询成功 本人的收藏夹",folderInfo)
         } else {
             if(folderInfo.state == CollectionsFolderState.PRIVATE.state) {
-                ResponseEntity.fail(StatusCode.FORBIDDEN,"无权限")
+                ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
             } else {
-                ResponseEntity.success("查询成功 他人的收藏夹",folderInfo)
+                ResultEntity.success("查询成功 他人的收藏夹",folderInfo)
             }
         }
     }
@@ -51,7 +51,7 @@ class CollectionController {
         return if(isSuccessResponse(responseBody)) {
             val data = jsonToMap(responseBody)["data"] as CollectionsFolderBean
             val list = collectService.getFolderCollectionsList(folderId)
-            ResponseEntity.success("查询成功", mapOf(
+            ResultEntity.success("查询成功", mapOf(
                 "info" to data,
                 "items" to list
             ))
@@ -73,7 +73,7 @@ class CollectionController {
         } else {
             folders
         }
-        return ResponseEntity.success("获取成功",newList)
+        return ResultEntity.success("获取成功",newList)
     }
     @PostMapping("/folder/create")
     fun createFolder(name: String,description: String? = null,state: String,request: HttpServletRequest) : Any {
@@ -88,9 +88,9 @@ class CollectionController {
             )
         )
         return if(result) {
-            ResponseEntity.success("创建成功")
+            ResultEntity.success("创建成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"创建失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"创建失败")
         }
     }
     @DeleteMapping("folder/del")
@@ -102,14 +102,14 @@ class CollectionController {
             val data = jsonToMap(responseBody)["data"] as CollectionsFolderBean
             return if(data.uid != uid) {
                 // 删除的不是自己的收藏夹
-                ResponseEntity.fail(StatusCode.FORBIDDEN,"无权限")
+                ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
             } else {
                 // 删除自己的收藏夹
                 val result = collectService.deleteFolder(folderId)
                 if(result) {
-                    ResponseEntity.success("删除成功")
+                    ResultEntity.success("删除成功")
                 } else {
-                    ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
+                    ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
                 }
             }
         } else {
@@ -124,8 +124,8 @@ class CollectionController {
 //    }
     @GetMapping("/info")
     fun getCollectionInfo(collectionId: Int) : Any {
-        val result = collectService.getCollectionInfo(collectionId) ?: return ResponseEntity.fail(StatusCode.NOT_FOUND,"未找到")
-        return ResponseEntity.success("查询成功",result)
+        val result = collectService.getCollectionInfo(collectionId) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"未找到")
+        return ResultEntity.success("查询成功",result)
     }
 //    @GetMapping("/all/count")
 //    fun getAllCollectionsCount(uid : Int) : Any {
@@ -136,7 +136,7 @@ class CollectionController {
         // 获取所有的收藏项目，仅对自己可用
         val session = myUserInfo(request)
         val result = collectService.getAllCollectionsList(session.id)
-        return ResponseEntity.success("查询成功",result)
+        return ResultEntity.success("查询成功",result)
     }
     @PostMapping("/collect")
     fun collect(
@@ -155,9 +155,9 @@ class CollectionController {
         ))
         // 返回数据
         return if(result) {
-            ResponseEntity.success("收藏成功")
+            ResultEntity.success("收藏成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"收藏失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"收藏失败")
         }
     }
     @DeleteMapping("/uncollect")
@@ -169,9 +169,9 @@ class CollectionController {
         val result = collectService.uncollect(collectionId,userinfo.id)
         // 返回数据
         return if(result) {
-            ResponseEntity.success("取消收藏成功")
+            ResultEntity.success("取消收藏成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取消收藏失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取消收藏失败")
         }
     }
     @PutMapping("/folder/change-state")
@@ -179,9 +179,9 @@ class CollectionController {
         val folderState = toState(state) ?: return INVALID_RESPONSE
         val result = collectService.changeFolderState(folderId,folderState)
         return if(result) {
-            ResponseEntity.success("修改成功")
+            ResultEntity.success("修改成功")
         } else {
-            ResponseEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"修改失败")
+            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"修改失败")
         }
     }
     fun toState(state : String) : CollectionsFolderState? {
@@ -197,7 +197,7 @@ class CollectionController {
     fun getArticleCollectionsCount(articleId : Int) : Any {
         if(!isValidId(articleId)) return INVALID_RESPONSE
         val count = collectService.getArticleCollectionsCount(articleId)
-        return ResponseEntity.success("查询成功", mapOf(
+        return ResultEntity.success("查询成功", mapOf(
             "articleId" to articleId,
             "collectionsCount" to count
         ))
