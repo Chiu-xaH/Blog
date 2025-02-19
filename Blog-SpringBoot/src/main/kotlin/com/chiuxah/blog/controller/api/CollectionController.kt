@@ -4,9 +4,12 @@ import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.model.bean.collection.CollectionBean
 import com.chiuxah.blog.model.bean.collection.CollectionsFolderBean
-import com.chiuxah.blog.model.enums.CollectionsFolderState
+import com.chiuxah.blog.model.enums.state.CollectionsFolderState
 import com.chiuxah.blog.service.CollectionService
+import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.EMPTY_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.USER_FORBID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
 import com.chiuxah.blog.utils.ControllerUtils.jsonToMap
 import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
@@ -32,19 +35,19 @@ class CollectionController {
         // 如果不是本人的，需要检查state
         if(!isValidId(folderId)) return INVALID_RESPONSE
         val uid = myUserInfo(request).id
-        val folderInfo = collectService.getFolderInfo(folderId) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"无收藏夹")
+        val folderInfo = collectService.getFolderInfo(folderId) ?: return EMPTY_RESPONSE
         return if(folderInfo.uid == uid) {
             // 是本人的收藏夹
             ResultEntity.success("查询成功 本人的收藏夹",folderInfo)
         } else {
             if(folderInfo.state == CollectionsFolderState.PRIVATE.state) {
-                ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
+                USER_FORBID_RESPONSE
             } else {
                 ResultEntity.success("查询成功 他人的收藏夹",folderInfo)
             }
         }
     }
-    @GetMapping("/folder/collections")
+    @GetMapping("/folder/collection")
     fun getFolderCollectionsList(folderId : Int,request : HttpServletRequest) : Any {
         if(!isValidId(folderId)) return INVALID_RESPONSE
         val responseBody = getFolderInfo(folderId,request)
@@ -90,7 +93,7 @@ class CollectionController {
         return if(result) {
             ResultEntity.success("创建成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"创建失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     @DeleteMapping("folder/del")
@@ -102,14 +105,14 @@ class CollectionController {
             val data = jsonToMap(responseBody)["data"] as CollectionsFolderBean
             return if(data.uid != uid) {
                 // 删除的不是自己的收藏夹
-                ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
+                USER_FORBID_RESPONSE
             } else {
                 // 删除自己的收藏夹
                 val result = collectService.deleteFolder(folderId)
                 if(result) {
                     ResultEntity.success("删除成功")
                 } else {
-                    ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
+                    DATABASE_ERROR_RESPONSE
                 }
             }
         } else {
@@ -124,14 +127,14 @@ class CollectionController {
 //    }
     @GetMapping("/info")
     fun getCollectionInfo(collectionId: Int) : Any {
-        val result = collectService.getCollectionInfo(collectionId) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"未找到")
+        val result = collectService.getCollectionInfo(collectionId) ?: return EMPTY_RESPONSE
         return ResultEntity.success("查询成功",result)
     }
 //    @GetMapping("/all/count")
 //    fun getAllCollectionsCount(uid : Int) : Any {
 //
 //    }
-    @GetMapping("/all/collections")
+    @GetMapping("/all/collection")
     fun getAllCollectionsList(request: HttpServletRequest) : Any {
         // 获取所有的收藏项目，仅对自己可用
         val session = myUserInfo(request)
@@ -157,7 +160,7 @@ class CollectionController {
         return if(result) {
             ResultEntity.success("收藏成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"收藏失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     @DeleteMapping("/uncollect")
@@ -171,7 +174,7 @@ class CollectionController {
         return if(result) {
             ResultEntity.success("取消收藏成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取消收藏失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     @PutMapping("/folder/change-state")
@@ -181,7 +184,7 @@ class CollectionController {
         return if(result) {
             ResultEntity.success("修改成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"修改失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     fun toState(state : String) : CollectionsFolderState? {

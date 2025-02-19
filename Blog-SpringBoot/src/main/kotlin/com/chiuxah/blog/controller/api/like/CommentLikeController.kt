@@ -4,6 +4,7 @@ import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.service.like.CommentLikeService
 import com.chiuxah.blog.utils.ControllerUtils
+import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ValidUtils
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +36,7 @@ class CommentLikeController {
         return if(result) {
             ResultEntity.success("点赞成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"点赞失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     // 取消点赞
@@ -49,7 +50,7 @@ class CommentLikeController {
         return if(result) {
             ResultEntity.success("取消点赞成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取消点赞失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
 }

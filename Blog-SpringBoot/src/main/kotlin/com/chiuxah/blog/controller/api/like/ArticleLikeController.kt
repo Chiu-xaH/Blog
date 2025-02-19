@@ -5,7 +5,9 @@ import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.controller.api.ArticleController
 import com.chiuxah.blog.model.bean.ArticleBean
 import com.chiuxah.blog.service.like.ArticleLikeService
+import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.USER_FORBID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
 import com.chiuxah.blog.utils.ControllerUtils.jsonToMap
 import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
@@ -32,7 +34,7 @@ class ArticleLikeController {
         return ResultEntity.success("查询成功", data = result)
     }
     // 谁点赞了文章 只有作者可见
-    @GetMapping("/list")
+    @GetMapping("/all")
     fun getArticleLikeList(articleId: Int,request : HttpServletRequest) : Any {
         val userInfo = myUserInfo(request)
         val uid = userInfo.id
@@ -43,7 +45,7 @@ class ArticleLikeController {
         // 身份核验 是否为作者
         val articleInfo = jsonToMap(articleResponse)["data"] as ArticleBean
         if(articleInfo.uid != uid) {
-            return ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
+            return USER_FORBID_RESPONSE
         }
 
         val result = articleLikeService.getLikeList(articleId)
@@ -63,7 +65,7 @@ class ArticleLikeController {
         return if(result) {
             ResultEntity.success("点赞成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"点赞失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     // 取消点赞
@@ -77,7 +79,7 @@ class ArticleLikeController {
         return if(result) {
             ResultEntity.success("取消点赞成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取消点赞失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
 }

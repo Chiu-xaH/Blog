@@ -1,11 +1,10 @@
 package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.UserMapper
-import com.chiuxah.blog.model.bean.PostUserInfo
 import com.chiuxah.blog.model.bean.UserBean
 import com.chiuxah.blog.model.bean.UserSessionSummary
 import com.chiuxah.blog.model.bean.UserInfoDTO
-import com.chiuxah.blog.model.enums.UserSexType
+import com.chiuxah.blog.model.enums.type.SexType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -50,9 +49,9 @@ class UserService {
             phone_number = userInfo.phone_number,
             description = userInfo.description,
             sex = when(userInfo.sex) {
-                UserSexType.DEFAULT.type -> UserSexType.DEFAULT.name
-                UserSexType.MALE.type -> UserSexType.MALE.name
-                UserSexType.FEMALE.type -> UserSexType.FEMALE.name
+                SexType.DEFAULT.type -> SexType.DEFAULT.name
+                SexType.MALE.type -> SexType.MALE.name
+                SexType.FEMALE.type -> SexType.FEMALE.name
                 else -> ""
             },
             born_date = userInfo.born_date,

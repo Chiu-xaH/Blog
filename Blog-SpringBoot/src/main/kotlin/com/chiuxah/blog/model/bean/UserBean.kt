@@ -1,7 +1,7 @@
 package com.chiuxah.blog.model.bean
 
 import com.chiuxah.blog.model.BaseSqlBean
-import com.chiuxah.blog.model.enums.UserSexType
+import com.chiuxah.blog.model.enums.type.SexType
 import java.sql.Date
 import java.sql.Timestamp
 
@@ -60,7 +60,7 @@ data class UserInfoDTO(
         email = "",
         phone_number = null,
         description = null,
-        sex = UserSexType.DEFAULT.name,
+        sex = SexType.DEFAULT.name,
         born_date = null,
         region = null,
         website = null,
@@ -92,7 +92,7 @@ data class PostUserInfo(
     val email : String? = null,
     val phoneNumber : String? = null,
     val description : String? = null,
-    val sex : UserSexType? = null,
+    val sex : SexType? = null,
     val bornDate : Date? = null,
     val region : String? = null,
     val website : String? = null,

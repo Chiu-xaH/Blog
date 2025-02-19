@@ -30,22 +30,27 @@ class ApplicationConfig : WebMvcConfigurer {
         const val LIKE = "/like"
     }
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(loginInterception)
-            .addPathPatterns("${API}/**") // 全部拦截
+        registry.addInterceptor(loginInterception).addPathPatterns("${API}/**") // 全部拦截
             // 除外 不拦截
-            .excludePathPatterns("$API$ARTICLE/all")
-            .excludePathPatterns("$API$ARTICLE/info")
-            .excludePathPatterns("$API$ARTICLE/user")
+            .apply {
+                excludePathPatterns("$API$ARTICLE/all")
+                excludePathPatterns("$API$ARTICLE/info")
+                excludePathPatterns("$API$ARTICLE/user")
 
-            .excludePathPatterns("$API$USER/login")
-            .excludePathPatterns("$API$USER/reg")
-            .excludePathPatterns("$API$USER/info")
+                excludePathPatterns("$API$USER/login")
+                excludePathPatterns("$API$USER/reg")
+                excludePathPatterns("$API$USER/info")
 
-            .excludePathPatterns("${API}/upload/image/**")
+                excludePathPatterns("${API}/upload/image/**")
 
-            .excludePathPatterns("$API$FOLLOW/count")
-            .excludePathPatterns("$API$LIKE$ARTICLE/count")
-            .excludePathPatterns("$API$LIKE$COMMENT/count")
+                excludePathPatterns("$API$FOLLOW/count")
+                excludePathPatterns("$API$LIKE$ARTICLE/count")
+                excludePathPatterns("$API$LIKE$COMMENT/count")
+
+                excludePathPatterns("$API$COMMENT/info")
+                excludePathPatterns("$API$COMMENT/all")
+                excludePathPatterns("$API$COMMENT/count")
+            }
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {

@@ -3,6 +3,7 @@ package com.chiuxah.blog.controller.api
 import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.service.FollowService
 import com.chiuxah.blog.config.response.StatusCode
+import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
@@ -54,7 +55,7 @@ class FollowController {
         return if(result) {
             ResultEntity.success("关注成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"关注失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     // 取关
@@ -71,7 +72,7 @@ class FollowController {
         return if(result) {
             ResultEntity.success("取关成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"取关失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.chiuxah.blog.model.enums
+package com.chiuxah.blog.model.enums.state
 
 enum class ArticleState(val state : Int) {
     CHECKING(0),

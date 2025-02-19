@@ -3,9 +3,12 @@ package com.chiuxah.blog.controller.api
 import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.model.bean.ArticleBean
-import com.chiuxah.blog.model.enums.ArticleState
+import com.chiuxah.blog.model.enums.state.ArticleState
 import com.chiuxah.blog.service.ArticleService
+import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.EMPTY_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.USER_FORBID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
 import com.chiuxah.blog.utils.ValidUtils.isValidId
 import jakarta.servlet.http.HttpServletRequest
@@ -36,7 +39,7 @@ class ArticleController {
         return if(result) {
             ResultEntity.success("发布成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"发布失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     // 管理我的博客
@@ -75,15 +78,15 @@ class ArticleController {
             return INVALID_RESPONSE
         }
         val articleInfo = articleService.selectByBlogId(id)
-            ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"无此博文")
+            ?: return EMPTY_RESPONSE
 
         val userInfo = myUserInfo(request)
         return if(userInfo.id != articleInfo.uid) {
-            ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
+            USER_FORBID_RESPONSE
         } else {
             val result = articleService.del(id)
             if(!result) {
-                ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"删除失败")
+                DATABASE_ERROR_RESPONSE
             } else {
                 ResultEntity.success(msg = "删除成功")
             }
@@ -95,17 +98,17 @@ class ArticleController {
         if(!isValidId(id)) {
             return INVALID_RESPONSE
         }
-        val articleInfo = articleService.selectByBlogId(id) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"找不到博文")
+        val articleInfo = articleService.selectByBlogId(id) ?: return EMPTY_RESPONSE
 
         val userInfo = myUserInfo(request)
         val uid = userInfo.id
         // 验证是否为博文的作者，只有作者有权限操作自己的博文
         return if(uid != articleInfo.uid) {
-            ResultEntity.fail(StatusCode.FORBIDDEN,"无权限")
+            USER_FORBID_RESPONSE
         } else {
             val result = articleService.update(id,title,content)
             if(!result) {
-                ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"更新失败")
+                DATABASE_ERROR_RESPONSE
             } else {
                 ResultEntity.success("更新成功")
             }

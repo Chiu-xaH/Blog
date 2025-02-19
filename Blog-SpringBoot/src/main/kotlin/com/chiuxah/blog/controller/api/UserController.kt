@@ -7,6 +7,8 @@ import com.chiuxah.blog.utils.CryptoUtils
 import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.model.bean.PostUserInfo
 import com.chiuxah.blog.model.bean.UserSessionSummary
+import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.EMPTY_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_PWD_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
@@ -38,14 +40,14 @@ class UserController {
             // 检查是否已存在账号
             val hasAccount = userService.hasAccount(it)
             if(hasAccount) {
-                return ResultEntity.fail(StatusCode.FORBIDDEN,"已有账号")
+                return ResultEntity.fail(StatusCode.BAD_REQUEST,"已有账号")
             }
         }
         // 检查用户名是否已存在
         username?.let {
             val isUsernameExist = userService.isUserNameExist(it)
             if(isUsernameExist) {
-                return ResultEntity.fail(StatusCode.FORBIDDEN,"用户名重复")
+                return ResultEntity.fail(StatusCode.BAD_REQUEST,"用户名重复")
             }
         }
         // 检查密码的合理性
@@ -81,7 +83,7 @@ class UserController {
             // 注册成功
             ResultEntity.success("注册成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"注册失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     /*用户登录*/
@@ -93,7 +95,7 @@ class UserController {
             return ResultEntity.fail(StatusCode.BAD_REQUEST,"邮箱格式有误")
         }
         // 验证密码
-        val userInfo = userService.selectByEmail(email) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"无账号 先注册")
+        val userInfo = userService.selectByEmail(email) ?: return EMPTY_RESPONSE
         if(!CryptoUtils.verifyPassword(password,userInfo.password!!)) {
             return ResultEntity.fail(StatusCode.BAD_REQUEST,"密码错误")
         }
@@ -122,7 +124,7 @@ class UserController {
         return if(userInfo != null) {
             ResultEntity.success("查询成功", userService.convertToUserInfoDTO(userInfo))
         } else {
-            ResultEntity.fail(StatusCode.NOT_FOUND,"无用户")
+            EMPTY_RESPONSE
         }
     }
     // 验证Cookie是仍有效
@@ -177,7 +179,7 @@ class UserController {
         // 更新
         val result = userService.update(updateFields)
         if(result) {
-            val newUserInfo = userService.selectByUid(uid) ?: return ResultEntity.fail(StatusCode.NOT_FOUND,"无用户")
+            val newUserInfo = userService.selectByUid(uid) ?: return EMPTY_RESPONSE
             // session信息更新
             val session = request.session
             session.setAttribute(ConstVariable.USER_SESSION_KEY, UserSessionSummary(
@@ -194,7 +196,7 @@ class UserController {
                 "userinfo" to newSession
             ))
         } else {
-            return ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"更新失败")
+            return DATABASE_ERROR_RESPONSE
         }
     }
     // 注销账号 删除账号数据库，并删除头像文件及其数据库记录； 由用户自行决定是否保留其关联的博文 不保留博文则删除所有博文以及图片
@@ -211,7 +213,7 @@ class UserController {
             }
             ResultEntity.success("注销成功")
         } else {
-            ResultEntity.fail(StatusCode.INTERNAL_SERVER_ERROR,"注销失败")
+            DATABASE_ERROR_RESPONSE
         }
     }
     // 扩展任务：用户鉴权改为JWT

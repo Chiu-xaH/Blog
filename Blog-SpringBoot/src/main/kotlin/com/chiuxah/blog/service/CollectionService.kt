@@ -4,7 +4,7 @@ import com.chiuxah.blog.mapper.CollectionMapper
 import com.chiuxah.blog.model.bean.collection.CollectionBean
 import com.chiuxah.blog.model.bean.collection.CollectionSummaryInfo
 import com.chiuxah.blog.model.bean.collection.CollectionsFolderBean
-import com.chiuxah.blog.model.enums.CollectionsFolderState
+import com.chiuxah.blog.model.enums.state.CollectionsFolderState
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

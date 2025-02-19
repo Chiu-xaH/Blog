@@ -11,7 +11,7 @@ CREATE TABLE image_info(
     size BIGINT NOT NULL,
     filetype VARCHAR(50) NOT NULL,
     uid INT NOT NULL,
-    type TINYINT(1) CHECK (type IN (1, 2)) -- 1用户头像 2博客插图
+    type TINYINT(1) CHECK (type IN (1, 2, 3)) -- 1用户头像 2博客插图 3评论图片
 )DEFAULT CHARSET 'utf8mb4';
 -- 存储用户信息
 DROP TABLE IF EXISTS user_info;
