@@ -40,6 +40,8 @@ class ApplicationConfig : WebMvcConfigurer {
                 excludePathPatterns("$API$USER/login")
                 excludePathPatterns("$API$USER/reg")
                 excludePathPatterns("$API$USER/info")
+                excludePathPatterns("$API$USER/send-code")
+                excludePathPatterns("$API$USER/login-from-code")
 
                 excludePathPatterns("${API}/upload/image/**")
 

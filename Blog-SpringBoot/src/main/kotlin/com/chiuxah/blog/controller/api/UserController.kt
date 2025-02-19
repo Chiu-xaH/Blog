@@ -1,5 +1,6 @@
 package com.chiuxah.blog.controller.api
 
+import com.chiuxah.blog.service.MailService
 import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.service.UserService
 import com.chiuxah.blog.utils.ConstVariable
@@ -11,8 +12,10 @@ import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.EMPTY_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_PWD_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
+import com.chiuxah.blog.utils.ControllerUtils.SUCCESS_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
 import com.chiuxah.blog.utils.ControllerUtils.myUserInfo
+import com.chiuxah.blog.utils.ValidUtils.isValidCode
 import com.chiuxah.blog.utils.ValidUtils.isValidEmail
 import com.chiuxah.blog.utils.ValidUtils.isValidId
 import com.chiuxah.blog.utils.ValidUtils.isValidPassword
@@ -27,10 +30,11 @@ import org.springframework.web.bind.annotation.*
 class UserController {
     @Autowired
     lateinit var userService : UserService
-
+    @Autowired
+    lateinit var mailService : MailService
     // 核验 用于注册和修改信息 不可用于登录！！
     @GetMapping("/check-valid")
-    fun checkVaild(email : String?, username : String?, password : String?) : Any {
+    fun checkValid(email : String?, username : String?, password : String?) : Any {
         email?.let {
             // 检查是否是合法邮箱
             val isValidEmail = isValidEmail(it)
@@ -70,10 +74,20 @@ class UserController {
     }
     /*用户注册*/
     @PostMapping("/reg")
-    fun reg(email : String,username : String,password : String) : Any {
-        val check = checkVaild(email,username,password)
+    fun reg(email : String,username : String,password : String,code : String) : Any {
+        // 验证码格式验证
+        if(isValidCode(code)) {
+            return INVALID_RESPONSE
+        }
+        // 邮箱、密码、用户名验证
+        val check = checkValid(email,username,password)
         if(!isSuccessResponse(check)) {
             return check
+        }
+        // 验证码对照
+        val isRight = mailService.checkCode(email,code)
+        if(!isRight) {
+            return ResultEntity.fail(StatusCode.BAD_REQUEST,"验证码错误")
         }
         // 加密密码
         val encryptedPwd = CryptoUtils.hashPassword(password)
@@ -92,7 +106,7 @@ class UserController {
         // 检查是否是合法邮箱
         val isValidEmail = isValidEmail(email)
         if(!isValidEmail) {
-            return ResultEntity.fail(StatusCode.BAD_REQUEST,"邮箱格式有误")
+            return INVALID_RESPONSE
         }
         // 验证密码
         val userInfo = userService.selectByEmail(email) ?: return EMPTY_RESPONSE
@@ -153,7 +167,7 @@ class UserController {
             }
         }
         // 验证合理性
-        val check = checkVaild(updateRequest.email,updateRequest.username,updateRequest.password)
+        val check = checkValid(updateRequest.email,updateRequest.username,updateRequest.password)
         if(!isSuccessResponse(check)) {
                 return check
         }
@@ -218,4 +232,41 @@ class UserController {
     }
     // 扩展任务：用户鉴权改为JWT
     // 扩展任务：使用加密传输数据 例如AES
+    @PostMapping("/send-code")
+    fun sendEmailCode(email : String) : Any {
+        // 检查是否是合法邮箱
+        val isValidEmail = isValidEmail(email)
+        if(!isValidEmail) {
+            return INVALID_RESPONSE
+        }
+        mailService.addQueue(email)
+        return SUCCESS_RESPONSE
+    }
+    @PostMapping("/login-from-code")
+    fun loginFromCode(code: String,email: String,request: HttpServletRequest) : Any {
+        // 验证码格式验证
+        if(isValidCode(code)) {
+            return INVALID_RESPONSE
+        }
+        // 检查是否是合法邮箱
+        val isValidEmail = isValidEmail(email)
+        if(!isValidEmail) {
+            return INVALID_RESPONSE
+        }
+        // 检查验证码
+        val isRight = mailService.checkCode(email,code)
+        if(!isRight) {
+            return ResultEntity.fail(StatusCode.BAD_REQUEST,"验证码错误")
+        }
+        // 获取用户信息
+        val userInfo = userService.selectByEmail(email) ?: return EMPTY_RESPONSE
+        // 储存信息
+        val session = request.session
+        session.setAttribute(ConstVariable.USER_SESSION_KEY,userInfo)
+        userInfo.password = null
+        return ResultEntity.success("登陆成功", mapOf(
+            "JSESSIONID" to session.id,
+            "userinfo" to userInfo
+        ))
+    }
 }

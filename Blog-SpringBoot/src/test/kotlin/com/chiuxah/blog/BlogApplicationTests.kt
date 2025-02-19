@@ -1,6 +1,6 @@
 package com.chiuxah.blog
 
-import com.chiuxah.blog.model.bean.UserBean
+import com.chiuxah.blog.service.MailService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,6 +35,8 @@ class BlogApplicationTests {
 //	}
 	@Autowired
 	lateinit var redisTemplate: StringRedisTemplate
+	@Autowired
+	lateinit var mailService: MailService
 
 	private val mapper = ObjectMapper()
 
@@ -47,6 +49,7 @@ class BlogApplicationTests {
 //		println(getValue)
 //		val getUser = mapper.readValue(getValue, UserBean::class.java)
 //		println(getUser)
+		mailService.send("zsh0908@outlook.com")
 	}
 }
 

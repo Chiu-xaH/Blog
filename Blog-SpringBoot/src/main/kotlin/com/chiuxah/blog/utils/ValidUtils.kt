@@ -8,6 +8,11 @@ object ValidUtils {
         return regex.matches(email)
     }
 
+    fun isValidCode(code : String) : Boolean {
+        val num = code.toIntOrNull() ?: return false
+        return num in 10000..99999
+    }
+
     // 包含字母、符号、数字中的至少两种，长度至少8位
     fun isValidPassword(password : String) : Boolean {
         if (password.length < 8) return false // 长度必须大于8

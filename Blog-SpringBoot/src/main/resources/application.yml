@@ -4,32 +4,51 @@ spring:
     username: root
     password: 050908
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    stream:
-#      username: Chiu-xaH
-#      password: 050908
-#    listener:
-#      simple:
-#        prefetch: 1
-#        acknowledge-mode: manual # 手动签收
+# RABBITMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    stream:
+      username: Chiu-xaH
+      password: 050908
+      virtual-host: /
+    listener:
+      simple:
+        prefetch: 100
+        acknowledge-mode: manual # 手动签收
 #        default-requeue-rejected: false
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
-#      lettuce:
-#        pool:
-#          max-active: 8
-#          max-idle: 8
-#          min-idle: 0
-#          max-wait: 100ms
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: 100ms
+
+  mail:
+    host: smtp.163.com
+    username: XXX
+    password: XXX
+    properties:
+          mail:
+            smtp:
+              socketFactoryClass: javax.net.ssl.SSLSocketFactory
+              #表示开启 DEBUG 模式，这样，邮件发送过程的日志会在控制台打印出来，方便排查错误
+              debug: true
+              ssl: true
+    protocol: smtp
 
 
 file:
   upload-dir: D:/blogUpload/image
   location-url: /upload/image/
+app:
+  name: Chiu-xaH's Bolg
 
 #  mybatis:
 #  mapper-locations: classpath:mapper/**Mapper.xml
