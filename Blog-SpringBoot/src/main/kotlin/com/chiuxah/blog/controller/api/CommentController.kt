@@ -1,10 +1,8 @@
 package com.chiuxah.blog.controller.api
 
 import com.chiuxah.blog.config.response.ResultEntity
-import com.chiuxah.blog.config.response.StatusCode
-import com.chiuxah.blog.model.bean.CommentBean
+import com.chiuxah.blog.model.entity.CommentEntity
 import com.chiuxah.blog.model.enums.type.ImageType
-import com.chiuxah.blog.model.enums.type.ParentCommentType
 import com.chiuxah.blog.service.CommentService
 import com.chiuxah.blog.utils.ControllerUtils.CONTROLLER_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
@@ -69,7 +67,7 @@ class CommentController {
             data["url"] as String
         }
         // 数据组装
-        val comment = CommentBean(
+        val comment = CommentEntity(
             uid = myUserInfo(request).id,
             article_id = articleId,
             parent_comment_id = commentId,
@@ -96,7 +94,7 @@ class CommentController {
             return CONTROLLER_ERROR_RESPONSE
         }
         // 发评论的人才可以删除
-        val commentInfo = jsonToMap(commentResponse)["data"] as CommentBean
+        val commentInfo = jsonToMap(commentResponse)["data"] as CommentEntity
         if(commentInfo.uid != uid) {
             return USER_FORBID_RESPONSE
         }

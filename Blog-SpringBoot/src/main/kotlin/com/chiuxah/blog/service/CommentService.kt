@@ -1,10 +1,9 @@
 package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.CommentMapper
-import com.chiuxah.blog.model.bean.CommentBean
+import com.chiuxah.blog.model.entity.CommentEntity
 import com.chiuxah.blog.model.enums.type.ParentCommentType
 import com.chiuxah.blog.utils.ValidUtils
-import org.apache.ibatis.jdbc.Null
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -13,18 +12,18 @@ class CommentService {
     @Autowired
     lateinit var commentMapper: CommentMapper
     // 获取单条评论信息
-    fun getCommentInfo(commentId: Int): CommentBean? {
+    fun getCommentInfo(commentId: Int): CommentEntity? {
         return commentMapper.getCommentInfo(commentId)
     }
     // 获取文章的所有评论
-    fun getComments(type : ParentCommentType,articleId: Int?,commentId: Int?): List<CommentBean> {
+    fun getComments(type : ParentCommentType,articleId: Int?,commentId: Int?): List<CommentEntity> {
         return when(type) {
             ParentCommentType.COMMENT -> commentMapper.getComments(articleId = null, commentId = commentId)
             ParentCommentType.ARTICLE -> commentMapper.getComments(articleId = articleId, commentId = null)
         }
     }
     // 发布评论
-    fun add(comment: CommentBean): Boolean {
+    fun add(comment: CommentEntity): Boolean {
         return commentMapper.add(comment)
     }
     // 删除评论
@@ -39,7 +38,7 @@ class CommentService {
         }
     }
     // 获取某用户的所有评论
-    fun getUserComments(uid: Int): List<CommentBean> {
+    fun getUserComments(uid: Int): List<CommentEntity> {
         return commentMapper.getUserComments(uid)
     }
     // 合理性判断

@@ -49,7 +49,7 @@ class BlogApplicationTests {
 //		println(getValue)
 //		val getUser = mapper.readValue(getValue, UserBean::class.java)
 //		println(getUser)
-		mailService.send("zsh0908@outlook.com")
+//		mailService.send("zsh0908@outlook.com")
 	}
 }
 

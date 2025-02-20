@@ -26,32 +26,38 @@ class ApplicationConfig : WebMvcConfigurer {
         const val USER = "/user"
         const val FOLLOW = "/follow"
         const val COLLECTION = "/collection"
+        const val HISTORY = "/history"
         const val COMMENT = "/comment"
         const val LIKE = "/like"
+        const val COUNT = "/count"
+        const val INFO = "/info"
+        const val ALL = "/all"
     }
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterception).addPathPatterns("${API}/**") // 全部拦截
             // 除外 不拦截
             .apply {
-                excludePathPatterns("$API$ARTICLE/all")
-                excludePathPatterns("$API$ARTICLE/info")
+                excludePathPatterns("$API$ARTICLE$ALL")
+                excludePathPatterns("$API$ARTICLE$INFO")
                 excludePathPatterns("$API$ARTICLE/user")
 
                 excludePathPatterns("$API$USER/login")
                 excludePathPatterns("$API$USER/reg")
-                excludePathPatterns("$API$USER/info")
+                excludePathPatterns("$API$USER$INFO")
                 excludePathPatterns("$API$USER/send-code")
                 excludePathPatterns("$API$USER/login-from-code")
 
                 excludePathPatterns("${API}/upload/image/**")
 
-                excludePathPatterns("$API$FOLLOW/count")
-                excludePathPatterns("$API$LIKE$ARTICLE/count")
-                excludePathPatterns("$API$LIKE$COMMENT/count")
+                excludePathPatterns("$API$FOLLOW$COUNT")
+                excludePathPatterns("$API$LIKE$ARTICLE$COUNT")
+                excludePathPatterns("$API$LIKE$COMMENT$COUNT")
 
-                excludePathPatterns("$API$COMMENT/info")
-                excludePathPatterns("$API$COMMENT/all")
-                excludePathPatterns("$API$COMMENT/count")
+                excludePathPatterns("$API$COMMENT$INFO")
+                excludePathPatterns("$API$COMMENT$ALL")
+                excludePathPatterns("$API$COMMENT$COUNT")
+
+                excludePathPatterns("$API$HISTORY$ARTICLE$COUNT")
             }
     }
 

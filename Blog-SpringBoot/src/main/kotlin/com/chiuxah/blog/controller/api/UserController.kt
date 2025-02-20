@@ -202,7 +202,8 @@ class UserController {
                 email = newUserInfo.email,
                 password = newUserInfo.password,
                 photo = newUserInfo.photo
-            ))
+            )
+            )
             val newSession = session.getAttribute(ConstVariable.USER_SESSION_KEY) as UserSessionSummary
             newSession.password = null
             return ResultEntity.success("更新成功", data = mapOf(

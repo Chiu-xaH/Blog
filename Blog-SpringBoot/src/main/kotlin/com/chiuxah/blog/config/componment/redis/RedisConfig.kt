@@ -1,4 +1,4 @@
-package com.chiuxah.blog.config.componment
+package com.chiuxah.blog.config.componment.redis
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

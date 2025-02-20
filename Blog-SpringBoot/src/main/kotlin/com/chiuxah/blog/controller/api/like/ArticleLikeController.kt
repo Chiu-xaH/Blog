@@ -1,9 +1,8 @@
 package com.chiuxah.blog.controller.api.like
 
 import com.chiuxah.blog.config.response.ResultEntity
-import com.chiuxah.blog.config.response.StatusCode
 import com.chiuxah.blog.controller.api.ArticleController
-import com.chiuxah.blog.model.bean.ArticleBean
+import com.chiuxah.blog.model.entity.ArticleEntity
 import com.chiuxah.blog.service.like.ArticleLikeService
 import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
@@ -38,12 +37,12 @@ class ArticleLikeController {
     fun getArticleLikeList(articleId: Int,request : HttpServletRequest) : Any {
         val userInfo = myUserInfo(request)
         val uid = userInfo.id
-        val articleResponse = articleController.getByBlogId(articleId)
+        val articleResponse = articleController.getArticleInfo(articleId)
         if(!isSuccessResponse(articleResponse)) {
             return articleResponse
         }
         // 身份核验 是否为作者
-        val articleInfo = jsonToMap(articleResponse)["data"] as ArticleBean
+        val articleInfo = jsonToMap(articleResponse)["data"] as ArticleEntity
         if(articleInfo.uid != uid) {
             return USER_FORBID_RESPONSE
         }

@@ -1,9 +1,9 @@
 package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.CollectionMapper
-import com.chiuxah.blog.model.bean.collection.CollectionBean
-import com.chiuxah.blog.model.bean.collection.CollectionSummaryInfo
-import com.chiuxah.blog.model.bean.collection.CollectionsFolderBean
+import com.chiuxah.blog.model.bean.CollectionInfoSummary
+import com.chiuxah.blog.model.entity.collection.CollectionEntity
+import com.chiuxah.blog.model.entity.collection.CollectionsFolderEntity
 import com.chiuxah.blog.model.enums.state.CollectionsFolderState
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -14,12 +14,12 @@ class CollectionService {
     lateinit var collectionMapper: CollectionMapper
 
     // 获取某个收藏夹的信息
-    fun getFolderInfo(folderId: Int): CollectionsFolderBean? {
+    fun getFolderInfo(folderId: Int): CollectionsFolderEntity? {
         return collectionMapper.getFolderInfo(folderId)
     }
 
     // 获取某个收藏的信息
-    fun getCollectionInfo(collectionId: Int): CollectionBean? {
+    fun getCollectionInfo(collectionId: Int): CollectionEntity? {
         return collectionMapper.getCollectionInfo(collectionId)
     }
 
@@ -29,17 +29,17 @@ class CollectionService {
     }
 
     // 获取某个收藏夹里的博客列表
-    fun getFolderCollectionsList(folderId: Int): List<CollectionSummaryInfo> {
+    fun getFolderCollectionsList(folderId: Int): List<CollectionInfoSummary> {
         return collectionMapper.getFolderCollectionsList(folderId)
     }
 
     // 获取某个用户的收藏夹列表
-    fun getFoldersList(uid: Int): List<CollectionsFolderBean> {
+    fun getFoldersList(uid: Int): List<CollectionsFolderEntity> {
         return collectionMapper.getFoldersList(uid)
     }
 
     // 加入收藏
-    fun collect(collection: CollectionBean): Boolean {
+    fun collect(collection: CollectionEntity): Boolean {
         return collectionMapper.collect(collection.uid,collection.article_id,collection.folder_id)
     }
 
@@ -49,7 +49,7 @@ class CollectionService {
     }
 
     // 新建收藏夹
-    fun createFolder(folderInfo: CollectionsFolderBean): Boolean {
+    fun createFolder(folderInfo: CollectionsFolderEntity): Boolean {
         return collectionMapper.createFolder(folderInfo)
     }
 
@@ -69,7 +69,7 @@ class CollectionService {
     }
 
     // 获取某个用户的所有收藏博客列表
-    fun getAllCollectionsList(uid: Int): List<CollectionSummaryInfo> {
+    fun getAllCollectionsList(uid: Int): List<CollectionInfoSummary> {
         return collectionMapper.getAllCollectionsList(uid)
     }
 

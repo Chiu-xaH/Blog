@@ -1,8 +1,7 @@
 package com.chiuxah.blog.mapper
 
-import com.chiuxah.blog.model.bean.PostUserInfo
-import com.chiuxah.blog.model.bean.UserBean
 import com.chiuxah.blog.model.bean.UserSessionSummary
+import com.chiuxah.blog.model.entity.UserEntity
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
@@ -42,7 +41,7 @@ interface UserMapper {
     fun selectByEmail(email : String) : UserSessionSummary?
     // 按ID找 用于用户信息
     @Select("SELECT * FROM user_info WHERE id = #{uid}")
-    fun selectByUid(uid : Int) : UserBean?
+    fun selectByUid(uid : Int) : UserEntity?
     // 验证是否注册过
     @Select("SELECT COUNT(1) FROM user_info WHERE email = #{email}")
     fun hasAccount(email: String) : Boolean

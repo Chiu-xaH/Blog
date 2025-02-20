@@ -1,27 +1,27 @@
 package com.chiuxah.blog.mapper
 
-import com.chiuxah.blog.model.bean.collection.CollectionBean
-import com.chiuxah.blog.model.bean.collection.CollectionSummaryInfo
-import com.chiuxah.blog.model.bean.collection.CollectionsFolderBean
+import com.chiuxah.blog.model.bean.CollectionInfoSummary
+import com.chiuxah.blog.model.entity.collection.CollectionEntity
+import com.chiuxah.blog.model.entity.collection.CollectionsFolderEntity
 import org.apache.ibatis.annotations.*
 
 @Mapper
 interface CollectionMapper {
     // 获取某个收藏夹的信息
     @Select("SELECT * FROM collection_folder WHERE id = #{folderId}")
-    fun getFolderInfo(folderId : Int) : CollectionsFolderBean?
+    fun getFolderInfo(folderId : Int) : CollectionsFolderEntity?
     // 获取某个收藏的信息
     @Select("SELECT * FROM user_collection WHERE id = #{collectionId}")
-    fun getCollectionInfo(collectionId: Int) : CollectionBean?
+    fun getCollectionInfo(collectionId: Int) : CollectionEntity?
     // 获取某个收藏夹里面的博客数量
     @Select("SELECT COUNT(*) FROM user_collection WHERE folder_id = #{folderId}")
     fun getFolderCollectionsCount(folderId : Int) : Int
     // 获取某个收藏夹里面博客的列表
     @Select("SELECT id, article_id, folder_id FROM user_collection WHERE folder_id = #{folderId}")
-    fun getFolderCollectionsList(folderId : Int) : List<CollectionSummaryInfo>
+    fun getFolderCollectionsList(folderId : Int) : List<CollectionInfoSummary>
     // 获取某个用户的收藏夹列表
     @Select("SELECT * FROM collection_folder WHERE uid = #{uid}")
-    fun getFoldersList(uid : Int) : List<CollectionsFolderBean>
+    fun getFoldersList(uid : Int) : List<CollectionsFolderEntity>
     // 加入收藏
     @Insert("INSERT INTO user_collection (uid, article_id, folder_id) VALUES (#{uid}, #{articleId}, #{folderId})")
     fun collect(uid: Int,articleId : Int,folderId: Int?) : Boolean
@@ -30,7 +30,7 @@ interface CollectionMapper {
     fun uncollect(collectionId : Int,uid : Int) : Boolean
     // 新建收藏夹
     @Insert("INSERT INTO collection_folder (uid, name, description, state) VALUES (#{uid}, #{name}, #{description}, #{state})")
-    fun createFolder(folderInfo : CollectionsFolderBean) : Boolean
+    fun createFolder(folderInfo : CollectionsFolderEntity) : Boolean
     // 删除收藏夹，并清空里面的收藏内容
     @Delete("DELETE FROM collection_folder WHERE id = #{folderId}")
     fun deleteFolder(folderId: Int) : Boolean
@@ -44,7 +44,7 @@ interface CollectionMapper {
     fun getAllCollectionsCount(uid : Int) : Int
     // 获取全部收藏的博客列表
     @Select("SELECT id,article_id,folder_id FROM user_collection WHERE uid = #{uid}")
-    fun getAllCollectionsList(uid : Int) : List<CollectionSummaryInfo>
+    fun getAllCollectionsList(uid : Int) : List<CollectionInfoSummary>
     // 修改收藏夹的状态
     @Update("UPDATE collection_folder SET state = #{newState} WHERE id = #{folderId}")
     fun changeFolderState(folderId: Int,newState : Int) : Boolean

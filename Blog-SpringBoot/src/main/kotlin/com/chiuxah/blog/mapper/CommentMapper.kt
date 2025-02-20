@@ -1,6 +1,6 @@
 package com.chiuxah.blog.mapper
 
-import com.chiuxah.blog.model.bean.CommentBean
+import com.chiuxah.blog.model.entity.CommentEntity
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select
 interface CommentMapper {
     // 根据id获取评论内容
     @Select("SELECT * FROM comment WHERE id = #{commentId}")
-    fun getCommentInfo(commentId: Int) : CommentBean?
+    fun getCommentInfo(commentId: Int) : CommentEntity?
     // 获取文章的评论们 // 按时间排序
     // 获取评论的子评论们 // 按时间排序
     @Select("""
@@ -19,10 +19,10 @@ interface CommentMapper {
            OR (parent_comment_id = #{commentId} AND #{articleId} IS NULL) 
         ORDER BY create_time ASC
     """)
-    fun getComments(articleId: Int?, commentId: Int?): List<CommentBean>
+    fun getComments(articleId: Int?, commentId: Int?): List<CommentEntity>
     // 评论
     @Insert("INSERT INTO comment (uid, article_id, parent_comment_id, content, image_url) VALUES (#{uid}, #{article_id}, #{parent_comment_id}, #{content}, #{image_url})")
-    fun add(comment : CommentBean) : Boolean
+    fun add(comment : CommentEntity) : Boolean
     // 删评
     @Delete("DELETE FROM comment WHERE id = #{commentId}")
     fun del(commentId : Int) : Boolean
@@ -35,5 +35,5 @@ interface CommentMapper {
     fun getCommentCount(articleId: Int?, commentId: Int?): Int
     // 获取自己的发布评论
     @Select("SELECT * FROM comment WHERE uid = #{uid} ORDER BY create_time DESC")
-    fun getUserComments(uid: Int): List<CommentBean>
+    fun getUserComments(uid: Int): List<CommentEntity>
 }

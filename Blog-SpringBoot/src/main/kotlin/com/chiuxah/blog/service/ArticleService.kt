@@ -1,8 +1,8 @@
 package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.ArticleMapper
-import com.chiuxah.blog.model.bean.ArticleBean
 import com.chiuxah.blog.model.bean.ArticleInfoSummary
+import com.chiuxah.blog.model.entity.ArticleEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -12,20 +12,20 @@ class ArticleService {
     lateinit var articleMapper : ArticleMapper
 
     // 发布新文章
-    fun add(articleInfo: ArticleBean) : Boolean {
+    fun add(articleInfo: ArticleEntity) : Boolean {
         return articleMapper.add(articleInfo)
     }
     // 查询指定博客id的详情
-    fun selectByBlogId(blogId : Int) : ArticleBean? {
-        return articleMapper.selectByBlogId(blogId)
+    fun getArticleInfo(articleId : Int) : ArticleEntity? {
+        return articleMapper.getArticleInfo(articleId)
     }
     // 查询个人博客列表
-    fun getBlogListByUser(uid : Int) : List<ArticleInfoSummary> {
-        return articleMapper.getMyBlogList(uid)
+    fun getUserArticles(uid : Int) : List<ArticleInfoSummary> {
+        return articleMapper.getUserAtricles(uid)
     }
     // 查询总的博客列表
-    fun getBlogList() : List<ArticleInfoSummary> {
-        return articleMapper.getBlogList()
+    fun getAllArticles() : List<ArticleInfoSummary> {
+        return articleMapper.getAllArticles()
     }
     // 删除指定博客
     fun del(id : Int) : Boolean {
@@ -36,8 +36,8 @@ class ArticleService {
         return articleMapper.getPageCount()
     }
     // 查询总的博客列表(分页)
-    fun getBlogListByPage(pageSize : Int = 15, page : Int = 1) : List<ArticleInfoSummary> {
-        return articleMapper.getBlogListByPage(pageSize, page)
+    fun getAllAtriclesByPage(pageSize : Int = 15, page : Int = 1) : List<ArticleInfoSummary> {
+        return articleMapper.getAllAtriclesByPage(pageSize, page)
     }
     // 修改博客title和content
     fun update(id : Int,title : String?, content : String?) : Boolean {

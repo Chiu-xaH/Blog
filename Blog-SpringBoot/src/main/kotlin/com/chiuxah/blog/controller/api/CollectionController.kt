@@ -1,9 +1,8 @@
 package com.chiuxah.blog.controller.api
 
 import com.chiuxah.blog.config.response.ResultEntity
-import com.chiuxah.blog.config.response.StatusCode
-import com.chiuxah.blog.model.bean.collection.CollectionBean
-import com.chiuxah.blog.model.bean.collection.CollectionsFolderBean
+import com.chiuxah.blog.model.entity.collection.CollectionEntity
+import com.chiuxah.blog.model.entity.collection.CollectionsFolderEntity
 import com.chiuxah.blog.model.enums.state.CollectionsFolderState
 import com.chiuxah.blog.service.CollectionService
 import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
@@ -52,7 +51,7 @@ class CollectionController {
         if(!isValidId(folderId)) return INVALID_RESPONSE
         val responseBody = getFolderInfo(folderId,request)
         return if(isSuccessResponse(responseBody)) {
-            val data = jsonToMap(responseBody)["data"] as CollectionsFolderBean
+            val data = jsonToMap(responseBody)["data"] as CollectionsFolderEntity
             val list = collectService.getFolderCollectionsList(folderId)
             ResultEntity.success("查询成功", mapOf(
                 "info" to data,
@@ -83,7 +82,7 @@ class CollectionController {
         val folderState = toState(state) ?: return INVALID_RESPONSE
         val session = myUserInfo(request)
         val result = collectService.createFolder(
-            CollectionsFolderBean(
+            CollectionsFolderEntity(
                 state = folderState.state,
                 uid = session.id,
                 description = description,
@@ -102,7 +101,7 @@ class CollectionController {
         val uid = myUserInfo(request).id
         val responseBody = getFolderInfo(folderId,request)
         if(isSuccessResponse(responseBody)) {
-            val data = jsonToMap(responseBody)["data"] as CollectionsFolderBean
+            val data = jsonToMap(responseBody)["data"] as CollectionsFolderEntity
             return if(data.uid != uid) {
                 // 删除的不是自己的收藏夹
                 USER_FORBID_RESPONSE
@@ -151,7 +150,7 @@ class CollectionController {
         if(folderId != null && !isValidId(folderId)) return INVALID_RESPONSE
         // 数组组装
         val userinfo = myUserInfo(request)
-        val result = collectService.collect(CollectionBean(
+        val result = collectService.collect(CollectionEntity(
             uid = userinfo.id,
             article_id = articleId,
             folder_id = folderId

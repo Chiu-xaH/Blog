@@ -1,9 +1,9 @@
 package com.chiuxah.blog.service
 
 import com.chiuxah.blog.mapper.UserMapper
-import com.chiuxah.blog.model.bean.UserBean
 import com.chiuxah.blog.model.bean.UserSessionSummary
 import com.chiuxah.blog.model.bean.UserInfoDTO
+import com.chiuxah.blog.model.entity.UserEntity
 import com.chiuxah.blog.model.enums.type.SexType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -21,7 +21,7 @@ class UserService {
         return userMapper.selectByEmail(email)
     }
     // 用UID查询信息
-    fun selectByUid(uid : Int) : UserBean? {
+    fun selectByUid(uid : Int) : UserEntity? {
         return userMapper.selectByUid(uid)
     }
     // 是否注册过
@@ -40,7 +40,7 @@ class UserService {
         return userMapper.del(uid)
     }
     // 转换
-    fun convertToUserInfoDTO(userInfo: UserBean): UserInfoDTO {
+    fun convertToUserInfoDTO(userInfo: UserEntity): UserInfoDTO {
         return UserInfoDTO(
             id = userInfo.id,
             create_time = userInfo.create_time,

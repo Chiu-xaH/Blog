@@ -1,7 +1,7 @@
 package com.chiuxah.blog.controller.api
 
 import com.chiuxah.blog.config.response.ResultEntity
-import com.chiuxah.blog.model.bean.ImageBean
+import com.chiuxah.blog.model.entity.ImageEntity
 import com.chiuxah.blog.service.ImageService
 import com.chiuxah.blog.model.enums.type.ImageType
 import com.chiuxah.blog.config.response.StatusCode
@@ -70,7 +70,7 @@ class ImageController {
             val fileSize = filePath.length()
             val fileType = image.contentType ?: "unknown"
 
-            val imageInfo = ImageBean(
+            val imageInfo = ImageEntity(
                 url = url,
                 size = fileSize,
                 filename = filename,
@@ -114,7 +114,7 @@ class ImageController {
         // 查找图片
         val responseBody = getImage(filename)
         if(responseBody is Map<*,*> && responseBody["data"] != null) {
-            val imageinfo = responseBody["data"] as? ImageBean ?: return ControllerUtils.CONTROLLER_ERROR_RESPONSE
+            val imageinfo = responseBody["data"] as? ImageEntity ?: return ControllerUtils.CONTROLLER_ERROR_RESPONSE
             val uid = imageinfo.uid
             // 权限检查
             val session = myUserInfo(request)
@@ -165,7 +165,8 @@ class ImageController {
                 password = userinfo.password,
                 photo = url,
                 email = userinfo.email
-            ))
+            )
+            )
             return ResultEntity.success("更新成功")
         } else {
             CONTROLLER_ERROR_RESPONSE

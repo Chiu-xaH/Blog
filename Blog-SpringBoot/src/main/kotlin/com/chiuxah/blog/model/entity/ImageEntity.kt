@@ -1,9 +1,9 @@
-package com.chiuxah.blog.model.bean
+package com.chiuxah.blog.model.entity
 
-import com.chiuxah.blog.model.BaseSqlBean
+import com.chiuxah.blog.model.entity.base.BaseSqlEntity
 import java.sql.Timestamp
 // TABLE image_info
-data class ImageBean(
+data class ImageEntity(
     override val id : Int = 0,
     override val create_time : Timestamp? = null,
     val url : String,
@@ -12,4 +12,4 @@ data class ImageBean(
     val filetype : String,
     val uid : Int,
     val type : Int,
-) : BaseSqlBean()
+) : BaseSqlEntity()
