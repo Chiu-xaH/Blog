@@ -108,7 +108,7 @@ class CommentController {
     }
     // 获取评论数量
     @GetMapping("/count")
-    fun getCommentCount(articleId : Int?,commentId: Int?) : Any {
+    fun getCommentCount(articleId : Int? = null,commentId: Int? = null) : Any {
         val type = commentService.parentType(articleId, commentId) ?: return INVALID_RESPONSE
         val result = commentService.getCommentCount(type,articleId,commentId)
         return ResultEntity.success("查询成功", data = result)

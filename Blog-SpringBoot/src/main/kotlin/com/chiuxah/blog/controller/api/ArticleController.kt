@@ -43,7 +43,7 @@ class ArticleController {
     }
     // 管理我的博客
     @GetMapping("/mine")
-    fun getMyBlogList(request: HttpServletRequest) : Any {
+    fun getMyArticles(request: HttpServletRequest) : Any {
         val userInfo = myUserInfo(request)
         val uid = userInfo.id
         return ResultEntity.success("查找成功",articleService.getUserArticles(uid))

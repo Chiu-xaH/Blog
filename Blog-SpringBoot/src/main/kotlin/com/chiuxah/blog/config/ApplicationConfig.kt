@@ -25,13 +25,14 @@ class ApplicationConfig : WebMvcConfigurer {
         const val ARTICLE = "/article"
         const val USER = "/user"
         const val FOLLOW = "/follow"
-        const val COLLECTION = "/collection"
+        const val COLLECT = "/collection"
         const val HISTORY = "/history"
         const val COMMENT = "/comment"
         const val LIKE = "/like"
         const val COUNT = "/count"
         const val INFO = "/info"
         const val ALL = "/all"
+        const val RECOMMEND = "/recommendation"
     }
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterception).addPathPatterns("${API}/**") // 全部拦截
@@ -58,6 +59,8 @@ class ApplicationConfig : WebMvcConfigurer {
                 excludePathPatterns("$API$COMMENT$COUNT")
 
                 excludePathPatterns("$API$HISTORY$ARTICLE$COUNT")
+
+                excludePathPatterns("$API$RECOMMEND/hot")
             }
     }
 

@@ -111,8 +111,8 @@ CREATE TABLE article_like (
     UNIQUE KEY unique_article_like (uid, article_id) -- 确保用户不能重复点赞同一篇文章
 ) DEFAULT CHARSET = 'utf8mb4';
 -- 存储访问记录
-DROP TABLE IF EXISTS article_read_history;
-CREATE TABLE article_read_history (
+DROP TABLE IF EXISTS article_visit_history;
+CREATE TABLE article_visit_history (
     id INT PRIMARY KEY AUTO_INCREMENT,
     create_time TIMESTAMP DEFAULT NOW(),
     uid INT NOT NULL,           -- 观看的用户

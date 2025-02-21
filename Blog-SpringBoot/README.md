@@ -5,7 +5,7 @@
 ## 功能
 用户注册、登录、注销、信息更新、头像、邮箱验证码
 
-博文上传、修改、删除、**发文审核机制**(待开发)
+博文上传、修改、删除、首页推荐、**搜索**(借助Elasticsearch,待开发)、**发文审核机制**(待开发)
 
 配套图床(存储博文插入图片、用户头像)
 
@@ -15,12 +15,12 @@
 
 关注、粉丝
 
-**搜索**(待开发)
+JWT鉴权
 
 ...
 
 ## 技术栈
-SpringBoot MyBatis Redis RabbitMQ MySQL ...
+SpringBoot MyBatis Redis RabbitMQ MySQL Kibana Elasticsearch...
 
 ## 来自ChatGPT的设计
 1. 数据库 (SQL)

@@ -8,3 +8,4 @@ data class ArticleInfoSummary(
     val update_time : Timestamp? = null,
     val uid : Int,
 )
+

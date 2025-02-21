@@ -21,7 +21,7 @@ class ArticleService {
     }
     // 查询个人博客列表
     fun getUserArticles(uid : Int) : List<ArticleInfoSummary> {
-        return articleMapper.getUserAtricles(uid)
+        return articleMapper.getUserArticles(uid)
     }
     // 查询总的博客列表
     fun getAllArticles() : List<ArticleInfoSummary> {
@@ -36,8 +36,8 @@ class ArticleService {
         return articleMapper.getPageCount()
     }
     // 查询总的博客列表(分页)
-    fun getAllAtriclesByPage(pageSize : Int = 15, page : Int = 1) : List<ArticleInfoSummary> {
-        return articleMapper.getAllAtriclesByPage(pageSize, page)
+    fun getAllArticlesByPage(pageSize : Int, page : Int) : List<ArticleInfoSummary> {
+        return articleMapper.getAllArticlesByPage(pageSize, page)
     }
     // 修改博客title和content
     fun update(id : Int,title : String?, content : String?) : Boolean {

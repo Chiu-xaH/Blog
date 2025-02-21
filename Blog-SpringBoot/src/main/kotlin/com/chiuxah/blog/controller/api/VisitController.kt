@@ -2,7 +2,7 @@ package com.chiuxah.blog.controller.api
 
 import com.chiuxah.blog.config.response.ResultEntity
 import com.chiuxah.blog.model.entity.ArticleEntity
-import com.chiuxah.blog.service.ReadHistoryService
+import com.chiuxah.blog.service.VisitService
 import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.SUCCESS_RESPONSE
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/history")
-class ReadHistoryController {
+class VisitController {
     @Autowired
-    lateinit var readHistoryService: ReadHistoryService
+    lateinit var visitService: VisitService
     @Autowired
     lateinit var articleController: ArticleController
     // 阅读+1
@@ -33,7 +33,7 @@ class ReadHistoryController {
         // 是否之前阅读过
         // 阅读过 则更新日期
         // 没阅读过 则插入新数据
-        val result = readHistoryService.read(uid, articleId)
+        val result = visitService.read(uid, articleId)
         return if(result) {
             SUCCESS_RESPONSE
         } else {
@@ -44,14 +44,14 @@ class ReadHistoryController {
     @GetMapping("/mine")
     fun getMyReadHistories(request: HttpServletRequest) : Any {
         val uid = myUserInfo(request).id
-        val result = readHistoryService.getUserReadHistories(uid)
+        val result = visitService.getUserReadHistories(uid)
         return ResultEntity.success("查询成功", data = result)
     }
     // 文章的阅读量 公开
     @GetMapping("/article/count")
     fun getArticleReadCount(articleId : Int) : Any {
         if(!isValidId(articleId)) return INVALID_RESPONSE
-        val result = readHistoryService.getReadCount(articleId)
+        val result = visitService.getReadCount(articleId)
         return ResultEntity.success("查询成功", data = result)
     }
     // 文章都被谁阅读了 作者私有
@@ -69,7 +69,7 @@ class ReadHistoryController {
             return USER_FORBID_RESPONSE
         }
         // 数据库
-        val result = readHistoryService.getReadUsers(articleId)
+        val result = visitService.getReadUsers(articleId)
         return ResultEntity.success("查询成功", data = result)
     }
 }

@@ -3,7 +3,7 @@ package com.chiuxah.blog.model.entity
 import com.chiuxah.blog.model.entity.base.BaseSqlEntity
 import java.sql.Timestamp
 
-data class ReadHistoryEntity(
+data class VisitEntity(
     override val id: Int = 0,
     override val create_time: Timestamp? = null,
     val uid : Int,

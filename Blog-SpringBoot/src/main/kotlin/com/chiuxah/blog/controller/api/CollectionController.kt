@@ -199,9 +199,6 @@ class CollectionController {
     fun getArticleCollectionsCount(articleId : Int) : Any {
         if(!isValidId(articleId)) return INVALID_RESPONSE
         val count = collectService.getArticleCollectionsCount(articleId)
-        return ResultEntity.success("查询成功", mapOf(
-            "articleId" to articleId,
-            "collectionsCount" to count
-        ))
+        return ResultEntity.success("查询成功", count)
     }
 }

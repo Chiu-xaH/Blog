@@ -21,6 +21,8 @@ object ControllerUtils {
 
     val EMPTY_RESPONSE = ResultEntity.fail(StatusCode.NOT_FOUND,"无资源")
 
+    val DEVELOPING_RESPONSE = ResultEntity.fail(StatusCode.NOT_FOUND,"接口维护开发中")
+
     val SUCCESS_RESPONSE = ResultEntity.success()
 
     // 用于同一个Controller内联调用其他API
