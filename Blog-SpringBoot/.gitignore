@@ -37,3 +37,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+release/
+build/libs
