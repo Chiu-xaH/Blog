@@ -1,0 +1,371 @@
+###
+POST https://localhost:8080/api/v1/article/add
+
+###
+POST http://localhost:8080/api/v1/article/add
+
+###
+GET http://localhost:8080/api/v1/article/all
+
+###
+DELETE http://localhost:8080/api/v1/article/del
+
+###
+GET http://localhost:8080/api/v1/article/info
+
+###
+GET http://localhost:8080/api/v1/article/mine
+
+###
+PUT http://localhost:8080/api/v1/article/update
+
+###
+GET http://localhost:8080/api/v1/article/user
+
+###
+POST http://localhost:8080/api/v1/comment/add
+
+###
+GET http://localhost:8080/api/v1/comment/all
+
+###
+GET http://localhost:8080/api/v1/comment/count
+
+###
+DELETE http://localhost:8080/api/v1/comment/del
+
+###
+GET http://localhost:8080/api/v1/comment/info
+
+###
+GET http://localhost:8080/api/v1/comment/mine
+
+###
+DELETE http://localhost:8080/api/v1/image/del
+
+###
+GET http://localhost:8080/api/v1/image/info
+
+###
+GET http://localhost:8080/api/v1/image/mine
+
+###
+PUT http://localhost:8080/api/v1/image/update-user-photo
+
+###
+POST http://localhost:8080/api/v1/image/upload
+
+###
+GET http://localhost:8080/api/v1/user/check
+
+###
+GET http://localhost:8080/api/v1/user/check-login
+
+###
+GET http://localhost:8080/api/v1/user/check-valid
+
+###
+DELETE http://localhost:8080/api/v1/user/del
+
+###
+GET http://localhost:8080/api/v1/user/info
+
+###
+POST http://localhost:8080/api/v1/user/login
+
+###
+POST http://localhost:8080/api/v1/user/login-from-code
+
+###
+POST http://localhost:8080/api/v1/user/logout
+
+###
+GET http://localhost:8080/api/v1/user/me
+
+###
+POST http://localhost:8080/api/v1/user/reg
+
+###
+POST http://localhost:8080/api/v1/user/send-code
+
+###
+PUT http://localhost:8080/api/v1/user/update
+
+###
+GET http://localhost:8080/api/v1/search/article
+
+###
+GET http://localhost:8080/api/v1/search/user
+
+###
+GET http://localhost:8080/api/v1/follow/count
+
+###
+POST http://localhost:8080/api/v1/follow/follow
+
+###
+GET http://localhost:8080/api/v1/follow/followee
+
+###
+GET http://localhost:8080/api/v1/follow/follower
+
+###
+DELETE http://localhost:8080/api/v1/follow/unfollow
+
+###
+GET http://localhost:8080/api/v1/collection/all/collection
+
+###
+GET http://localhost:8080/api/v1/collection/article/count
+
+###
+POST http://localhost:8080/api/v1/collection/collect
+
+###
+PUT http://localhost:8080/api/v1/collection/folder/change-state
+
+###
+GET http://localhost:8080/api/v1/collection/folder/collection
+
+###
+POST http://localhost:8080/api/v1/collection/folder/create
+
+###
+DELETE http://localhost:8080/api/v1/collection/folder/del
+
+###
+GET http://localhost:8080/api/v1/collection/folder/info
+
+###
+GET http://localhost:8080/api/v1/collection/folder/user
+
+###
+GET http://localhost:8080/api/v1/collection/info
+
+###
+DELETE http://localhost:8080/api/v1/collection/uncollect
+
+###
+GET http://localhost:8080/api/v1/like/article/all
+
+###
+GET http://localhost:8080/api/v1/like/article/count
+
+###
+POST http://localhost:8080/api/v1/like/article/like
+
+###
+DELETE http://localhost:8080/api/v1/like/article/unlike
+
+###
+GET http://localhost:8080/api/v1/like/comment/count
+
+###
+POST http://localhost:8080/api/v1/like/comment/like
+
+###
+DELETE http://localhost:8080/api/v1/like/comment/unlike
+
+###
+GET http://localhost:8080/api/v1/history/article/all
+
+###
+GET http://localhost:8080/api/v1/history/article/count
+
+###
+GET http://localhost:8080/api/v1/history/mine
+
+###
+POST http://localhost:8080/api/v1/history/read
+
+###
+GET http://localhost:8080/api/v1/recommendation/follow
+
+###
+GET http://localhost:8080/api/v1/recommendation/hot
+
+###
+GET http://localhost:8080/rec/login
+
+###
+POST http://localhost:8080/api/v1/article/add
+
+###
+GET http://localhost:8080/api/v1/article/all
+
+###
+DELETE http://localhost:8080/api/v1/article/del
+
+###
+GET http://localhost:8080/api/v1/article/info
+
+###
+GET http://localhost:8080/api/v1/article/mine
+
+###
+PUT http://localhost:8080/api/v1/article/update
+
+###
+GET http://localhost:8080/api/v1/article/user
+
+###
+POST http://localhost:8080/api/v1/comment/add
+
+###
+GET http://localhost:8080/api/v1/comment/all
+
+###
+GET http://localhost:8080/api/v1/comment/count
+
+###
+DELETE http://localhost:8080/api/v1/comment/del
+
+###
+GET http://localhost:8080/api/v1/comment/info
+
+###
+GET http://localhost:8080/api/v1/comment/mine
+
+###
+DELETE http://localhost:8080/api/v1/image/del
+
+###
+GET http://localhost:8080/api/v1/image/info
+
+###
+GET http://localhost:8080/api/v1/image/mine
+
+###
+PUT http://localhost:8080/api/v1/image/update-user-photo
+
+###
+POST http://localhost:8080/api/v1/image/upload
+
+###
+GET http://localhost:8080/api/v1/user/check
+
+###
+GET http://localhost:8080/api/v1/user/check-login
+
+###
+GET http://localhost:8080/api/v1/user/check-valid
+
+###
+DELETE http://localhost:8080/api/v1/user/del
+
+###
+GET http://localhost:8080/api/v1/user/info
+
+###
+POST http://localhost:8080/api/v1/user/login
+
+###
+POST http://localhost:8080/api/v1/user/login-from-code
+
+###
+POST http://localhost:8080/api/v1/user/logout
+
+###
+GET http://localhost:8080/api/v1/user/me
+
+###
+POST http://localhost:8080/api/v1/user/reg
+
+###
+POST http://localhost:8080/api/v1/user/send-code
+
+###
+PUT http://localhost:8080/api/v1/user/update
+
+###
+GET http://localhost:8080/api/v1/search/article
+
+###
+GET http://localhost:8080/api/v1/search/user
+
+###
+GET http://localhost:8080/api/v1/follow/count
+
+###
+POST http://localhost:8080/api/v1/follow/follow
+
+###
+GET http://localhost:8080/api/v1/follow/followee
+
+###
+GET http://localhost:8080/api/v1/follow/follower
+
+###
+DELETE http://localhost:8080/api/v1/follow/unfollow
+
+###
+GET http://localhost:8080/api/v1/collection/all/collection
+
+###
+GET http://localhost:8080/api/v1/collection/article/count
+
+###
+POST http://localhost:8080/api/v1/collection/collect
+
+###
+PUT http://localhost:8080/api/v1/collection/folder/change-state
+
+###
+GET http://localhost:8080/api/v1/collection/folder/collection
+
+###
+POST http://localhost:8080/api/v1/collection/folder/create
+
+###
+DELETE http://localhost:8080/api/v1/collection/folder/del
+
+###
+GET http://localhost:8080/api/v1/collection/folder/info
+
+###
+GET http://localhost:8080/api/v1/collection/folder/user
+
+###
+GET http://localhost:8080/api/v1/collection/info
+
+###
+DELETE http://localhost:8080/api/v1/collection/uncollect
+
+###
+GET http://localhost:8080/api/v1/like/article/all
+
+###
+GET http://localhost:8080/api/v1/like/article/count
+
+###
+POST http://localhost:8080/api/v1/like/article/like
+
+###
+DELETE http://localhost:8080/api/v1/like/article/unlike
+
+###
+GET http://localhost:8080/api/v1/like/comment/count
+
+###
+POST http://localhost:8080/api/v1/like/comment/like
+
+###
+DELETE http://localhost:8080/api/v1/like/comment/unlike
+
+###
+GET http://localhost:8080/api/v1/history/article/all
+
+###
+GET http://localhost:8080/api/v1/history/article/count
+
+###
+GET http://localhost:8080/api/v1/history/mine
+
+###
+POST http://localhost:8080/api/v1/history/read
+
+###
+GET http://localhost:8080/api/v1/recommendation/follow
+
+###
+GET http://localhost:8080/api/v1/recommendation/hot

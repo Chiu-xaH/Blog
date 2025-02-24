@@ -1,11 +1,10 @@
 # 博客 KMP
-## vs安卓开发
-使用协程Flow代替LiveData
 
-仍采用ViewModel
+## 功能
+用户注册、登录
 
-定义更多的基类，抽出复用逻辑
-
+博文列表查看
+...
 
 ## Kotlin MultiPlatform
 This is a Kotlin Multiplatform project targeting Android, iOS, Desktop.

@@ -1,6 +1,7 @@
 # 博客系统后端
 
-## 接口
+## (接口)[./blog]
+
 
 ## 功能
 用户注册、登录、注销、信息更新、头像、邮箱验证码
@@ -15,12 +16,12 @@
 
 关注、粉丝
 
-JWT鉴权
+**JWT鉴权**(待开发)
 
 ...
 
 ## 技术栈
-SpringBoot MyBatis Redis RabbitMQ MySQL Kibana Elasticsearch...
+SpringBoot MyBatis Redis RabbitMQ MySQL Elasticsearch...
 
 ## 来自ChatGPT的设计
 1. 数据库 (SQL)
