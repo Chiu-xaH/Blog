@@ -20,6 +20,7 @@ object NetworkConstants {
         const val LOGOUT = USER + "logout"
         const val GET_USER_BY_ID = USER + "info"
         const val GET_MY = USER + "me"
+        const val SEND_CODE = USER + "send-code"
         // 博文
         private const val ARTICLE = API + "article/"
         const val GET_ALL_ARTICLES = ARTICLE + "all"

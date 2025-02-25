@@ -1,0 +1,867 @@
+openapi: "3.0.3"
+info:
+  title: "Blog API"
+  description: "Blog API"
+  version: "1.0.0"
+servers:
+  - url: "https://localhost:8080"
+tags:
+  - name: user
+    description: 用户的信息、登陆注册等
+  - name: article
+    description: 博文
+  - name: image
+    description: 图床：头像、博文、评论的插图
+  - name: collect
+    description: 用户的收藏夹、博文的收藏量
+  - name: comment
+    description: 文章的评论、评论的子评论
+  - name: follow
+    description: 用户的关注、粉丝
+  - name: recommend
+    description: 推荐，用于首页展示
+  - name: search
+    description: 检索博文、用户
+  - name: visit
+    description: 统计博文观看量、用户观看博文历史
+  - name: like
+    description: 用户点赞博文
+paths:
+  /api/v1/article/add:
+    post:
+      tags:
+        - article
+      summary: "POST api/v1/article/add"
+      operationId: "addArticle"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/article/all:
+    get:
+      tags:
+        - article
+      summary: "GET api/v1/article/all"
+      operationId: "getAllArticles"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/article/del:
+    delete:
+      tags:
+        - article
+      summary: "DELETE api/v1/article/del"
+      operationId: "delArticle"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/article/info:
+    get:
+      tags:
+        - article
+      summary: "GET api/v1/article/info"
+      operationId: "getArticleInfo"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/article/mine:
+    get:
+      tags:
+        - article
+      summary: "GET api/v1/article/mine"
+      operationId: "getMyArticles"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/article/update:
+    put:
+      tags:
+        - article
+      summary: "PUT api/v1/article/update"
+      operationId: "updateArticle"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/article/user:
+    get:
+      tags:
+        - article
+      summary: "GET api/v1/article/user"
+      operationId: "getUserArticles"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/comment/add:
+    post:
+      tags:
+        - comment
+      summary: "POST api/v1/comment/add"
+      operationId: "addComment"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/comment/all:
+    get:
+      tags:
+        - comment
+      summary: "GET api/v1/comment/all"
+      operationId: "getArticleComments"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/comment/count:
+    get:
+      tags:
+        - comment
+      summary: "GET api/v1/comment/count"
+      operationId: "getCommentCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/comment/del:
+    delete:
+      tags:
+        - comment
+      summary: "DELETE api/v1/comment/del"
+      operationId: "delComment"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/comment/info:
+    get:
+      tags:
+        - comment
+      summary: "GET api/v1/comment/info"
+      operationId: "getCommentInfo"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/comment/mine:
+    get:
+      tags:
+        - comment
+      summary: "GET api/v1/comment/mine"
+      operationId: "getMyComments"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/image/del:
+    delete:
+      tags:
+        - image
+      summary: "DELETE api/v1/image/del"
+      operationId: "delImage"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/image/info:
+    get:
+      tags:
+        - image
+      summary: "GET api/v1/image/info"
+      operationId: "getImage"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/image/mine:
+    get:
+      tags:
+        - image
+      summary: "GET api/v1/image/mine"
+      operationId: "getUploadedImage"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/image/update-user-photo:
+    put:
+      tags:
+        - image
+      summary: "PUT api/v1/image/update-user-photo"
+      operationId: "uploadUserPhoto"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/image/upload:
+    post:
+      tags:
+        - image
+      summary: "POST api/v1/image/upload"
+      operationId: "uploadImage"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/check:
+    get:
+      tags:
+        - user
+      summary: "GET api/v1/user/check"
+      operationId: "checkUser"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/check-login:
+    get:
+      tags:
+        - user
+      summary: "GET api/v1/user/check-login"
+      operationId: "checkLogin"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/check-valid:
+    get:
+      tags:
+        - user
+      summary: "GET api/v1/user/check-valid"
+      operationId: "checkValid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/del:
+    delete:
+      tags:
+        - user
+      summary: "DELETE api/v1/user/del"
+      operationId: "delUser"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/info:
+    get:
+      tags:
+        - user
+      summary: "GET api/v1/user/info"
+      operationId: "selectByUid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/login:
+    post:
+      tags:
+        - user
+      summary: "POST api/v1/user/login"
+      operationId: "login"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/login-from-code:
+    post:
+      tags:
+        - user
+      summary: "POST api/v1/user/login-from-code"
+      operationId: "loginFromCode"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/logout:
+    post:
+      tags:
+        - user
+      summary: "POST api/v1/user/logout"
+      operationId: "logout"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/me:
+    get:
+      tags:
+        - user
+      summary: "GET api/v1/user/me"
+      operationId: "selectByUid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/reg:
+    post:
+      tags:
+        - user
+      summary: "POST api/v1/user/reg"
+      operationId: "reg"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/send-code:
+    post:
+      tags:
+        - user
+      summary: "POST api/v1/user/send-code"
+      operationId: "sendEmailCode"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/user/update:
+    put:
+      tags:
+        - user
+      summary: "PUT api/v1/user/update"
+      operationId: "updateUserInfo"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostUserInfo"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/search/article:
+    get:
+      tags:
+        - search
+      summary: "GET api/v1/search/article"
+      operationId: "searchArticles"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/search/user:
+    get:
+      tags:
+        - search
+      summary: "GET api/v1/search/user"
+      operationId: "searchUsers"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/follow/count:
+    get:
+      tags:
+        - follow
+      summary: "GET api/v1/follow/count"
+      operationId: "getFollowCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/follow/follow:
+    post:
+      tags:
+        - follow
+      summary: "POST api/v1/follow/follow"
+      operationId: "follow"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/follow/followee:
+    get:
+      tags:
+        - follow
+      summary: "GET api/v1/follow/followee"
+      operationId: "getFolloweeList"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/follow/follower:
+    get:
+      tags:
+        - follow
+      summary: "GET api/v1/follow/follower"
+      operationId: "getFollowerList"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/follow/unfollow:
+    delete:
+      tags:
+        - follow
+      summary: "DELETE api/v1/follow/unfollow"
+      operationId: "unfollow"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/all/collection:
+    get:
+      tags:
+        - collection
+      summary: "GET api/v1/collection/all/collection"
+      operationId: "getAllCollectionsList"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/article/count:
+    get:
+      tags:
+        - collection
+      summary: "GET api/v1/collection/article/count"
+      operationId: "getArticleCollectionsCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/collect:
+    post:
+      tags:
+        - collection
+      summary: "POST api/v1/collection/collect"
+      operationId: "collect"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/folder/change-state:
+    put:
+      tags:
+        - collection
+      summary: "PUT api/v1/collection/folder/change-state"
+      operationId: "changeFolderState"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/folder/collection:
+    get:
+      tags:
+        - collection
+      summary: "GET api/v1/collection/folder/collection"
+      operationId: "getFolderCollectionsList"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/folder/create:
+    post:
+      tags:
+        - collection
+      summary: "POST api/v1/collection/folder/create"
+      operationId: "createFolder"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/folder/del:
+    delete:
+      tags:
+        - collection
+      summary: "DELETE api/v1/collection/folder/del"
+      operationId: "deleteFolder"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/folder/info:
+    get:
+      tags:
+        - collection
+      summary: "GET api/v1/collection/folder/info"
+      operationId: "getFolderInfo"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/folder/user:
+    get:
+      tags:
+        - collection
+      summary: "GET api/v1/collection/folder/user"
+      operationId: "getFolders"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/info:
+    get:
+      tags:
+        - collection
+      summary: "GET api/v1/collection/info"
+      operationId: "getCollectionInfo"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/collection/uncollect:
+    delete:
+      tags:
+        - collection
+      summary: "DELETE api/v1/collection/uncollect"
+      operationId: "uncollect"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/like/article/all:
+    get:
+      tags:
+        - like
+      summary: "GET api/v1/like/article/all"
+      operationId: "getArticleLikeList"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/like/article/count:
+    get:
+      tags:
+        - like
+      summary: "GET api/v1/like/article/count"
+      operationId: "getArticleLikeCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/like/article/like:
+    post:
+      tags:
+        - like
+      summary: "POST api/v1/like/article/like"
+      operationId: "likeArticle"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/like/article/unlike:
+    delete:
+      tags:
+        - like
+      summary: "DELETE api/v1/like/article/unlike"
+      operationId: "unlikeArticle"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/like/comment/count:
+    get:
+      tags:
+        - like
+      summary: "GET api/v1/like/comment/count"
+      operationId: "getCommentLikeCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/like/comment/like:
+    post:
+      tags:
+        - like
+      summary: "POST api/v1/like/comment/like"
+      operationId: "likeComment"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/like/comment/unlike:
+    delete:
+      tags:
+        - like
+      summary: "DELETE api/v1/like/comment/unlike"
+      operationId: "unlikeComment"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/history/article/all:
+    get:
+      tags:
+        - visit
+      summary: "GET api/v1/history/article/all"
+      operationId: "getArticleReadList"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/history/article/count:
+    get:
+      tags:
+        - visit
+      summary: "GET api/v1/history/article/count"
+      operationId: "getArticleReadCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/history/mine:
+    get:
+      tags:
+        - visit
+      summary: "GET api/v1/history/mine"
+      operationId: "getMyReadHistories"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/history/read:
+    post:
+      tags:
+        - visit
+      summary: "POST api/v1/history/read"
+      operationId: "readCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/recommendation/follow:
+    get:
+      tags:
+        - recommend
+      summary: "GET api/v1/recommendation/follow"
+      operationId: "getRecommendLikeArticles"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/v1/recommendation/hot:
+    get:
+      tags:
+        - recommend
+      summary: "GET api/v1/recommendation/hot"
+      operationId: "getRecommendHotArticles"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+components:
+  schemas:
+    Object:
+      type: "object"
+      properties: { }
+    Date:
+      type: "object"
+      properties: { }
+    PostUserInfo:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        username:
+          type: "string"
+        password:
+          type: "string"
+        email:
+          type: "string"
+        phoneNumber:
+          type: "string"
+        description:
+          type: "string"
+        sex:
+          type: "string"
+          enum:
+            - "type"
+            - "DEFAULT"
+            - "MALE"
+            - "FEMALE"
+        bornDate:
+          $ref: "#/components/schemas/Date"
+        region:
+          type: "string"
+        website:
+          type: "string"
+        photo:
+          type: "string"

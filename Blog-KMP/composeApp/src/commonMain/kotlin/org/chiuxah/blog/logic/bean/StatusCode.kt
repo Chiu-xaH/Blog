@@ -5,6 +5,7 @@ enum class StatusCode(val code: Int) {
     CREATED(201), // 新建或修改数据成功
     ACCEPTED(202), // 一个请求已经进入后台排队(异步任务)
     NO_CONTENT(204), // 删除数据成功
+    MOVED(301), // 接口变更
     REDIRECT(302), // 重定向
     BAD_REQUEST(400), // 错误非法请求，例如缺少必须参数
     UNAUTHORIZED(401), // 未登录，需要登录
@@ -16,5 +17,5 @@ enum class StatusCode(val code: Int) {
     UNPROCESSABLE_ENTITY(422), // 当创建一个对象时，发生一个验证错误
     INTERNAL_SERVER_ERROR(500), // 服务器内部错误
     BAD_GATEWAY(502), // 上游服务器不可用或响应无效
-    SERVICE_UNAVAILABLE(503); // 服务器维护或过载
+    SERVICE_UNAVAILABLE(503), // 服务器维护或过载
 }

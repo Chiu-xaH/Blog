@@ -50,7 +50,7 @@ class NetworkViewModel : ViewModel() {
     private val _regResponse = MutableSharedFlow<ApiResult<MsgResponse>>() // 事件流
     val regResponse = _regResponse.asSharedFlow()
 
-    fun fetchReg(username: String, password: String) = launchRequest(sharedFlow = _regResponse) { blogApi.reg(username, password) }
+    fun fetchReg(email: String, password: String,code : String,username : String) = launchRequest(sharedFlow = _regResponse) { blogApi.reg(email, password,code,username) }
 
     fun fetchLogout() = viewModelScope.launch { blogApi.logout() }
 
@@ -84,5 +84,10 @@ class NetworkViewModel : ViewModel() {
     val getFollowCountResponse: StateFlow<ApiResult<FollowCountResponse>?> = _getFollowCountResponse.asStateFlow()
 
     fun fetchGetFollowCount(uid : Int) = launchRequest(flow = _getFollowCountResponse) { blogApi.getFollowCount(uid) }
+
+    private val _sendCodeResponse = MutableStateFlow<ApiResult<MsgResponse>?>(null) // 初始值设为 null
+    val sendCodResponse: StateFlow<ApiResult<MsgResponse>?> = _sendCodeResponse.asStateFlow()
+
+    fun fetchSendCode(email : String) = launchRequest(flow = _sendCodeResponse) { blogApi.sendCode(email) }
 
 }

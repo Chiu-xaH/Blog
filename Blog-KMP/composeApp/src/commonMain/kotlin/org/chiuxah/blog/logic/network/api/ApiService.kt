@@ -10,8 +10,10 @@ import org.chiuxah.blog.logic.network.config.ApiResult
 interface ApiService {
     // 登录
     suspend fun login(username : String,password : String) : ApiResult<LoginResponse>
+    // 以验证码登录
+
     // 注册
-    suspend fun reg(username: String,password: String) : ApiResult<MsgResponse>
+    suspend fun reg(email: String,password: String,code : String,username : String) : ApiResult<MsgResponse>
     // 检查登录状态
     suspend fun checkLogin() : ApiResult<UserResponse>
     // 登出
@@ -26,4 +28,6 @@ interface ApiService {
     suspend fun delArticle(id : Int) : ApiResult<MsgResponse>
     // 查看粉丝及其关注数目
     suspend fun getFollowCount(id : Int) : ApiResult<FollowCountResponse>
+    // 发送验证码
+    suspend fun sendCode(email : String) : ApiResult<MsgResponse>
 }

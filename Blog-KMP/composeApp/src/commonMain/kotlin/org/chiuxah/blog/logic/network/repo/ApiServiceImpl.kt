@@ -51,13 +51,15 @@ class ApiServiceImpl(private val client : HttpClient) : ApiService {
         )
     }
     // 注册
-    override suspend fun reg(username: String, password: String): ApiResult<MsgResponse> {
+    override suspend fun reg(email: String, password: String,code : String,username : String): ApiResult<MsgResponse> {
         return request(
             method = HttpMethod.Post,
             url = NetworkConstants.APIs.REG,
             params = mapOf(
                 "username" to username,
-                "password" to password
+                "password" to password,
+                "code" to code,
+                "email" to email
             )
         )
     }
@@ -111,6 +113,14 @@ class ApiServiceImpl(private val client : HttpClient) : ApiService {
             method = HttpMethod.Get,
             url = NetworkConstants.APIs.GET_FOLLOWERS_COUNT,
             params = mapOf("uid" to id)
+        )
+    }
+    // 发送验证码
+    override suspend fun sendCode(email: String): ApiResult<MsgResponse> {
+        return request(
+            method = HttpMethod.Post,
+            url = NetworkConstants.APIs.SEND_CODE,
+            params = mapOf("email" to email)
         )
     }
 }

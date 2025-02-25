@@ -13,8 +13,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -35,7 +37,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.chiuxah.blog.logic.bean.NavRoute
+import org.chiuxah.blog.logic.bean.StatusCode
 import org.chiuxah.blog.logic.network.config.ApiResult
 import org.chiuxah.blog.logic.uitls.MultiPlatUtils.showMsg
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
@@ -81,12 +86,17 @@ fun RegUI(navController: NavHostController,vm : NetworkViewModel) {
 
 @Composable
 fun RegInfoUI( vm : NetworkViewModel) {
-    var inputUsername by remember { mutableStateOf("") }
+    var inputEmail by remember { mutableStateOf("") }
     var inputPassword by remember { mutableStateOf("") }
     var inputPassword2 by remember { mutableStateOf("") }
+    var inputCode by remember { mutableStateOf("") }
+    var inputUsername by remember { mutableStateOf("") }
+    var hasSend by remember { mutableStateOf(false) }
+    var count by remember { mutableStateOf(60) }
 
     LaunchedEffect(Unit) {
-        vm.regResponse.collect { response ->
+        launch {
+            vm.regResponse.collect { response ->
                 when (response) {
                     is ApiResult.Success -> {
                         val result = response.data
@@ -94,6 +104,33 @@ fun RegInfoUI( vm : NetworkViewModel) {
                     }
                     is ApiResult.Error -> showMsg(response.toString())
                 }
+            }
+        }
+        launch {
+            vm.sendCodResponse.collect { response ->
+                when(response) {
+                    is ApiResult.Success -> {
+                        if(response.data.state == StatusCode.OK.code) {
+                            count = 60
+                            hasSend = true
+                        }
+                    }
+                    is ApiResult.Error -> showMsg(response.toString())
+                    null -> null
+                }
+            }
+        }
+    }
+    // 倒计时
+    LaunchedEffect(hasSend) {
+        if(hasSend) {
+            while(count != 0) {
+                count--
+                delay(1000L)
+            }
+            if(count == 0) {
+                hasSend = false
+            }
         }
     }
 
@@ -102,8 +139,8 @@ fun RegInfoUI( vm : NetworkViewModel) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
         TextField(
             modifier = Modifier.weight(1f).padding(horizontal = 25.dp),
-            value = inputUsername,
-            onValueChange = { inputUsername = it },
+            value = inputEmail,
+            onValueChange = { inputEmail = it },
             singleLine = true,
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
@@ -118,10 +155,44 @@ fun RegInfoUI( vm : NetworkViewModel) {
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        inputUsername = ""
+                        inputEmail = ""
                     }
                 ) {
                     Icon(Icons.Default.Close, contentDescription = null)
+                }
+            },
+            shape = MaterialTheme.shapes.medium
+        )
+    }
+    Spacer(modifier = Modifier.height(25.dp))
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        TextField(
+            modifier = Modifier.weight(1f).padding(horizontal = 25.dp),
+            value = inputCode,
+            onValueChange = { inputCode = it },
+            singleLine = true,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            label = {
+                Text("邮件验证码")
+            },
+            leadingIcon = {
+                Icon(Icons.Default.MailOutline, contentDescription = null)
+            },
+            trailingIcon = {
+                if(!hasSend) {
+                    FilledTonalButton(
+                        onClick = {
+                            vm.fetchSendCode(inputEmail)
+                        },
+                        modifier = Modifier.padding(horizontal = 15.dp)
+                    ) {
+                        Text("获取")
+                    }
+                } else {
+                    Text("${count}s")
                 }
             },
             shape = MaterialTheme.shapes.medium
@@ -179,19 +250,40 @@ fun RegInfoUI( vm : NetworkViewModel) {
         )
     }
     Spacer(modifier = Modifier.height(25.dp))
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        TextField(
+            modifier = Modifier.weight(1f).padding(horizontal = 25.dp),
+            value = inputUsername,
+            onValueChange = { inputUsername = it },
+            singleLine = true,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            label = {
+                Text("昵称")
+            },
+            leadingIcon = {
+                Icon(Icons.Default.MailOutline, contentDescription = null)
+            },
+            shape = MaterialTheme.shapes.medium
+        )
+    }
+    Spacer(modifier = Modifier.height(25.dp))
 
     CustomRow {
         Button(
             onClick = {
-                vm.fetchReg(inputUsername,inputPassword)
+                vm.fetchReg(inputEmail,inputPassword,inputCode,inputUsername)
             },
-            enabled = checkPassword(inputPassword,inputPassword2).first
+            enabled = checkPassword(inputPassword,inputPassword2,inputCode).first
         ) { Text("注册") }
     }
 }
 
-fun checkPassword(pwd1 : String,pwd2 : String) : Pair<Boolean,String> {
+fun checkPassword(pwd1 : String,pwd2 : String,code : String) : Pair<Boolean,String> {
     if(pwd2 != pwd2) return Pair(false,"两次密码不匹配")
     if(pwd1.length <= 8) return Pair(false,"密码太短 应大于8位")
+    if(code.length != 6) return Pair(false,"验证码格式有误")
     return Pair(true,"密码合理")
 }
