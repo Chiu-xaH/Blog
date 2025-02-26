@@ -15,7 +15,7 @@ class Consumer {
         val email = message["email"]
         val code = message["code"]
 
-        if (email != null && code != null) {
+        if (email != null && code != null && mailService.isOutTime(email)) {
             mailService.send(email, code)
         }
     }

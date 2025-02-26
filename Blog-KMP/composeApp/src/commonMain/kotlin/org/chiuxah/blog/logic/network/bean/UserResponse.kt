@@ -15,5 +15,5 @@ data class UserBean(
     val id : Int,
     val username : String,
     val photo : String,
-    val create_time : String
+    val email : String
 )

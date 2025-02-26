@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Close
@@ -147,7 +148,7 @@ fun RegInfoUI( vm : NetworkViewModel) {
                 unfocusedIndicatorColor = Color.Transparent
             ),
             label = {
-                Text("手机号")
+                Text("邮箱")
             },
             leadingIcon = {
                 Icon(Icons.Default.Call, contentDescription = null)
@@ -165,9 +166,27 @@ fun RegInfoUI( vm : NetworkViewModel) {
         )
     }
     Spacer(modifier = Modifier.height(25.dp))
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp), horizontalArrangement = Arrangement.Center) {
         TextField(
-            modifier = Modifier.weight(1f).padding(horizontal = 25.dp),
+            modifier = Modifier.weight(.5f),
+            value = inputUsername,
+            onValueChange = { inputUsername = it },
+            singleLine = true,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            label = {
+                Text("昵称")
+            },
+            leadingIcon = {
+                Icon(Icons.Default.MailOutline, contentDescription = null)
+            },
+            shape = MaterialTheme.shapes.medium
+        )
+        Spacer(Modifier.width(15.dp))
+        TextField(
+            modifier = Modifier.weight(.5f),
             value = inputCode,
             onValueChange = { inputCode = it },
             singleLine = true,
@@ -197,6 +216,7 @@ fun RegInfoUI( vm : NetworkViewModel) {
             },
             shape = MaterialTheme.shapes.medium
         )
+
     }
     Spacer(modifier = Modifier.height(25.dp))
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
@@ -250,26 +270,7 @@ fun RegInfoUI( vm : NetworkViewModel) {
         )
     }
     Spacer(modifier = Modifier.height(25.dp))
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        TextField(
-            modifier = Modifier.weight(1f).padding(horizontal = 25.dp),
-            value = inputUsername,
-            onValueChange = { inputUsername = it },
-            singleLine = true,
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            label = {
-                Text("昵称")
-            },
-            leadingIcon = {
-                Icon(Icons.Default.MailOutline, contentDescription = null)
-            },
-            shape = MaterialTheme.shapes.medium
-        )
-    }
-    Spacer(modifier = Modifier.height(25.dp))
+
 
     CustomRow {
         Button(

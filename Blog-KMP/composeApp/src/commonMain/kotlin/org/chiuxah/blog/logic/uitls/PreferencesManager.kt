@@ -7,7 +7,7 @@ object PreferencesManager {
     val settings  = Settings()
 
     const val KEY_COOKIE = "cookie"
-    const val KEY_USERNAME = "username"
+    const val KEY_EMAIL = "email"
     const val KEY_PASSWORD = "password"
     const val KEY_USERINFO = "userinfo"
 

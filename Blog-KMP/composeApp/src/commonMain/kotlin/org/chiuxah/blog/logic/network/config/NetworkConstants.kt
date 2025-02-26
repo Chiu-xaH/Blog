@@ -28,6 +28,14 @@ object NetworkConstants {
         // 关注
         private const val FOLLOW = API + "follow/"
         const val GET_FOLLOWERS_COUNT = FOLLOW + "count"
+        // 推荐
+        private const val RECOMMEND = API + "recommendation/"
+        const val GET_HOT_ARTICLES = RECOMMEND + "hot"
+        const val GET_FOLLOW_ARTICLES = RECOMMEND + "follow"
+        // 评论
+        private const val COMMENT = API + "comment/"
+        const val GET_ALL_COMMENTS = COMMENT + "all"
+        const val ADD_COMMENT = COMMENT + "add"
     }
     // 类型 http/https
     val TYPE =  URLProtocol.HTTP

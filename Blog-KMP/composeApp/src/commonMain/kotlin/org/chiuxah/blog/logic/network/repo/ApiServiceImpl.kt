@@ -1,5 +1,6 @@
 package org.chiuxah.blog.logic.network.repo
 
+import coil3.Bitmap
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
@@ -8,9 +9,12 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpMethod
 import org.chiuxah.blog.logic.network.api.ApiService
 import org.chiuxah.blog.logic.network.bean.BlogResponse
+import org.chiuxah.blog.logic.network.bean.CommentResponse
 import org.chiuxah.blog.logic.network.bean.FollowCountResponse
 import org.chiuxah.blog.logic.network.bean.LoginResponse
 import org.chiuxah.blog.logic.network.bean.MsgResponse
+import org.chiuxah.blog.logic.network.bean.RecommendArticlesResponse
+import org.chiuxah.blog.logic.network.bean.RecommendFollowArticlesResponse
 import org.chiuxah.blog.logic.network.bean.UserResponse
 import org.chiuxah.blog.logic.network.config.ApiResult
 import org.chiuxah.blog.logic.network.config.NetworkConstants
@@ -40,12 +44,12 @@ class ApiServiceImpl(private val client : HttpClient) : ApiService {
     }
 
     // 登录
-    override suspend fun login(username : String,password : String): ApiResult<LoginResponse> {
+    override suspend fun login(email : String,password : String): ApiResult<LoginResponse> {
         return request(
             method = HttpMethod.Post,
             url = NetworkConstants.APIs.LOGIN,
             params = mapOf(
-                "username" to username,
+                "email" to email,
                 "password" to password
             )
         )
@@ -121,6 +125,54 @@ class ApiServiceImpl(private val client : HttpClient) : ApiService {
             method = HttpMethod.Post,
             url = NetworkConstants.APIs.SEND_CODE,
             params = mapOf("email" to email)
+        )
+    }
+    // 推荐热门文章
+    override suspend fun recommendHotArticles(
+        pageSize: Int,
+        page: Int
+    ): ApiResult<RecommendArticlesResponse> {
+        return request(
+            method = HttpMethod.Get,
+            url = NetworkConstants.APIs.GET_HOT_ARTICLES,
+            params = mapOf(
+                "pageSize" to pageSize,
+                "page" to page
+            )
+        )
+    }
+    // 推荐关注的文章
+    override suspend fun recommendFollowArticles(): ApiResult<RecommendArticlesResponse> {
+        return request(
+            method = HttpMethod.Get,
+            url = NetworkConstants.APIs.GET_FOLLOW_ARTICLES
+        )
+    }
+    // 评论 通过递归构建层序关系
+    override suspend fun getComment(articleId: Int): ApiResult<CommentResponse> {
+        return request(
+            method = HttpMethod.Get,
+            url = NetworkConstants.APIs.GET_ALL_COMMENTS,
+            params = mapOf("articleId" to articleId)
+        )
+    }
+    // 评论
+    override suspend fun comment(
+        articleId: Int?,
+        commentId: Int?,
+        content: String,
+        image: Bitmap?
+    ): ApiResult<MsgResponse> {
+        return request(
+            method = HttpMethod.Post,
+            url = NetworkConstants.APIs.ADD_COMMENT,
+            params = mapOf(
+                "articleId" to articleId,
+                "commentId" to commentId,
+                "articleId" to articleId,
+                "content" to content,
+                "image" to image
+            )
         )
     }
 }

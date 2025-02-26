@@ -49,7 +49,7 @@ import org.chiuxah.blog.logic.uitls.PlatformsManager
 import org.chiuxah.blog.logic.uitls.PreferencesManager
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_COOKIE
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_PASSWORD
-import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_USERNAME
+import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_EMAIL
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
 import org.chiuxah.blog.ui.uitls.UserManager.userinfo
 import org.chiuxah.blog.ui.uitls.compents.CustomRow
@@ -125,14 +125,14 @@ fun LoginInfoUI(navController : NavHostController, vm : NetworkViewModel) {
         }
     }
 
-    var inputUsername by remember { mutableStateOf("") }
+    var inputEmail by remember { mutableStateOf("") }
     var inputPassword by remember { mutableStateOf("") }
     Spacer(modifier = Modifier.height(25.dp))
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
         TextField(
             modifier = Modifier.weight(1f).padding(horizontal = 25.dp),
-            value = inputUsername,
-            onValueChange = { inputUsername = it },
+            value = inputEmail,
+            onValueChange = { inputEmail = it },
             singleLine = true,
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
@@ -147,7 +147,7 @@ fun LoginInfoUI(navController : NavHostController, vm : NetworkViewModel) {
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        inputUsername = ""
+                        inputEmail = ""
                     }
                 ) {
                     Icon(Icons.Default.Close, contentDescription = null)
@@ -190,8 +190,8 @@ fun LoginInfoUI(navController : NavHostController, vm : NetworkViewModel) {
     CustomRow {
         Button(
             onClick = {
-                saveLogin(inputUsername,inputPassword)
-                vm.fetchLogin(inputUsername,inputPassword)
+                saveLogin(inputEmail,inputPassword)
+                vm.fetchLogin(inputEmail,inputPassword)
             },
         ) { Text("登录") }
         Spacer(Modifier.width(10.dp))
@@ -218,7 +218,7 @@ fun LoginInfoUI(navController : NavHostController, vm : NetworkViewModel) {
 // 记住密码
 fun saveLogin(username : String,password : String) {
     PreferencesManager.settings.apply {
-        putString(KEY_USERNAME,username)
+        putString(KEY_EMAIL,username)
         putString(KEY_PASSWORD,password)
     }
 }

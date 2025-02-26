@@ -35,7 +35,7 @@ class MailService {
         rabbitTemplate.convertAndSend(RabbitMQConfig.MAIL_EXCHANGE_NAME, RabbitMQConfig.MAIL_ROUTING_KEY,message)
         println("加入队列")
         // 将验证码存入Redis缓存，设置过期时间
-        redisTemplate.opsForValue().set(email, code, Duration.ofMinutes(5))
+        redisTemplate.opsForValue().set(email, code, Duration.ofMinutes(1))
     }
 
     fun send(email: String, code: String) {
@@ -64,5 +64,10 @@ class MailService {
     fun checkCode(email: String, code: String) : Boolean {
         val cachedCode = redisTemplate.opsForValue().get(email)
         return cachedCode != null && cachedCode == code
+    }
+    // 发送验证码时redis设置有效期1分钟，此方法检测
+    fun isOutTime(email: String) : Boolean {
+        redisTemplate.opsForValue().get(email) ?: return false
+        return true
     }
 }

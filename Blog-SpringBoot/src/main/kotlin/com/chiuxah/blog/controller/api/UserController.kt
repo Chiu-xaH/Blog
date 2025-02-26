@@ -240,6 +240,11 @@ class UserController {
         if(!isValidEmail) {
             return INVALID_RESPONSE
         }
+        // 检查是否上一个验证码过期了，没过期不逊于重复申请
+        if(mailService.isOutTime(email)) {
+            return ResultEntity.fail(StatusCode.FORBIDDEN, msg = "频率过高 稍后再试")
+        }
+        // 发送邮件
         mailService.addQueue(email)
         return SUCCESS_RESPONSE
     }

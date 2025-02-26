@@ -6,8 +6,10 @@ import com.chiuxah.blog.model.bean.ArticleCount
 import com.chiuxah.blog.model.bean.ArticleInfoSummary
 import com.chiuxah.blog.model.bean.ArticleInfoWithCount
 import com.chiuxah.blog.model.bean.UserInfoSummary
+import com.chiuxah.blog.utils.ControllerUtils.INVALID_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.isSuccessResponse
 import com.chiuxah.blog.utils.ControllerUtils.jsonToMap
+import com.chiuxah.blog.utils.ValidUtils
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -40,38 +42,14 @@ class RecommendController {
         // articles已经时按时间顺序取得
         for(articleInfo in articleInfos) {
             val articleId = articleInfo.id
-            // 初始化
-            var likeCount = 0
-            var visitCount = 0
-            var collectCount = 0
-            var commentCount = 0
-            // 获取数据
-            val likeCountResponse = articleLikeController.getArticleLikeCount(articleId)
-            if(isSuccessResponse(likeCountResponse)) {
-                likeCount = jsonToMap(likeCountResponse)["data"] as Int
-            }
-            val visitCountResponse = visitController.getArticleReadCount(articleId)
-            if(isSuccessResponse(visitCountResponse)) {
-                visitCount = jsonToMap(visitCountResponse)["data"] as Int
-            }
-            val collectCountResponse = collectionController.getArticleCollectionsCount(articleId)
-            if(isSuccessResponse(collectCountResponse)) {
-                collectCount = jsonToMap(collectCountResponse)["data"] as Int
-            }
-            val commentCountResponse = commentController.getCommentCount(articleId)
-            if(isSuccessResponse(commentCountResponse)) {
-                commentCount = jsonToMap(commentCountResponse)["data"] as Int
-            }
             // 组装数据
-            val countDTO = ArticleCount(
-                likeCount = likeCount,
-                visitCount = visitCount,
-                collectCount = collectCount,
-                commentCount = commentCount
-            )
+            val countDTOResponse = getArticleInfoCount(articleId)
+            if(!isSuccessResponse(countDTOResponse)) {
+                return INVALID_RESPONSE
+            }
             val articleInfoWithCount = ArticleInfoWithCount(
                 articleInfo = articleInfo,
-                countInfo = countDTO
+                countInfo = jsonToMap(countDTOResponse)["data"] as ArticleCount
             )
             hotArticles.add(articleInfoWithCount)
         }
@@ -90,6 +68,8 @@ class RecommendController {
     // 推荐文章 显示在首页  拿出自己关注的用户的文章，然后取最近时间段排序
     @GetMapping("/follow")
     fun getRecommendLikeArticles(request : HttpServletRequest) : Any {
+        // 初始化返回数据
+        var followArticles = mutableListOf<ArticleInfoWithCount>()
         // 先取关注列表
         val followResponse = followController.getFolloweeList(request)
         if(!isSuccessResponse(followResponse)) {
@@ -114,6 +94,56 @@ class RecommendController {
         totalArticles.sortBy { item ->
             item.update_time
         }
-        return ResultEntity.success("为您推荐关注${totalArticles.size}条", data = totalArticles)
+        // 查询关注收藏数据
+        for(article in totalArticles) {
+            val articleId = article.id
+            val countDTOResponse = getArticleInfoCount(articleId)
+            if(!isSuccessResponse(countDTOResponse)) {
+                return INVALID_RESPONSE
+            }
+            val articleInfoWithCount = ArticleInfoWithCount(
+                articleInfo = article,
+                countInfo = jsonToMap(countDTOResponse)["data"] as ArticleCount
+            )
+            followArticles.add(articleInfoWithCount)
+        }
+        return ResultEntity.success("为您推荐关注${totalArticles.size}条", data = followArticles)
+    }
+    // 获取文章的流量信息
+    @GetMapping("/info-count")
+    fun getArticleInfoCount(articleId : Int) : Any {
+        if(!ValidUtils.isValidId(articleId)) {
+            return INVALID_RESPONSE
+        }
+        // 初始化
+        var likeCount = 0
+        var visitCount = 0
+        var collectCount = 0
+        var commentCount = 0
+        // 获取数据
+        val likeCountResponse = articleLikeController.getArticleLikeCount(articleId)
+        if(isSuccessResponse(likeCountResponse)) {
+            likeCount = jsonToMap(likeCountResponse)["data"] as Int
+        }
+        val visitCountResponse = visitController.getArticleReadCount(articleId)
+        if(isSuccessResponse(visitCountResponse)) {
+            visitCount = jsonToMap(visitCountResponse)["data"] as Int
+        }
+        val collectCountResponse = collectionController.getArticleCollectionsCount(articleId)
+        if(isSuccessResponse(collectCountResponse)) {
+            collectCount = jsonToMap(collectCountResponse)["data"] as Int
+        }
+        val commentCountResponse = commentController.getCommentCount(articleId)
+        if(isSuccessResponse(commentCountResponse)) {
+            commentCount = jsonToMap(commentCountResponse)["data"] as Int
+        }
+        // 组装数据
+        val countDTO = ArticleCount(
+            likeCount = likeCount,
+            visitCount = visitCount,
+            collectCount = collectCount,
+            commentCount = commentCount
+        )
+        return ResultEntity.success(msg = "获取成功", data = countDTO)
     }
 }

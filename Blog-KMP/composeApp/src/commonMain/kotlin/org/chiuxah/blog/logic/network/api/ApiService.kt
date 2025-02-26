@@ -1,17 +1,19 @@
 package org.chiuxah.blog.logic.network.api
 
+import coil3.Bitmap
 import org.chiuxah.blog.logic.network.bean.BlogResponse
+import org.chiuxah.blog.logic.network.bean.CommentResponse
 import org.chiuxah.blog.logic.network.bean.FollowCountResponse
 import org.chiuxah.blog.logic.network.bean.LoginResponse
 import org.chiuxah.blog.logic.network.bean.MsgResponse
+import org.chiuxah.blog.logic.network.bean.RecommendArticlesResponse
+import org.chiuxah.blog.logic.network.bean.RecommendFollowArticlesResponse
 import org.chiuxah.blog.logic.network.bean.UserResponse
 import org.chiuxah.blog.logic.network.config.ApiResult
 
 interface ApiService {
     // 登录
-    suspend fun login(username : String,password : String) : ApiResult<LoginResponse>
-    // 以验证码登录
-
+    suspend fun login(email : String,password : String) : ApiResult<LoginResponse>
     // 注册
     suspend fun reg(email: String,password: String,code : String,username : String) : ApiResult<MsgResponse>
     // 检查登录状态
@@ -30,4 +32,13 @@ interface ApiService {
     suspend fun getFollowCount(id : Int) : ApiResult<FollowCountResponse>
     // 发送验证码
     suspend fun sendCode(email : String) : ApiResult<MsgResponse>
+    /************************************************************/
+    // 首页展示 推荐热门博文
+    suspend fun recommendHotArticles(pageSize : Int = 15,page : Int = 1) : ApiResult<RecommendArticlesResponse>
+    // 首页展示 推荐关注
+    suspend fun recommendFollowArticles() : ApiResult<RecommendArticlesResponse>
+    // 所有评论
+    suspend fun getComment(articleId : Int) : ApiResult<CommentResponse>
+    // 评论
+    suspend fun comment(articleId : Int?, commentId: Int?, content : String, image : Bitmap?) : ApiResult<MsgResponse>
 }

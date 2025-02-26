@@ -27,6 +27,19 @@ tags:
   - name: like
     description: 用户点赞博文
 paths:
+  /api/v1/recommendation/info-count:
+    get:
+      tags:
+        - recommend
+      summary: "GET api/v1/recommendation/info-count"
+      operationId: "getArticleInfoCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
   /api/v1/article/add:
     post:
       tags:
@@ -517,7 +530,7 @@ paths:
   /api/v1/collection/all/collection:
     get:
       tags:
-        - collection
+        - collect
       summary: "GET api/v1/collection/all/collection"
       operationId: "getAllCollectionsList"
       responses:
@@ -530,7 +543,7 @@ paths:
   /api/v1/collection/article/count:
     get:
       tags:
-        - collection
+        - collect
       summary: "GET api/v1/collection/article/count"
       operationId: "getArticleCollectionsCount"
       responses:
@@ -543,7 +556,7 @@ paths:
   /api/v1/collection/collect:
     post:
       tags:
-        - collection
+        - collect
       summary: "POST api/v1/collection/collect"
       operationId: "collect"
       responses:
@@ -556,7 +569,7 @@ paths:
   /api/v1/collection/folder/change-state:
     put:
       tags:
-        - collection
+        - collect
       summary: "PUT api/v1/collection/folder/change-state"
       operationId: "changeFolderState"
       responses:
@@ -569,7 +582,7 @@ paths:
   /api/v1/collection/folder/collection:
     get:
       tags:
-        - collection
+        - collect
       summary: "GET api/v1/collection/folder/collection"
       operationId: "getFolderCollectionsList"
       responses:
@@ -582,7 +595,7 @@ paths:
   /api/v1/collection/folder/create:
     post:
       tags:
-        - collection
+        - collect
       summary: "POST api/v1/collection/folder/create"
       operationId: "createFolder"
       responses:
@@ -595,7 +608,7 @@ paths:
   /api/v1/collection/folder/del:
     delete:
       tags:
-        - collection
+        - collect
       summary: "DELETE api/v1/collection/folder/del"
       operationId: "deleteFolder"
       responses:
@@ -608,7 +621,7 @@ paths:
   /api/v1/collection/folder/info:
     get:
       tags:
-        - collection
+        - collect
       summary: "GET api/v1/collection/folder/info"
       operationId: "getFolderInfo"
       responses:
@@ -621,7 +634,7 @@ paths:
   /api/v1/collection/folder/user:
     get:
       tags:
-        - collection
+        - collect
       summary: "GET api/v1/collection/folder/user"
       operationId: "getFolders"
       responses:
@@ -634,7 +647,7 @@ paths:
   /api/v1/collection/info:
     get:
       tags:
-        - collection
+        - collect
       summary: "GET api/v1/collection/info"
       operationId: "getCollectionInfo"
       responses:
@@ -647,7 +660,7 @@ paths:
   /api/v1/collection/uncollect:
     delete:
       tags:
-        - collection
+        - collect
       summary: "DELETE api/v1/collection/uncollect"
       operationId: "uncollect"
       responses:

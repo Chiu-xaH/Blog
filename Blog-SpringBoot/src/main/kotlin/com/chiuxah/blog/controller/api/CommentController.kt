@@ -1,8 +1,10 @@
 package com.chiuxah.blog.controller.api
 
 import com.chiuxah.blog.config.response.ResultEntity
+import com.chiuxah.blog.model.bean.CommentDTO
 import com.chiuxah.blog.model.entity.CommentEntity
 import com.chiuxah.blog.model.enums.type.ImageType
+import com.chiuxah.blog.model.enums.type.ParentCommentType
 import com.chiuxah.blog.service.CommentService
 import com.chiuxah.blog.utils.ControllerUtils.CONTROLLER_ERROR_RESPONSE
 import com.chiuxah.blog.utils.ControllerUtils.DATABASE_ERROR_RESPONSE
@@ -47,8 +49,25 @@ class CommentController {
     @GetMapping("/all")
     fun getArticleComments(articleId : Int?,commentId: Int?) : Any {
         val type = commentService.parentType(articleId, commentId) ?: return INVALID_RESPONSE
-        val result = commentService.getComments(type,articleId,commentId)
-        return ResultEntity.success("获取成功", data = result)
+        val parents = commentService.getComments(type,articleId,commentId)
+        val comment = mutableListOf<CommentDTO>()
+        for(parent in parents) {
+            val children = mutableListOf<CommentDTO>()
+            val childrenResponse = getArticleComments(null,parent.id)
+            if(!isSuccessResponse(childrenResponse)) {
+                return childrenResponse
+            }
+            val c = jsonToMap(childrenResponse)["data"] as List<CommentDTO>
+            for(cChildren in c) {
+                children.add(cChildren)
+            }
+            comment.add(CommentDTO(
+                type = type.name,
+                commentInfo = parent,
+                children = children
+            ))
+        }
+        return ResultEntity.success("获取成功", data = comment)
     }
     // 评论
     @PostMapping("/add")

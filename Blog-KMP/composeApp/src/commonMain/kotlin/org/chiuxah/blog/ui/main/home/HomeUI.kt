@@ -36,9 +36,10 @@ import org.chiuxah.blog.logic.bean.PlatformType
 import org.chiuxah.blog.logic.uitls.PlatformsManager
 import org.chiuxah.blog.logic.uitls.PreferencesManager
 import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_COOKIE
-import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_USERNAME
+import org.chiuxah.blog.logic.uitls.PreferencesManager.KEY_EMAIL
 import org.chiuxah.blog.ui.main.home.add.AddUI
 import org.chiuxah.blog.ui.main.home.blog.BlogsUI
+import org.chiuxah.blog.ui.main.home.blog.FollowArticlesUI
 import org.chiuxah.blog.ui.main.home.cube.MyUI
 import org.chiuxah.blog.ui.uitls.NavigateManager.fadeAnimation
 import org.chiuxah.blog.ui.uitls.NavigateManager.turnToAndClear
@@ -50,19 +51,24 @@ import org.jetbrains.compose.resources.painterResource
 fun HomeUI(navController : NavHostController, vm : NetworkViewModel) {
     val navHomeController = rememberNavController()
     val isDesktop = PlatformsManager.platformType == PlatformType.DESKTOP
-    val username = PreferencesManager.settings.getStringOrNull(KEY_USERNAME) ?: "游客"
     val barItems = listOf(
         NavigationBarItemData(
-            HomeRoute.BLOG.name,
-            "博客",
+            HomeRoute.RECOMMEND.name,
+            "推荐",
             painterResource(Res.drawable.article),
             painterResource(Res.drawable.article_filled)
         ),
         NavigationBarItemData(
-            HomeRoute.ADD.name,
-            "发布",
+            HomeRoute.FOLLOW.name,
+            "关注",
             painterResource(Res.drawable.add_2),
             painterResource(Res.drawable.add_2)
+        ),
+        NavigationBarItemData(
+            HomeRoute.SEARCH.name,
+            "搜索",
+            painterResource(Res.drawable.deployed_code),
+            painterResource(Res.drawable.deployed_code_filled)
         ),
         NavigationBarItemData(
             HomeRoute.CUBE.name,
@@ -71,34 +77,8 @@ fun HomeUI(navController : NavHostController, vm : NetworkViewModel) {
             painterResource(Res.drawable.deployed_code_filled)
         ),
     )
-    @Composable
-    fun BarItemUI() {
-        barItems.forEach { item ->
-            val interactionSource = remember { MutableInteractionSource() }
-            val isPressed by interactionSource.collectIsPressedAsState()
-            val scale = animateFloatAsState(
-                targetValue = if (isPressed) 0.8f else 1f, // 按下时为0.9，松开时为1
-                animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow),
-                label = "" // 使用弹簧动画
-            )
-            val route = item.route
-            val selected = navController.currentBackStackEntryAsState().value?.destination?.route == route
-            NavigationRailItem(
-                selected = selected,
-                modifier = Modifier.scale(scale.value),
-                interactionSource = interactionSource,
-                onClick = {
-                    if (!selected) { turnToAndClear(navHomeController, route) }
-                },
-                label = { Text(text = item.label) },
-                icon = {
-                    Icon(if(selected)item.filledIcon else item.icon, contentDescription = item.label)
-                }
-            )
-        }
-    }
 
-    var currentDestination by rememberSaveable { mutableStateOf(HomeRoute.BLOG.name) }
+    var currentDestination by rememberSaveable { mutableStateOf(HomeRoute.RECOMMEND.name) }
 
     NavigationSuiteScaffold(
         navigationSuiteItems =  {
@@ -118,40 +98,10 @@ fun HomeUI(navController : NavHostController, vm : NetworkViewModel) {
                 )
             }
         }
-//        topBar = {
-//            TopAppBar(
-//                colors = TopAppBarDefaults.mediumTopAppBarColors(
-//                    containerColor = Color.Transparent,
-//                    titleContentColor = MaterialTheme.colorScheme.primary,
-//                ),
-//                title = { Text("欢迎 $username") },
-//                actions = {
-//                    IconButton(onClick = {
-//
-//                    }) {
-//                        Icon(Icons.Filled.Close, contentDescription = "")
-//                    }
-//                },
-//            )
-//        },
-//        bottomBar = {
-//            if (isDesktop) {
-//                // 为电脑平台单独适配UI:侧边
-//                NavigationRail(
-//                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-//                ) {
-//                    BarItemUI()
-//                }
-//            } else {
-//                NavigationBar() {
-//                    BarItemUI()
-//                }
-//            }
-//        }
     ) {
         NavHost(
             navController = navHomeController,
-            startDestination = HomeRoute.BLOG.name,
+            startDestination = HomeRoute.RECOMMEND.name,
             enterTransition = {
                 fadeAnimation.enter
             },
@@ -159,11 +109,14 @@ fun HomeUI(navController : NavHostController, vm : NetworkViewModel) {
                 fadeAnimation.exit
             }
         ) {
-            composable(HomeRoute.BLOG.name) {
+            composable(HomeRoute.RECOMMEND.name) {
                 BlogsUI(vm)
             }
-            composable(HomeRoute.ADD.name) {
-                AddUI(vm)
+            composable(HomeRoute.FOLLOW.name) {
+                FollowArticlesUI(vm)
+            }
+            composable(HomeRoute.SEARCH.name) {
+
             }
             composable(HomeRoute.CUBE.name) {
                 MyUI(vm,navController)

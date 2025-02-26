@@ -5,5 +5,5 @@ enum class NavRoute {
 }
 
 enum class HomeRoute {
-    BLOG,ADD,CUBE
+    RECOMMEND,CUBE,SEARCH,FOLLOW
 }
